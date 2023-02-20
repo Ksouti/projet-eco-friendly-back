@@ -47,7 +47,7 @@ class Category
     private $articles;
 
     /**
-     * @ORM\OneToMany(targetEntity=Advice::class, mappedBy="category")
+     * @ORM\OneToMany(targetEntity=Advice::class, mappedBy="category", orphanRemoval=false)
      */
     private $advices;
 
@@ -55,6 +55,11 @@ class Category
     {
         $this->articles = new ArrayCollection();
         $this->advices = new ArrayCollection();
+    }
+
+    public function __toString(): string
+    {
+        return $this->name;
     }
 
     public function getId(): ?int

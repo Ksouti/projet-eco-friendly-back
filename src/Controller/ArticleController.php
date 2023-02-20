@@ -44,7 +44,7 @@ class ArticleController extends AbstractController
     }
 
     /**
-     * @Route("/back_office/articles/{id}", name="app_backoffice_articles_show", methods={"GET"})
+     * @Route("/back_office/articles/{id}", name="app_backoffice_articles_show", requirements={"id":"\d+", "slug":"^[0-9a-z-]+$"}, methods={"GET"})
      */
     public function show(Article $article): Response
     {
@@ -54,7 +54,7 @@ class ArticleController extends AbstractController
     }
 
     /**
-     * @Route("/back_office/articles/{id}/editer", name="app_backoffice_articles_edit", methods={"GET", "POST"})
+     * @Route("/back_office/articles/{id}/editer", name="app_backoffice_articles_edit", requirements={"id":"\d+", "slug":"^[0-9a-z-]+$"}, methods={"GET", "POST"})
      */
     public function edit(Request $request, Article $article, ArticleRepository $articleRepository): Response
     {
@@ -73,15 +73,15 @@ class ArticleController extends AbstractController
         ]);
     }
 
-    /* *
-     * @Route("/back_office/articles/{id}/", name="app_backoffice_articles_delete", methods={"POST"})
+    /**
+     * @Route("/back_office/articles/{id}/desactiver", name="app_backoffice_articles_deactivate", requirements={"id":"\d+", "slug":"^[0-9a-z-]+$"}, methods={"POST"})
      */
-    /* public function delete(Request $request, Article $article, ArticleRepository $articleRepository): Response
+    public function deactivate(Request $request, Article $article, ArticleRepository $articleRepository): Response
     {
-        if ($this->isCsrfTokenValid('delete' . $article->getId(), $request->request->get('_token'))) {
-            $articleRepository->remove($article, true);
+        if ($this->isCsrfTokenValid('deactivate' . $article->getId(), $request->request->get('_token'))) {
+            $article->setStatus(2);
+            $articleRepository->add($article, true);
         }
-
         return $this->redirectToRoute('app_backoffice_articles_list', [], Response::HTTP_SEE_OTHER);
-    } */
+    }
 }
