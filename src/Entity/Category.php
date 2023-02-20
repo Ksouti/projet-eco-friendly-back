@@ -21,16 +21,22 @@ class Category
 
     /**
      * @ORM\Column(type="string", length=32)
+     * @Assert\Length(min = 1, max = 32)
+     * @Assert\NotBlank
      */
     private $name;
 
     /**
      * @ORM\Column(type="string", length=128)
+     * @Assert\Length(min = 1, max = 128)
+     * @Assert\NotBlank
      */
     private $tagline;
 
     /**
      * @ORM\Column(type="string", length=32)
+     * @Assert\Length(min = 1, max = 32)
+     * @Assert\NotBlank
      */
     private $slug;
 

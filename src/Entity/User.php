@@ -45,7 +45,6 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 
     /**
      * @ORM\OneToMany(targetEntity=Article::class, mappedBy="author")
-     * @Assert\NotBlank
      */
     private $articles;
 
