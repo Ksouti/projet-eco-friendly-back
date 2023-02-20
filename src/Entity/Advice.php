@@ -69,6 +69,7 @@ class Advice
      * @Assert\NotBlank
      */
     private $category;
+    
 
     public function getId(): ?int
     {

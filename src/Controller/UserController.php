@@ -10,15 +10,13 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
-/**
- * @Route("/user")
- */
+
 class UserController extends AbstractController
 {
     /**
-     * @Route("/", name="app_user_list", methods={"GET"})
+     * @Route("/back_office/utilisateurs/inscrits", name="app_user_list", methods={"GET"})
      */
-    public function index(UserRepository $userRepository): Response
+    public function list(UserRepository $userRepository): Response
     {
         return $this->render('user/index.html.twig', [
             'users' => $userRepository->findAll(),
@@ -26,7 +24,7 @@ class UserController extends AbstractController
     }
 
     /**
-     * @Route("/new", name="app_user_new", methods={"GET", "POST"})
+     * @Route("/back_office/utilisateurs/nouveau", name="app_user_new", methods={"GET" , "POST"})
      */
     public function new(Request $request, UserRepository $userRepository): Response
     {
@@ -47,7 +45,7 @@ class UserController extends AbstractController
     }
 
     /**
-     * @Route("/{id}", name="app_user_show", methods={"GET"})
+     * @Route("/back_office/utilisateurs/{id}", name="app_user_show", methods={"GET"})
      */
     public function show(User $user): Response
     {
@@ -57,7 +55,7 @@ class UserController extends AbstractController
     }
 
     /**
-     * @Route("/{id}/edit", name="app_user_edit", methods={"GET", "POST"})
+     * @Route("/back_office/utilisateurs/[user-id]/modifier", name="app_user_", methods={"GET", "PUT"})
      */
     public function edit(Request $request, User $user, UserRepository $userRepository): Response
     {
