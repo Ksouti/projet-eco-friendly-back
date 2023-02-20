@@ -55,36 +55,47 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 
     /**
      * @ORM\Column(type="string", length=64, nullable=true)
+     * @Assert\Length(min = 1, max = 64)
      */
     private $firstname;
 
     /**
      * @ORM\Column(type="string", length=64, nullable=true)
+     * @Assert\Length(min = 1, max = 64)
      */
     private $lastname;
 
     /**
      * @ORM\Column(type="string", length=64)
+     * @Assert\NotBlank
+     * @Assert\Length(min = 1, max = 64)
      */
     private $nickname;
 
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
+     * @Assert\Length(min = 1, max = 255)
+     * @Assert\Url
      */
     private $avatar;
 
     /**
      * @ORM\Column(type="boolean")
+     * @Assert\NotBlank
+     * @Assert\Type("bool")
      */
     private $is_active;
 
     /**
      * @ORM\Column(type="datetime_immutable")
+     * @Assert\NotBlank
+     * @Assert\Type("DateTimeImmutable")
      */
     private $created_at;
 
     /**
      * @ORM\Column(type="datetime_immutable", nullable=true)
+     * @Assert\Type("DateTimeImmutable")
      */
     private $updated_at;
 
@@ -164,7 +175,6 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     public function setPassword(string $password): self
     {
         $this->password = $password;
-
         return $this;
     }
 

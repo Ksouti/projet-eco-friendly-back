@@ -10,23 +10,20 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
-/**
- * @Route("/article")
- */
 class ArticleController extends AbstractController
 {
     /**
-     * @Route("/", name="app_article_index", methods={"GET"})
+     * @Route("/back_office/articles", name="app_backoffice_articles_list", methods={"GET"})
      */
-    public function index(ArticleRepository $articleRepository): Response
+    public function list(ArticleRepository $articleRepository): Response
     {
-        return $this->render('article/index.html.twig', [
+        return $this->render('article/list.html.twig', [
             'articles' => $articleRepository->findAll(),
         ]);
     }
 
     /**
-     * @Route("/new", name="app_article_new", methods={"GET", "POST"})
+     * @Route("/back_office/articles/ajouter", name="app_backoffice_articles_new", methods={"GET", "POST"})
      */
     public function new(Request $request, ArticleRepository $articleRepository): Response
     {
@@ -37,7 +34,7 @@ class ArticleController extends AbstractController
         if ($form->isSubmitted() && $form->isValid()) {
             $articleRepository->add($article, true);
 
-            return $this->redirectToRoute('app_article_index', [], Response::HTTP_SEE_OTHER);
+            return $this->redirectToRoute('app_backoffice_articles_list', [], Response::HTTP_SEE_OTHER);
         }
 
         return $this->renderForm('article/new.html.twig', [
@@ -47,7 +44,7 @@ class ArticleController extends AbstractController
     }
 
     /**
-     * @Route("/{id}", name="app_article_show", methods={"GET"})
+     * @Route("/back_office/articles/{id}", name="app_backoffice_articles_show", methods={"GET"})
      */
     public function show(Article $article): Response
     {
@@ -57,7 +54,7 @@ class ArticleController extends AbstractController
     }
 
     /**
-     * @Route("/{id}/edit", name="app_article_edit", methods={"GET", "POST"})
+     * @Route("/back_office/articles/{id}/editer", name="app_backoffice_articles_edit", methods={"GET", "POST"})
      */
     public function edit(Request $request, Article $article, ArticleRepository $articleRepository): Response
     {
@@ -67,7 +64,7 @@ class ArticleController extends AbstractController
         if ($form->isSubmitted() && $form->isValid()) {
             $articleRepository->add($article, true);
 
-            return $this->redirectToRoute('app_article_index', [], Response::HTTP_SEE_OTHER);
+            return $this->redirectToRoute('app_backoffice_articles_list', [], Response::HTTP_SEE_OTHER);
         }
 
         return $this->renderForm('article/edit.html.twig', [
@@ -76,15 +73,15 @@ class ArticleController extends AbstractController
         ]);
     }
 
-    /**
-     * @Route("/{id}", name="app_article_delete", methods={"POST"})
+    /* *
+     * @Route("/back_office/articles/{id}/", name="app_backoffice_articles_delete", methods={"POST"})
      */
-    public function delete(Request $request, Article $article, ArticleRepository $articleRepository): Response
+    /* public function delete(Request $request, Article $article, ArticleRepository $articleRepository): Response
     {
-        if ($this->isCsrfTokenValid('delete'.$article->getId(), $request->request->get('_token'))) {
+        if ($this->isCsrfTokenValid('delete' . $article->getId(), $request->request->get('_token'))) {
             $articleRepository->remove($article, true);
         }
 
-        return $this->redirectToRoute('app_article_index', [], Response::HTTP_SEE_OTHER);
-    }
+        return $this->redirectToRoute('app_backoffice_articles_list', [], Response::HTTP_SEE_OTHER);
+    } */
 }
