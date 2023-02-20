@@ -50,6 +50,11 @@ class Category
      * @ORM\OneToMany(targetEntity=Advice::class, mappedBy="category")
      */
     private $advices;
+    
+    public function __toString()
+    {
+        return $this->getName();
+    }
 
     public function __construct()
     {
