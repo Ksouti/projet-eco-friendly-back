@@ -43,9 +43,15 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
      */
     private $articles;
 
+    /**
+     * @ORM\OneToMany(targetEntity=Advice::class, mappedBy="contributor")
+     */
+    private $advices;
+
     public function __construct()
     {
         $this->articles = new ArrayCollection();
+        $this->advices = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -161,6 +167,36 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
             // set the owning side to null (unless already changed)
             if ($article->getAuthor() === $this) {
                 $article->setAuthor(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Advice>
+     */
+    public function getAdvices(): Collection
+    {
+        return $this->advices;
+    }
+
+    public function addAdvice(Advice $advice): self
+    {
+        if (!$this->advices->contains($advice)) {
+            $this->advices[] = $advice;
+            $advice->setContributor($this);
+        }
+
+        return $this;
+    }
+
+    public function removeAdvice(Advice $advice): self
+    {
+        if ($this->advices->removeElement($advice)) {
+            // set the owning side to null (unless already changed)
+            if ($advice->getContributor() === $this) {
+                $advice->setContributor(null);
             }
         }
 
