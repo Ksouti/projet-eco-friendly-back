@@ -13,11 +13,11 @@ use Symfony\Component\Routing\Annotation\Route;
 class ArticleController extends AbstractController
 {
     /**
-     * @Route("/back_office/articles", name="app_backoffice_articles_index", methods={"GET"})
+     * @Route("/back_office/articles", name="app_backoffice_articles_list", methods={"GET"})
      */
-    public function index(ArticleRepository $articleRepository): Response
+    public function list(ArticleRepository $articleRepository): Response
     {
-        return $this->render('article/index.html.twig', [
+        return $this->render('article/list.html.twig', [
             'articles' => $articleRepository->findAll(),
         ]);
     }
@@ -34,7 +34,7 @@ class ArticleController extends AbstractController
         if ($form->isSubmitted() && $form->isValid()) {
             $articleRepository->add($article, true);
 
-            return $this->redirectToRoute('app_backoffice_articles_index', [], Response::HTTP_SEE_OTHER);
+            return $this->redirectToRoute('app_backoffice_articles_list', [], Response::HTTP_SEE_OTHER);
         }
 
         return $this->renderForm('article/new.html.twig', [
@@ -64,7 +64,7 @@ class ArticleController extends AbstractController
         if ($form->isSubmitted() && $form->isValid()) {
             $articleRepository->add($article, true);
 
-            return $this->redirectToRoute('app_backoffice_articles_index', [], Response::HTTP_SEE_OTHER);
+            return $this->redirectToRoute('app_backoffice_articles_list', [], Response::HTTP_SEE_OTHER);
         }
 
         return $this->renderForm('article/edit.html.twig', [
@@ -82,6 +82,6 @@ class ArticleController extends AbstractController
             $articleRepository->remove($article, true);
         }
 
-        return $this->redirectToRoute('app_backoffice_articles_index', [], Response::HTTP_SEE_OTHER);
+        return $this->redirectToRoute('app_backoffice_articles_list', [], Response::HTTP_SEE_OTHER);
     } */
 }

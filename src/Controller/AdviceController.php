@@ -16,7 +16,7 @@ use Symfony\Component\Routing\Annotation\Route;
 class AdviceController extends AbstractController
 {
     /**
-     * @Route("/", name="app_advice_index", methods={"GET"})
+     * @Route("/", name="app_advice_list", methods={"GET"})
      */
     public function index(AdviceRepository $adviceRepository): Response
     {
@@ -37,7 +37,7 @@ class AdviceController extends AbstractController
         if ($form->isSubmitted() && $form->isValid()) {
             $adviceRepository->add($advice, true);
 
-            return $this->redirectToRoute('app_advice_index', [], Response::HTTP_SEE_OTHER);
+            return $this->redirectToRoute('app_advice_list', [], Response::HTTP_SEE_OTHER);
         }
 
         return $this->renderForm('advice/new.html.twig', [
@@ -67,7 +67,7 @@ class AdviceController extends AbstractController
         if ($form->isSubmitted() && $form->isValid()) {
             $adviceRepository->add($advice, true);
 
-            return $this->redirectToRoute('app_advice_index', [], Response::HTTP_SEE_OTHER);
+            return $this->redirectToRoute('app_advice_list', [], Response::HTTP_SEE_OTHER);
         }
 
         return $this->renderForm('advice/edit.html.twig', [
@@ -81,10 +81,10 @@ class AdviceController extends AbstractController
      */
     public function delete(Request $request, Advice $advice, AdviceRepository $adviceRepository): Response
     {
-        if ($this->isCsrfTokenValid('delete'.$advice->getId(), $request->request->get('_token'))) {
+        if ($this->isCsrfTokenValid('delete' . $advice->getId(), $request->request->get('_token'))) {
             $adviceRepository->remove($advice, true);
         }
 
-        return $this->redirectToRoute('app_advice_index', [], Response::HTTP_SEE_OTHER);
+        return $this->redirectToRoute('app_advice_list', [], Response::HTTP_SEE_OTHER);
     }
 }
