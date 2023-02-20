@@ -19,7 +19,7 @@
             </tr>
         </thead>
         <tbody>
-        {% for advice in advice %}
+        {% for advice in advices %}
             <tr>
                 <td>{{ advice.id }}</td>
                 <td>{{ advice.title }}</td>
@@ -29,8 +29,8 @@
                 <td>{{ advice.createdAt ? advice.createdAt|date('Y-m-d H:i:s') : '' }}</td>
                 <td>{{ advice.updatedAt ? advice.updatedAt|date('Y-m-d H:i:s') : '' }}</td>
                 <td>
-                    <a href="{{ path('app_advice_show', {'id': advice.id}) }}">show</a>
-                    <a href="{{ path('app_advice_edit', {'id': advice.id}) }}">edit</a>
+                    <a href="{{ path('app_backoffice_advice_show', {'id': advice.id}) }}">show</a>
+                    <a href="{{ path('app_backoffice_advice_edit', {'id': advice.id}) }}">edit</a>
                 </td>
             </tr>
         {% else %}
@@ -41,5 +41,5 @@
         </tbody>
     </table>
 
-    <a href="{{ path('app_advice_new') }}">Create new</a>
+    <a href="{{ path('app_backoffice_advices_new') }}">Create new</a>
 {% endblock %}
