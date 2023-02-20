@@ -14,7 +14,7 @@ use Symfony\Component\Routing\Annotation\Route;
 class AdviceController extends AbstractController
 {
     /**
-     * @Route("/back_office/conseils", name="app_back-office_advices_list", methods={"GET"})
+     * @Route("/back_office/conseils", name="app_backoffice_advices_list", methods={"GET"})
      */
     public function list(AdviceRepository $adviceRepository): Response
     {
@@ -22,8 +22,8 @@ class AdviceController extends AbstractController
             'advices' => $adviceRepository->findAll(),
         ]);
     }
-    /**r
-     * @Route("/back_office/conseils/ajouter", name="app_back-office_advices_new", methods={"GET", "POST"})
+    /**
+     * @Route("/back_office/conseils/ajouter", name="app_backoffice_advices_new", methods={"GET", "POST"})
      */
     public function new(Request $request, AdviceRepository $adviceRepository): Response
     {
@@ -44,7 +44,7 @@ class AdviceController extends AbstractController
     }
 
     /**
-     * @Route("/back-office/{id}", name="app_back-office_advice_show", methods={"GET"})
+     * @Route("/back_office/conseils/{id}", name="app_backoffice_advices_show", requirements={"id":"\d+"}, methods={"GET"})
      */
     public function show(Advice $advice): Response
     {
@@ -54,7 +54,7 @@ class AdviceController extends AbstractController
     }
 
     /**
-     * @Route("/{id}/edit", name="app_advice_edit", methods={"GET", "POST"})
+     * @Route("/back_office/conseils/{id}/editer", name="app_backoffice_advices_edit", requirements={"id":"\d+"}, methods={"GET", "POST"})
      */
     public function edit(Request $request, Advice $advice, AdviceRepository $adviceRepository): Response
     {
@@ -64,7 +64,7 @@ class AdviceController extends AbstractController
         if ($form->isSubmitted() && $form->isValid()) {
             $adviceRepository->add($advice, true);
 
-            return $this->redirectToRoute('app_advice_list', [], Response::HTTP_SEE_OTHER);
+            return $this->redirectToRoute('app_backoffice_advices_list', [], Response::HTTP_SEE_OTHER);
         }
 
         return $this->renderForm('advice/edit.html.twig', [
@@ -74,14 +74,16 @@ class AdviceController extends AbstractController
     }
 
     /**
-     * @Route("/{id}", name="app_advice_delete", methods={"POST"})
+     * @Route("/back_office/conseils/{id}/desactiver", name="app_backoffice_advices_deactivate", requirements={"id":"\d+"}, methods={"POST"})
      */
-    public function delete(Request $request, Advice $advice, AdviceRepository $adviceRepository): Response
+    public function deactivate(Request $request, Advice $advice, AdviceRepository $adviceRepository): Response
     {
-        if ($this->isCsrfTokenValid('delete' . $advice->getId(), $request->request->get('_token'))) {
-            $adviceRepository->remove($advice, true);
-        }
+        /*         if ($this->isCsrfTokenValid('deactivate' . $advice->getId(), $request->request->get('_token'))) {
+ */
+        $advice->setStatus(2);
+        $adviceRepository->add($advice, true);
+        /* } */
 
-        return $this->redirectToRoute('app_advice_list', [], Response::HTTP_SEE_OTHER);
+        return $this->redirectToRoute('app_backoffice_advices_list', [], Response::HTTP_SEE_OTHER);
     }
 }
