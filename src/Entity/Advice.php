@@ -4,6 +4,7 @@ namespace App\Entity;
 
 use App\Repository\AdviceRepository;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * @ORM\Entity(repositoryClass=AdviceRepository::class)
@@ -19,26 +20,34 @@ class Advice
 
     /**
      * @ORM\Column(type="string", length=128)
+     * @Assert\Length(min = 1, max = 128)
+     * @Assert\NotBlank
      */
     private $title;
 
     /**
      * @ORM\Column(type="text")
+     * @Assert\NotBlank
      */
     private $Content;
 
     /**
      * @ORM\Column(type="string", length=128)
+     * @Assert\Length(min = 1, max = 128)
+     * @Assert\NotBlank
      */
     private $Slug;
 
     /**
      * @ORM\Column(type="integer")
+     * @Assert\Length(min = 1, max = 128)
+     * @Assert\NotBlank
      */
     private $status;
 
     /**
      * @ORM\Column(type="datetime_immutable")
+     * @Assert\NotBlank
      */
     private $created_at;
 
@@ -50,12 +59,14 @@ class Advice
     /**
      * @ORM\ManyToOne(targetEntity=User::class, inversedBy="advices")
      * @ORM\JoinColumn(nullable=false)
+     * @Assert\NotBlank
      */
     private $contributor;
 
     /**
      * @ORM\ManyToOne(targetEntity=Category::class)
      * @ORM\JoinColumn(nullable=false)
+     * @Assert\NotBlank
      */
     private $category;
 
