@@ -10,23 +10,20 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
-/**
- * @Route("/advice")
- */
+
 class AdviceController extends AbstractController
 {
     /**
-     * @Route("/", name="app_advice_index", methods={"GET"})
+     * @Route("/back_office/conseils", name="app_back-office_advices_list", methods={"GET"})
      */
-    public function index(AdviceRepository $adviceRepository): Response
+    public function list(AdviceRepository $adviceRepository): Response
     {
-        return $this->render('advice/index.html.twig', [
-            'advice' => $adviceRepository->findAll(),
+        return $this->render('advice/list.html.twig', [
+            'advices' => $adviceRepository->findAll(),
         ]);
     }
-
-    /**
-     * @Route("/new", name="app_advice_new", methods={"GET", "POST"})
+    /**r
+     * @Route("/back_office/conseils/ajouter", name="app_back-office_advices_new", methods={"GET", "POST"})
      */
     public function new(Request $request, AdviceRepository $adviceRepository): Response
     {
@@ -37,7 +34,7 @@ class AdviceController extends AbstractController
         if ($form->isSubmitted() && $form->isValid()) {
             $adviceRepository->add($advice, true);
 
-            return $this->redirectToRoute('app_advice_index', [], Response::HTTP_SEE_OTHER);
+            return $this->redirectToRoute('app_backoffice_advices_list', [], Response::HTTP_SEE_OTHER);
         }
 
         return $this->renderForm('advice/new.html.twig', [
@@ -47,7 +44,7 @@ class AdviceController extends AbstractController
     }
 
     /**
-     * @Route("/{id}", name="app_advice_show", methods={"GET"})
+     * @Route("/back-office/{id}", name="app_back-office_advice_show", methods={"GET"})
      */
     public function show(Advice $advice): Response
     {
