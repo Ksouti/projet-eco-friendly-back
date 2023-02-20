@@ -2,14 +2,13 @@
 
 namespace App\Entity;
 
-use App\Repository\ArticleRepository;
+use App\Repository\AdviceRepository;
 use Doctrine\ORM\Mapping as ORM;
-use Symfony\Component\Validator\Constraints as Assert;
 
 /**
- * @ORM\Entity(repositoryClass=ArticleRepository::class)
+ * @ORM\Entity(repositoryClass=AdviceRepository::class)
  */
-class Article
+class Advice
 {
     /**
      * @ORM\Id
@@ -20,28 +19,18 @@ class Article
 
     /**
      * @ORM\Column(type="string", length=128)
-     * @Assert\Length(min = 1, max = 128)
-     * @Assert\NotBlank
      */
     private $title;
 
     /**
      * @ORM\Column(type="text")
-     * @Assert\NotBlank
      */
-    private $content;
+    private $Content;
 
     /**
      * @ORM\Column(type="string", length=128)
      */
-    private $slug;
-
-    /**
-     * @ORM\Column(type="string", length=255)
-     * @Assert\Url
-     * @Assert\Length(min = 10, max = 255)
-     */
-    private $picture;
+    private $Slug;
 
     /**
      * @ORM\Column(type="integer")
@@ -49,23 +38,23 @@ class Article
     private $status;
 
     /**
-     * @ORM\Column(type="datetime")
+     * @ORM\Column(type="datetime_immutable")
      */
     private $created_at;
 
     /**
-     * @ORM\Column(type="datetime")
+     * @ORM\Column(type="datetime_immutable", nullable=true)
      */
     private $updated_at;
 
     /**
-     * @ORM\ManyToOne(targetEntity=User::class, inversedBy="articles")
+     * @ORM\ManyToOne(targetEntity=User::class, inversedBy="advices")
      * @ORM\JoinColumn(nullable=false)
      */
-    private $author;
+    private $contributor;
 
     /**
-     * @ORM\ManyToOne(targetEntity=Category::class, inversedBy="articles")
+     * @ORM\ManyToOne(targetEntity=Category::class)
      * @ORM\JoinColumn(nullable=false)
      */
     private $category;
@@ -89,36 +78,24 @@ class Article
 
     public function getContent(): ?string
     {
-        return $this->content;
+        return $this->Content;
     }
 
-    public function setContent(string $content): self
+    public function setContent(string $Content): self
     {
-        $this->content = $content;
+        $this->Content = $Content;
 
         return $this;
     }
 
     public function getSlug(): ?string
     {
-        return $this->slug;
+        return $this->Slug;
     }
 
-    public function setSlug(string $slug): self
+    public function setSlug(string $Slug): self
     {
-        $this->slug = $slug;
-
-        return $this;
-    }
-
-    public function getPicture(): ?string
-    {
-        return $this->picture;
-    }
-
-    public function setPicture(string $picture): self
-    {
-        $this->picture = $picture;
+        $this->Slug = $Slug;
 
         return $this;
     }
@@ -135,38 +112,38 @@ class Article
         return $this;
     }
 
-    public function getCreatedAt(): ?\DateTimeInterface
+    public function getCreatedAt(): ?\DateTimeImmutable
     {
         return $this->created_at;
     }
 
-    public function setCreatedAt(\DateTimeInterface $created_at): self
+    public function setCreatedAt(\DateTimeImmutable $created_at): self
     {
         $this->created_at = $created_at;
 
         return $this;
     }
 
-    public function getUpdatedAt(): ?\DateTimeInterface
+    public function getUpdatedAt(): ?\DateTimeImmutable
     {
         return $this->updated_at;
     }
 
-    public function setUpdatedAt(\DateTimeInterface $updated_at): self
+    public function setUpdatedAt(?\DateTimeImmutable $updated_at): self
     {
         $this->updated_at = $updated_at;
 
         return $this;
     }
 
-    public function getAuthor(): ?User
+    public function getContributor(): ?User
     {
-        return $this->author;
+        return $this->contributor;
     }
 
-    public function setAuthor(?User $author): self
+    public function setContributor(?User $contributor): self
     {
-        $this->author = $author;
+        $this->contributor = $contributor;
 
         return $this;
     }
