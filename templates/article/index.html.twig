@@ -31,8 +31,8 @@
                 <td>{{ article.createdAt ? article.createdAt|date('Y-m-d H:i:s') : '' }}</td>
                 <td>{{ article.updatedAt ? article.updatedAt|date('Y-m-d H:i:s') : '' }}</td>
                 <td>
-                    <a href="{{ path('app_article_show', {'id': article.id}) }}">show</a>
-                    <a href="{{ path('app_article_edit', {'id': article.id}) }}">edit</a>
+                    <a href="{{ path('app_backoffice_articles_show', {'id': article.id}) }}">show</a>
+                    <a href="{{ path('app_backoffice_articles_edit', {'id': article.id}) }}">edit</a>
                 </td>
             </tr>
         {% else %}
@@ -43,5 +43,5 @@
         </tbody>
     </table>
 
-    <a href="{{ path('app_article_new') }}">Create new</a>
+    <a href="{{ path('app_backoffice_articles_new') }}">Create new</a>
 {% endblock %}
