@@ -20,7 +20,7 @@ PHP 7.4.3 (minimum)
 
 4. Configure a database and fill in the `.env` file
 
-`DATABASE_URL="<db_type>://<db_name>:<password>@127.0.0.1:3306/<db_name>?serverVersion=<server_version>"`
+`DATABASE_URL="<db_type>://<username>:<password>@127.0.0.1:3306/<db_name>?serverVersion=<server_version>"`
 
 5. Run migration
 
