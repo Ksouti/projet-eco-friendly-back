@@ -23,7 +23,7 @@ class ArticleController extends AbstractController
     }
 
     /**
-     * @Route("/back_office/articles/new", name="app_backoffice_articles_new", methods={"GET", "POST"})
+     * @Route("/back_office/articles/ajouter", name="app_backoffice_articles_new", methods={"GET", "POST"})
      */
     public function new(Request $request, ArticleRepository $articleRepository): Response
     {
@@ -54,7 +54,7 @@ class ArticleController extends AbstractController
     }
 
     /**
-     * @Route("/back_office/articles/{id}/edit", name="app_backoffice_articles_edit", methods={"GET", "POST"})
+     * @Route("/back_office/articles/{id}/editer", name="app_backoffice_articles_edit", methods={"GET", "POST"})
      */
     public function edit(Request $request, Article $article, ArticleRepository $articleRepository): Response
     {
@@ -73,15 +73,15 @@ class ArticleController extends AbstractController
         ]);
     }
 
-    /**
-     * @Route("/back_office/articles/{id}", name="app_backoffice_articles_delete", methods={"POST"})
+    /* *
+     * @Route("/back_office/articles/{id}/", name="app_backoffice_articles_delete", methods={"POST"})
      */
-    public function delete(Request $request, Article $article, ArticleRepository $articleRepository): Response
+    /* public function delete(Request $request, Article $article, ArticleRepository $articleRepository): Response
     {
         if ($this->isCsrfTokenValid('delete' . $article->getId(), $request->request->get('_token'))) {
             $articleRepository->remove($article, true);
         }
 
         return $this->redirectToRoute('app_backoffice_articles_index', [], Response::HTTP_SEE_OTHER);
-    }
+    } */
 }
