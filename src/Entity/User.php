@@ -24,22 +24,27 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 
     /**
      * @ORM\Column(type="string", length=180, unique=true)
+     * @Assert\Length(min = 1, max = 180)
+     * @Assert\NotBlank
      */
     private $email;
 
     /**
      * @ORM\Column(type="json")
+     * @Assert\NotBlank
      */
     private $roles = [];
 
     /**
      * @var string The hashed password
      * @ORM\Column(type="string")
+     * @Assert\NotBlank
      */
     private $password;
 
     /**
      * @ORM\OneToMany(targetEntity=Article::class, mappedBy="author")
+     * @Assert\NotBlank
      */
     private $articles;
 
