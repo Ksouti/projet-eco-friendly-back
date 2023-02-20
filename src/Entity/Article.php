@@ -33,6 +33,8 @@ class Article
 
     /**
      * @ORM\Column(type="string", length=128)
+     * @Assert\Length(min = 1, max = 128)
+     * @Assert\NotBlank
      */
     private $slug;
 
@@ -45,11 +47,14 @@ class Article
 
     /**
      * @ORM\Column(type="integer")
+     * @Assert\Range(min = 0, max = 2)
+     * @Assert\NotBlank
      */
     private $status;
 
     /**
      * @ORM\Column(type="datetime")
+     * @Assert\NotBlank
      */
     private $created_at;
 
@@ -61,12 +66,14 @@ class Article
     /**
      * @ORM\ManyToOne(targetEntity=User::class, inversedBy="articles")
      * @ORM\JoinColumn(nullable=false)
+     * @Assert\NotBlank
      */
     private $author;
 
     /**
      * @ORM\ManyToOne(targetEntity=Category::class, inversedBy="articles")
      * @ORM\JoinColumn(nullable=false)
+     * @Assert\NotBlank
      */
     private $category;
 
