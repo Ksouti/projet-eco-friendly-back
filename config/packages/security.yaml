@@ -28,27 +28,29 @@ security:
     # Note: Only the *first* access control that matches will be used
     access_control:
         # ! BACK-OFFICE
+        # - { path: ^/author, roles: ROLE_AUTHOR }
+        - {
+              # path: '^back_office/auteur/(\d+)/(editer|modifier|desactiver)$',
+              path: '^back_office/articles',
+              roles: ROLE_AUTHOR,
+          }
+        - {
+              # path: '^back_office/auteurs/(\d+)/(editer|modifier|desactiver)$',
+              path: '^back_office/auteurs|utilisateurs|conseils',
+              roles: ROLE_ADMIN,
+          }
+        #- {
+        #      path: '^back_office/utilisateurs/(\d+)/(desactiver)$',
+        #      roles: ROLE_ADMIN,
+        #  }
+        #- {
+        #      path: '^back_office/conseils/(\d+)/(editer|modifier|desactiver)$',
+        #      roles: ROLE_ADMIN,
+        #  }
 
-         # This configuration allows access to users with the 'ROLE_ADMIN' role:
-            #/back-office/author/{id}/edit
-            #/back-office/author/{id}/update
-            #/back-office/author/{id}/deactivate
-            #/back-office/user/{id}/deactivate
-            #/back-office/advice/{id}/edit
-            #/back-office/advice/{id}/update
-            #/back-office/advice/{id}/deactivate
-
-        - { path: '^%back_office_path%/auteur/(\d+)/(editer|modifier|desactiver)$', roles: ROLE_ADMIN }
-        - { path: '^%back_office_path%/utilisateur/(\d+)/(desactiver)$', roles: ROLE_ADMIN }
-        - { path: '^%back_office_path%/conseil/(\d+)/(editer|modifier|desactiver)$', roles: ROLE_ADMIN }
-        
-
-
-         # - { path: ^/author, roles: ROLE_AUTHOR }
-        - { path: '^%back_office_path%/auteur/(\d+)/(editer|modifier|desactiver)$', roles: ROLE_AUTHOR }
-       
-         # - { path: ^/profile, roles: ROLE_USER }
-        
+        # ! API
+        # - { path: ^/api/login, roles: PUBLIC_ACCESS }
+        # - { path: ^/api,       roles: IS_AUTHENTICATED_FULLY }
 
 when@test:
     security:
