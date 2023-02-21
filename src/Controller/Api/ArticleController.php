@@ -4,10 +4,13 @@ namespace App\Controller\Api;
 
 use App\Entity\Article;
 <<<<<<< HEAD
+<<<<<<< HEAD
 use App\Entity\User;
 =======
 use App\Entity\Category;
 >>>>>>> FEAT: ArticleController added with groups on relevant entities
+=======
+>>>>>>> FEAT: AdviceController (not list)  +  ArticleController (not list) + UserController read
 use App\Repository\ArticleRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
@@ -22,6 +25,7 @@ class ArticleController extends AbstractController
     public function index(ArticleRepository $articleRepository): Response
     {
 <<<<<<< HEAD
+<<<<<<< HEAD
         return $this->json($articleRepository->findAll(), Response::HTTP_OK, [], ['groups' => 'articles']);
 =======
         return $this->json(
@@ -31,11 +35,15 @@ class ArticleController extends AbstractController
             ['groups' => 'articles']
         );
 >>>>>>> FEAT: ArticleController added with groups on relevant entities
+=======
+        return $this->json($articleRepository->findAll(), Response::HTTP_OK, [], ['groups' => 'articles']);
+>>>>>>> FEAT: AdviceController (not list)  +  ArticleController (not list) + UserController read
     }
 
     /**
      * @Route("/api/articles/{id}", name="app_api_articles_read", requirements={"id":"\d+"}, methods={"GET"})
      */
+<<<<<<< HEAD
 <<<<<<< HEAD
     public function read(?Article $article, ArticleRepository $articleRepository): Response
     {
@@ -54,7 +62,13 @@ class ArticleController extends AbstractController
     }
 =======
     public function read(Article $article, ArticleRepository $articleRepository): Response
+=======
+    public function read(?Article $article, ArticleRepository $articleRepository): Response
+>>>>>>> FEAT: AdviceController (not list)  +  ArticleController (not list) + UserController read
     {
+        if (!$article) {
+            return $this->json(['errors' => 'Cet article n\'existe pas'], Response::HTTP_NOT_FOUND);
+        }
         return $this->json($articleRepository->find($article->getId()), Response::HTTP_OK, [], ['groups' => 'articles']);
     }
 >>>>>>> FEAT: ArticleController added with groups on relevant entities

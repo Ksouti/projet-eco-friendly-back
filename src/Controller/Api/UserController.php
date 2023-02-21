@@ -3,6 +3,7 @@
 namespace App\Controller\Api;
 
 use App\Entity\User;
+<<<<<<< HEAD
 use App\Repository\AdviceRepository;
 use App\Repository\UserRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -13,6 +14,12 @@ use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Serializer\Exception\NotEncodableValueException;
 use Symfony\Component\Serializer\SerializerInterface;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
+=======
+use App\Repository\UserRepository;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\Routing\Annotation\Route;
+>>>>>>> FEAT: AdviceController (not list)  +  ArticleController (not list) + UserController read
 
 class UserController extends AbstractController
 {
@@ -26,6 +33,7 @@ class UserController extends AbstractController
         }
         return $this->json($userRepository->find($user->getId()), Response::HTTP_OK, [], ['groups' => 'users']);
     }
+<<<<<<< HEAD
 
     /**
      * @Route("/api/users/{id}", name="app_api_users_update", requirements={"id":"\d+"}, methods={"PUT"})
@@ -94,4 +102,6 @@ class UserController extends AbstractController
         $userRepository->remove($user, true);
         return $this->json([], Response::HTTP_NO_CONTENT, [], ['groups' => 'users']);
     }
+=======
+>>>>>>> FEAT: AdviceController (not list)  +  ArticleController (not list) + UserController read
 }

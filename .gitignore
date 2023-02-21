@@ -20,7 +20,10 @@
 ###< symfony/phpunit-bridge ###
 
 /.vscode/
+<<<<<<< HEAD
 
 ###> lexik/jwt-authentication-bundle ###
 /config/jwt/*.pem
 ###< lexik/jwt-authentication-bundle ###
+=======
+>>>>>>> FEAT: AdviceController (not list)  +  ArticleController (not list) + UserController read

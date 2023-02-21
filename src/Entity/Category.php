@@ -20,10 +20,15 @@ class Category
      * @ORM\Column(type="integer")
      * @Groups({"articles"})
 <<<<<<< HEAD
+<<<<<<< HEAD
      * @Groups({"advices"})
      * @Groups({"users"})
 =======
 >>>>>>> FEAT: ArticleController added with groups on relevant entities
+=======
+     * @Groups({"advices"})
+     * @Groups({"users"})
+>>>>>>> FEAT: AdviceController (not list)  +  ArticleController (not list) + UserController read
      */
     private $id;
 
@@ -33,10 +38,15 @@ class Category
      * @Assert\NotBlank
      * @Groups({"articles"})
 <<<<<<< HEAD
+<<<<<<< HEAD
      * @Groups({"advices"})
      * @Groups({"users"})
 =======
 >>>>>>> FEAT: ArticleController added with groups on relevant entities
+=======
+     * @Groups({"advices"})
+     * @Groups({"users"})
+>>>>>>> FEAT: AdviceController (not list)  +  ArticleController (not list) + UserController read
      */
     private $name;
 
@@ -46,10 +56,15 @@ class Category
      * @Assert\NotBlank
      * @Groups({"articles"})
 <<<<<<< HEAD
+<<<<<<< HEAD
      * @Groups({"advices"})
      * @Groups({"users"})
 =======
 >>>>>>> FEAT: ArticleController added with groups on relevant entities
+=======
+     * @Groups({"advices"})
+     * @Groups({"users"})
+>>>>>>> FEAT: AdviceController (not list)  +  ArticleController (not list) + UserController read
      */
     private $tagline;
 
@@ -59,10 +74,15 @@ class Category
      * @Assert\NotBlank
      * @Groups({"articles"})
 <<<<<<< HEAD
+<<<<<<< HEAD
      * @Groups({"advices"})
      * @Groups({"users"})
 =======
 >>>>>>> FEAT: ArticleController added with groups on relevant entities
+=======
+     * @Groups({"advices"})
+     * @Groups({"users"})
+>>>>>>> FEAT: AdviceController (not list)  +  ArticleController (not list) + UserController read
      */
     private $slug;
 

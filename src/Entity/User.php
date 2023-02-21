@@ -23,10 +23,15 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
      * @ORM\Column(type="integer")
      * @Groups({"articles"})
 <<<<<<< HEAD
+<<<<<<< HEAD
      * @Groups({"advices"})
      * @Groups({"users"})
 =======
 >>>>>>> FEAT: ArticleController added with groups on relevant entities
+=======
+     * @Groups({"advices"})
+     * @Groups({"users"})
+>>>>>>> FEAT: AdviceController (not list)  +  ArticleController (not list) + UserController read
      */
     private $id;
 
@@ -36,10 +41,15 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
      * @Assert\NotBlank
      * @Groups({"articles"})
 <<<<<<< HEAD
+<<<<<<< HEAD
      * @Groups({"advices"})
      * @Groups({"users"})
 =======
 >>>>>>> FEAT: ArticleController added with groups on relevant entities
+=======
+     * @Groups({"advices"})
+     * @Groups({"users"})
+>>>>>>> FEAT: AdviceController (not list)  +  ArticleController (not list) + UserController read
      */
     private $email;
 
@@ -49,6 +59,8 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
      * @ORM\Column(type="json")
      * @Assert\NotBlank
      * @Groups({"articles"})
+     * @Groups({"advices"})
+     * @Groups({"users"})
      */
     private $roles = [];
 
@@ -62,10 +74,19 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     private $password;
 
     /**
+<<<<<<< HEAD
      * @ORM\Column(type="json")
      * @Assert\NotBlank
      * @Groups({"articles"})
      * @Groups({"advices"})
+=======
+     * @ORM\OneToMany(targetEntity=Article::class, mappedBy="author")
+     */
+    private $articles;
+
+    /**
+     * @ORM\OneToMany(targetEntity=Advice::class, mappedBy="contributor")
+>>>>>>> FEAT: AdviceController (not list)  +  ArticleController (not list) + UserController read
      * @Groups({"users"})
      */
     private $roles = [];
@@ -75,10 +96,15 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
      * @Assert\Length(min = 1, max = 64)
      * @Groups({"articles"})
 <<<<<<< HEAD
+<<<<<<< HEAD
      * @Groups({"advices"})
      * @Groups({"users"})
 =======
 >>>>>>> FEAT: ArticleController added with groups on relevant entities
+=======
+     * @Groups({"advices"})
+     * @Groups({"users"})
+>>>>>>> FEAT: AdviceController (not list)  +  ArticleController (not list) + UserController read
      */
     private $firstname;
 
@@ -87,10 +113,15 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
      * @Assert\Length(min = 1, max = 64)
      * @Groups({"articles"})
 <<<<<<< HEAD
+<<<<<<< HEAD
      * @Groups({"advices"})
      * @Groups({"users"})
 =======
 >>>>>>> FEAT: ArticleController added with groups on relevant entities
+=======
+     * @Groups({"advices"})
+     * @Groups({"users"})
+>>>>>>> FEAT: AdviceController (not list)  +  ArticleController (not list) + UserController read
      */
     private $lastname;
 
@@ -100,10 +131,15 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
      * @Assert\Length(min = 1, max = 64)
      * @Groups({"articles"})
 <<<<<<< HEAD
+<<<<<<< HEAD
      * @Groups({"advices"})
      * @Groups({"users"})
 =======
 >>>>>>> FEAT: ArticleController added with groups on relevant entities
+=======
+     * @Groups({"advices"})
+     * @Groups({"users"})
+>>>>>>> FEAT: AdviceController (not list)  +  ArticleController (not list) + UserController read
      */
     private $nickname;
 
@@ -113,10 +149,15 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
      * @Assert\Url
      * @Groups({"articles"})
 <<<<<<< HEAD
+<<<<<<< HEAD
      * @Groups({"advices"})
      * @Groups({"users"})
 =======
 >>>>>>> FEAT: ArticleController added with groups on relevant entities
+=======
+     * @Groups({"advices"})
+     * @Groups({"users"})
+>>>>>>> FEAT: AdviceController (not list)  +  ArticleController (not list) + UserController read
      */
     private $avatar;
 
@@ -125,10 +166,15 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
      * @Assert\Type("bool")
      * @Groups({"articles"})
 <<<<<<< HEAD
+<<<<<<< HEAD
      * @Groups({"advices"})
      * @Groups({"users"})
 =======
 >>>>>>> FEAT: ArticleController added with groups on relevant entities
+=======
+     * @Groups({"advices"})
+     * @Groups({"users"})
+>>>>>>> FEAT: AdviceController (not list)  +  ArticleController (not list) + UserController read
      */
     private $is_active;
 
@@ -138,10 +184,15 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
      * @Assert\Type("DateTimeImmutable")
      * @Groups({"articles"})
 <<<<<<< HEAD
+<<<<<<< HEAD
      * @Groups({"advices"})
      * @Groups({"users"})
 =======
 >>>>>>> FEAT: ArticleController added with groups on relevant entities
+=======
+     * @Groups({"advices"})
+     * @Groups({"users"})
+>>>>>>> FEAT: AdviceController (not list)  +  ArticleController (not list) + UserController read
      */
     private $created_at;
 
@@ -150,10 +201,15 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
      * @Assert\Type("DateTimeImmutable")
      * @Groups({"articles"})
 <<<<<<< HEAD
+<<<<<<< HEAD
      * @Groups({"advices"})
      * @Groups({"users"})
 =======
 >>>>>>> FEAT: ArticleController added with groups on relevant entities
+=======
+     * @Groups({"advices"})
+     * @Groups({"users"})
+>>>>>>> FEAT: AdviceController (not list)  +  ArticleController (not list) + UserController read
      */
     private $updated_at;
 

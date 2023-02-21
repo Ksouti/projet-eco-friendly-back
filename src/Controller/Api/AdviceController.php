@@ -6,9 +6,13 @@ use App\Entity\Advice;
 use App\Repository\AdviceRepository;
 use App\Repository\CategoryRepository;
 use App\Repository\UserRepository;
+<<<<<<< HEAD
 use Doctrine\Common\Util\Debug;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\ErrorHandler\Debug as ErrorHandlerDebug;
+=======
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+>>>>>>> FEAT: AdviceController (not list)  +  ArticleController (not list) + UserController read
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -17,7 +21,10 @@ use Symfony\Component\Serializer\SerializerInterface;
 use Symfony\Component\String\Slugger\SluggerInterface;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 
+<<<<<<< HEAD
 
+=======
+>>>>>>> FEAT: AdviceController (not list)  +  ArticleController (not list) + UserController read
 class AdviceController extends AbstractController
 {
     // TODO : add url parameters to filter advices
@@ -30,6 +37,7 @@ class AdviceController extends AbstractController
     }
 
     /**
+<<<<<<< HEAD
      * @Route("/api/advices", name="app_api_advices_new", methods={"POST"})
      */
     public function new(Request $request, SerializerInterface $serializer, ValidatorInterface $validator, SluggerInterface $slugger, AdviceRepository $adviceRepository, UserRepository $userRepository, CategoryRepository $categoryRepository): Response
@@ -38,6 +46,17 @@ class AdviceController extends AbstractController
             $advice = $serializer->deserialize($request->getContent(), Advice::class, 'json');
             $advice->setSlug(strtolower($slugger->slug($advice->getTitle(), '-')));
             $advice->setCreatedAt(new \DateTimeImmutable());
+=======
+     * @Route("/api/advices", name="app_api_advice_new", methods={"POST"})
+     */
+    public function new(Request $request, SerializerInterface $serializer, ValidatorInterface $validator, SluggerInterface $slugger, AdviceRepository $adviceRepository, UserRepository $userRepository, CategoryRepository $categoryRepository): Response
+    {
+        try {
+            $advice = $serializer->deserialize($request->getContent(), Advice::class, 'json');
+            $advice->setSlug(strtolower($slugger->slug($advice->getTitle(), '-')));
+            $advice->setCreatedAt(new \DateTimeImmutable());
+
+>>>>>>> FEAT: AdviceController (not list)  +  ArticleController (not list) + UserController read
             $json = $request->getContent();
             $contributorId = json_decode($json, true)['contributorId'];
             $advice->setContributor($userRepository->find($contributorId));
@@ -87,6 +106,7 @@ class AdviceController extends AbstractController
     }
 
     /**
+<<<<<<< HEAD
      * @Route("/api/advices/{id}", name="app_api_advices_update", requirements={"id":"\d+"}, methods={"PUT"})
      */
     public function update(Request $request, ?Advice $advice, SerializerInterface $serializer, ValidatorInterface $validator, SluggerInterface $slugger, AdviceRepository $adviceRepository, UserRepository $userRepository, CategoryRepository $categoryRepository): Response
@@ -108,6 +128,25 @@ class AdviceController extends AbstractController
             $advice->setUpdatedAt(new \DateTimeImmutable());
         } catch (NotEncodableValueException $e) {
             return $this->json(['errors' => ['json' => 'Json non valide']], Response::HTTP_BAD_REQUEST);
+=======
+     * @Route("/api/advices/{id}", name="app_api_advice_update", requirements={"id":"\d+"}, methods={"PUT"})
+     */
+    public function update(Request $request, ?Advice $advice, SerializerInterface $serializer, ValidatorInterface $validator, SluggerInterface $slugger, AdviceRepository $adviceRepository, UserRepository $userRepository, CategoryRepository $categoryRepository): Response
+    {
+        $adviceId = $advice->getId();
+        try {
+            $advice = $serializer->deserialize($request->getContent(), Advice::class, 'json');
+            $advice->setSlug(strtolower($slugger->slug($advice->getTitle(), '-')));
+            $advice->setCreatedAt($adviceRepository->find($adviceId)->getCreatedAt());
+            $advice->setUpdatedAt(new \DateTimeImmutable());
+            $json = $request->getContent();
+            $contributorId = json_decode($json, true)['contributorId'];
+            $advice->setContributor($userRepository->find($contributorId));
+            $categoryId = json_decode($json, true)['categoryId'];
+            $advice->setCategory($categoryRepository->find($categoryId));
+        } catch (NotEncodableValueException $e) {
+            return $this->json(['errors' => 'Json non valide'], Response::HTTP_BAD_REQUEST);
+>>>>>>> FEAT: AdviceController (not list)  +  ArticleController (not list) + UserController read
         }
 
         $errors = $validator->validate($advice);
@@ -138,7 +177,11 @@ class AdviceController extends AbstractController
     }
 
     /**
+<<<<<<< HEAD
      * @Route("/api/advices/{id}", name="app_api_advices_delete", requirements={"id":"\d+"}, methods={"DELETE"})
+=======
+     * @Route("/api/advices/{id}", name="app_api_advice_update", requirements={"id":"\d+"}, methods={"DELETE"})
+>>>>>>> FEAT: AdviceController (not list)  +  ArticleController (not list) + UserController read
      */
     public function delete(?Advice $advice, AdviceRepository $adviceRepository): Response
     {
