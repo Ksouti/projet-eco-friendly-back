@@ -25,7 +25,8 @@ class UserType extends AbstractType
                 ->add('roles',ChoiceType::class,[
                 "choices"=>[
                     "Manager" => "ROLE_AUTHOR",
-                    "Admin" => "ROLE_ADMIN"
+                    "Admin" => "ROLE_ADMIN",
+                    "User" => "ROLE_USER"
                 ],
                 "expanded" => true,
                 "multiple" => true
@@ -59,15 +60,15 @@ class UserType extends AbstractType
                 ],
                 "help"=> "* L'url d'un avatar"
             ]) 
-
+/*
             ->add('is_active' ,ChoiceType::class,[
                 "choices" => [
                     "Activé" => "0",
-                    "dasactivé" => "1"
+                    "Désactivé" => "1"
                 ],
                 "label" => "Activé ou désactivé"
             ])
-           
+     */      
         ;
     }
 
