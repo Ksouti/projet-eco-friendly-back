@@ -26,7 +26,11 @@ class SecurityController extends AbstractController
         ]);
     }
 
+<<<<<<< HEAD
      /**
+=======
+    /**
+>>>>>>> FIX: quickfix of 2 typos
      * @Route("/back_office/deconnexion", name="app_backoffice_security_logout", methods={"GET"})
      */
     public function logout(): void
