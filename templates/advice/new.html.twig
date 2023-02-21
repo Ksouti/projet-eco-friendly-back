@@ -1,11 +1,11 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}New Advice{% endblock %}
+{% block title %}Créer un conseil{% endblock %}
 
 {% block body %}
-    <h1>Create new Advice</h1>
+    <h1>Créer un conseil</h1>
 
     {{ include('advice/_form.html.twig') }}
 
-    <a href="{{ path('app_backoffice_advices_list') }}">back to list</a>
+    <a href="{{ path('app_backoffice_advices_list') }}">retour à la liste des conseils</a>
 {% endblock %}

@@ -24,7 +24,7 @@
         <div>{{ error.messageKey|trans(error.messageData, 'security') }}</div>
     {% endif %}
 
-    <form action="{{ path('app_backoffice_security_connexion') }}" method="post">
+    <form action="{{ path('app_backoffice_security_login') }}" method="post">
     <div class="form-group">
         <label for="username">Email:</label>
         <input class="form-control" type="text" id="username" name="_username" value="{{ last_username }}"/>
@@ -35,6 +35,10 @@
         <input class="form-control" type="password" id="password" name="_password"/>
     </div>
     <input type="hidden" name="_csrf_token" value="{{ csrf_token('authenticate') }}">
+
+        {# If you want to control the URL the user is redirected to on success
+        <input type="hidden" name="_target_path" value="/account"/> #}
+
     <button  class="btn btn-success my-3" type="submit">login</button>
     </form>
 </div>
