@@ -34,8 +34,30 @@ security:
     # Easy way to control access for large sections of your site
     # Note: Only the *first* access control that matches will be used
     access_control:
-        # - { path: ^/admin, roles: ROLE_ADMIN }
-        # - { path: ^/profile, roles: ROLE_USER }
+        # ! BACK-OFFICE
+        # - { path: ^/author, roles: ROLE_AUTHOR }
+        - {
+              # path: '^back_office/auteur/(\d+)/(editer|modifier|desactiver)$',
+              path: '^back_office/articles',
+              roles: ROLE_AUTHOR,
+          }
+        - {
+              # path: '^back_office/auteurs/(\d+)/(editer|modifier|desactiver)$',
+              path: '^back_office/auteurs|utilisateurs|conseils',
+              roles: ROLE_ADMIN,
+          }
+        #- {
+        #      path: '^back_office/utilisateurs/(\d+)/(desactiver)$',
+        #      roles: ROLE_ADMIN,
+        #  }
+        #- {
+        #      path: '^back_office/conseils/(\d+)/(editer|modifier|desactiver)$',
+        #      roles: ROLE_ADMIN,
+        #  }
+
+        # ! API
+        # - { path: ^/api/login, roles: PUBLIC_ACCESS }
+        # - { path: ^/api,       roles: IS_AUTHENTICATED_FULLY }
 
 when@test:
     security:
