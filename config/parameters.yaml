@@ -1,5 +1,5 @@
 
 
 parameters:
-    back_office_path: '^/back-office'
+    back_office_path: '^/back_office'
 
