@@ -48,6 +48,7 @@ class AdviceType extends AbstractType
                     "placeholder" => "Ecrit par",
             ]
             ])
+            
             ->add('category',EntityType::class,[
                 "class" => Category::class,
                 "label" => "Catégorie" ,
