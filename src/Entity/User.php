@@ -55,6 +55,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 
     /**
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
      * @ORM\Column(type="json")
      * @Assert\NotBlank
@@ -66,6 +67,8 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 
     /**
 >>>>>>> FEAT: ArticleController added with groups on relevant entities
+=======
+>>>>>>> FEAT: updates fixed, deleted users' advices managed
      * @var string The hashed password
      * @ORM\Column(type="string")
      * @Assert\NotBlank
@@ -75,10 +78,14 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 
     /**
 <<<<<<< HEAD
+<<<<<<< HEAD
+=======
+>>>>>>> FEAT: updates fixed, deleted users' advices managed
      * @ORM\Column(type="json")
      * @Assert\NotBlank
      * @Groups({"articles"})
      * @Groups({"advices"})
+<<<<<<< HEAD
 =======
      * @ORM\OneToMany(targetEntity=Article::class, mappedBy="author")
      */
@@ -87,6 +94,8 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     /**
      * @ORM\OneToMany(targetEntity=Advice::class, mappedBy="contributor")
 >>>>>>> FEAT: AdviceController (not list)  +  ArticleController (not list) + UserController read
+=======
+>>>>>>> FEAT: updates fixed, deleted users' advices managed
      * @Groups({"users"})
      */
     private $roles = [];
