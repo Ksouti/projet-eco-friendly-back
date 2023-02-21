@@ -36,6 +36,7 @@ security:
     access_control:
         # ! BACK-OFFICE
 <<<<<<< HEAD
+<<<<<<< HEAD
         # - { path: ^/author, roles: ROLE_AUTHOR }
         - {
               # path: '^back_office/auteurs/(\d+)/(editer|modifier|desactiver)$',
@@ -64,12 +65,28 @@ security:
           }
         #- {
         #      path: '^/back_office/utilisateurs/(\d+)/(desactiver)$',
+=======
+        # - { path: ^/author, roles: ROLE_AUTHOR }
+        - {
+              # path: '^back_office/auteur/(\d+)/(editer|modifier|desactiver)$',
+              path: '^back_office/articles',
+              roles: ROLE_AUTHOR,
+          }
+        - {
+              # path: '^back_office/auteurs/(\d+)/(editer|modifier|desactiver)$',
+              path: '^back_office/auteurs|utilisateurs|conseils',
+              roles: ROLE_ADMIN,
+          }
+        #- {
+        #      path: '^back_office/utilisateurs/(\d+)/(desactiver)$',
+>>>>>>> FIX: simplified access_control
         #      roles: ROLE_ADMIN,
         #  }
         #- {
         #      path: '^back_office/conseils/(\d+)/(editer|modifier|desactiver)$',
         #      roles: ROLE_ADMIN,
         #  }
+<<<<<<< HEAD
 
         # ! API
 
@@ -107,6 +124,12 @@ security:
          # - { path: ^/profile, roles: ROLE_USER }
         
 >>>>>>>  FEAT: access_control
+=======
+
+        # ! API
+        # - { path: ^/api/login, roles: PUBLIC_ACCESS }
+        # - { path: ^/api,       roles: IS_AUTHENTICATED_FULLY }
+>>>>>>> FIX: simplified access_control
 
 when@test:
     security:
