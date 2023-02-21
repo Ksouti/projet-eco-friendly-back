@@ -53,7 +53,7 @@ class AdviceType extends AbstractType
                 "class" => Category::class,
                 "label" => "Catégorie" ,
                 "multiple" => false,     
-                "expended" => true,           
+                //"expended" => true,           
 
             ])     
         ;       
