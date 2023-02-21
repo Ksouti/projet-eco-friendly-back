@@ -34,9 +34,9 @@ class AdviceType extends AbstractType
                 
             ->add('status',ChoiceType::class,[
                 "choices" => [
-                    "brouillon" => 0,
-                    "publié" => 1,
-                    "désactivé" => 2,
+                    "Brouillon" => 0,
+                    "Publié" => 1,
+                    "Désactivé" => 2,
             ],
                 "label" => "Statut"
             ])
