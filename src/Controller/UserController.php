@@ -22,7 +22,7 @@ class UserController extends AbstractController
             'users' => $userRepository->findAll(),
         ]);
     }
-
+ 
     /**
      * @Route("/back_office/utilisateurs/nouveau", name="app_backoffice_users_new", methods={"GET" , "POST"})
      */
@@ -43,7 +43,6 @@ class UserController extends AbstractController
             'form' => $form,
         ]);
     }
-
     /**
      * @Route("/back_office/utilisateurs/{id}", name="app_backoffice_users_show", requirements={"id":"\d+"}, methods={"GET"})
      */
@@ -75,7 +74,7 @@ class UserController extends AbstractController
     }
 
     /**
-     * @Route("/back_office/{id}/desactiver", name="app_backoffice_users_deactivate", requirements={"id":"\d+"}, methods={"POST"})
+     * @Route("/{id}", name="app_user_delete", methods={"POST"})
      */
     public function deactivate(Request $request, User $user, UserRepository $userRepository): Response
     {
@@ -86,4 +85,6 @@ class UserController extends AbstractController
 
         return $this->redirectToRoute('app_backoffice_users_list', [], Response::HTTP_SEE_OTHER);
     }
+    
+    
 }
