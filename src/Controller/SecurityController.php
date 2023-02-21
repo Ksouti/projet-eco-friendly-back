@@ -26,7 +26,7 @@ class SecurityController extends AbstractController
         ]);
     }
 
-     /**
+    /**
      * @Route("/back_office/deconnexion", name="app_backoffice_security_logout", methods={"GET"})
      */
     public function logout(): void
