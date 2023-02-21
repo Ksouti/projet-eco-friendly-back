@@ -24,7 +24,7 @@ class UserController extends AbstractController
     }
 
     /**
-     * @Route("/back_office/utilisateurs/nouveau", name="app_backoffice_users_new", methods={"GET" , "POST"})
+     * @Route("/back_office/utilisateurs/ajouter", name="app_backoffice_users_new", methods={"GET" , "POST"})
      */
     public function new(Request $request, UserRepository $userRepository): Response
     {
