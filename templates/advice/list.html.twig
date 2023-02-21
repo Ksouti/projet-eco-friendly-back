@@ -29,8 +29,8 @@
                 <td>{{ advice.createdAt ? advice.createdAt|date('Y-m-d H:i:s') : '' }}</td>
                 <td>{{ advice.updatedAt ? advice.updatedAt|date('Y-m-d H:i:s') : '' }}</td>
                 <td>
-                    <a href="{{ path('app_backoffice_advice_show', {'id': advice.id}) }}">show</a>
-                    <a href="{{ path('app_backoffice_advice_edit', {'id': advice.id}) }}">edit</a>
+                    <a href="{{ path('app_backoffice_advices_show', {'id': advice.id}) }}">show</a>
+                    <a href="{{ path('app_backoffice_advices_edit', {'id': advice.id}) }}">edit</a>
                 </td>
             </tr>
         {% else %}

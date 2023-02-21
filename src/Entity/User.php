@@ -99,15 +99,15 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
      */
     private $updated_at;
 
-    public function __toString()
-    {
-        return $this->getEmail();
-    }
-
     public function __construct()
     {
         $this->articles = new ArrayCollection();
         $this->advices = new ArrayCollection();
+    }
+
+    public function __toString()
+    {
+        return $this->email;
     }
 
     public function getId(): ?int

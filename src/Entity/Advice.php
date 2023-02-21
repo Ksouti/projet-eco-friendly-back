@@ -64,7 +64,7 @@ class Advice
     private $contributor;
 
     /**
-     * @ORM\ManyToOne(targetEntity=Category::class)
+     * @ORM\ManyToOne(targetEntity=Category::class, inversedBy="advices")
      * @ORM\JoinColumn(nullable=false)
      * @Assert\NotBlank
      */

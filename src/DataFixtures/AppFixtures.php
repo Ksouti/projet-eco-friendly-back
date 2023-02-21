@@ -57,6 +57,16 @@ class AppFixtures extends Fixture
             '',
         ];
 
+        $avatars = [
+            'avatar-bear.png',
+            'avatar-bluetit.png',
+            'avatar-deer.png',
+            'avatar-fox.png',
+            'avatar-frog.png',
+            'avatar-hare.png',
+            'avatar-tortoiseshell.png',
+        ];
+
         $user = new User();
         $user->setEmail('admin@admin.com');
         $user->setRoles(['ROLE_USER', 'ROLE_ADMIN']);
@@ -130,7 +140,7 @@ class AppFixtures extends Fixture
             return in_array('ROLE_AUTHOR', $user->getRoles());
         });
 
-        for ($index = 0; $index < 10; $index++) {
+        for ($index = 0; $index < 30; $index++) {
             $article = new Article();
             $article->setTitle($faker->sentence(6, true));
             $article->setContent($faker->paragraph(6, true));
@@ -150,7 +160,7 @@ class AppFixtures extends Fixture
             return !in_array('ROLE_AUTHOR', $user->getRoles()) && !in_array('ROLE_ADMIN', $user->getRoles());
         });
 
-        for ($index = 0; $index < 10; $index++) {
+        for ($index = 0; $index < 60; $index++) {
             $advice = new Advice();
             $advice->setTitle($faker->sentence(6, true));
             $advice->setContent($faker->paragraph(6, true));

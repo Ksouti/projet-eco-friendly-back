@@ -14,7 +14,7 @@ use Symfony\Component\Routing\Annotation\Route;
 class UserController extends AbstractController
 {
     /**
-     * @Route("/back_office/utilisateurs/inscrits", name="app_user_list", methods={"GET"})
+     * @Route("/back_office/utilisateurs/inscrits", name="app_backoffice_users_list", methods={"GET"})
      */
     public function list(UserRepository $userRepository): Response
     {
@@ -24,7 +24,7 @@ class UserController extends AbstractController
     }
  
     /**
-     * @Route("/back_office/utilisateurs/nouveau", name="app_user_new", methods={"GET" , "POST"})
+     * @Route("/back_office/utilisateurs/nouveau", name="app_backoffice_users_new", methods={"GET" , "POST"})
      */
     public function new(Request $request, UserRepository $userRepository): Response
     {
@@ -35,7 +35,7 @@ class UserController extends AbstractController
         if ($form->isSubmitted() && $form->isValid()) {
             $userRepository->add($user, true);
 
-            return $this->redirectToRoute('app_user_list', [], Response::HTTP_SEE_OTHER);
+            return $this->redirectToRoute('app_backoffice_users_list', [], Response::HTTP_SEE_OTHER);
         }
 
         return $this->renderForm('user/new.html.twig', [
@@ -44,7 +44,7 @@ class UserController extends AbstractController
         ]);
     }
     /**
-     * @Route("/back_office/utilisateurs/{id}", name="app_user_show", methods={"GET" , "PATCH"})
+     * @Route("/back_office/utilisateurs/{id}", name="app_backoffice_users_show", requirements={"id":"\d+"}, methods={"GET"})
      */
     public function show(User $user): Response
     {
@@ -54,7 +54,7 @@ class UserController extends AbstractController
     }
 
     /**
-     * @Route("/back_office/utilisateurs/{id}/modifier", name="app_user_edit", methods={"GET", "PUT"})
+     * @Route("/back_office/utilisateurs/{id}/modifier", name="app_backoffice_users_edit", requirements={"id":"\d+"}, methods={"GET", "POST"})
      */
     public function edit(Request $request, User $user, UserRepository $userRepository): Response
     {
@@ -64,7 +64,7 @@ class UserController extends AbstractController
         if ($form->isSubmitted() && $form->isValid()) {
             $userRepository->add($user, true);
 
-            return $this->redirectToRoute('app_user_list', [], Response::HTTP_SEE_OTHER);
+            return $this->redirectToRoute('app_backoffice_users_list', [], Response::HTTP_SEE_OTHER);
         }
 
         return $this->renderForm('user/edit.html.twig', [
@@ -74,26 +74,17 @@ class UserController extends AbstractController
     }
 
     /**
-     * @Route("/back_office/utilisateurs/auteurs", name="app_user_listAuthor", methods={"GET"})
-     */
-    public function listAuthor(UserRepository $userRepository): Response
-    {
-        return $this->render('user/index.html.twig', [
-            'users' => $userRepository->findAll(),
-        ]);
-    }
-
-    /**
      * @Route("/{id}", name="app_user_delete", methods={"POST"})
      */
-    /*public function delete(Request $request, User $user, UserRepository $userRepository): Response
+    public function deactivate(Request $request, User $user, UserRepository $userRepository): Response
     {
-        if ($this->isCsrfTokenValid('delete' . $user->getId(), $request->request->get('_token'))) {
-            $userRepository->remove($user, true);
+        if ($this->isCsrfTokenValid('deactibate' . $user->getId(), $request->request->get('_token'))) {
+            $user->setIsActive(false);
+            $userRepository->add($user, true);
         }
 
-        return $this->redirectToRoute('app_user_list', [], Response::HTTP_SEE_OTHER);
+        return $this->redirectToRoute('app_backoffice_users_list', [], Response::HTTP_SEE_OTHER);
     }
-    */
+    
     
 }
