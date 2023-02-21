@@ -27,8 +27,28 @@ security:
     # Easy way to control access for large sections of your site
     # Note: Only the *first* access control that matches will be used
     access_control:
-        # - { path: ^/admin, roles: ROLE_ADMIN }
-        # - { path: ^/profile, roles: ROLE_USER }
+        # ! BACK-OFFICE
+
+         # This configuration allows access to users with the 'ROLE_ADMIN' role:
+            #/back-office/author/{id}/edit
+            #/back-office/author/{id}/update
+            #/back-office/author/{id}/deactivate
+            #/back-office/user/{id}/deactivate
+            #/back-office/advice/{id}/edit
+            #/back-office/advice/{id}/update
+            #/back-office/advice/{id}/deactivate
+
+        - { path: '^%back_office_path%/auteur/(\d+)/(editer|modifier|desactiver)$', roles: ROLE_ADMIN }
+        - { path: '^%back_office_path%/utilisateur/(\d+)/(desactiver)$', roles: ROLE_ADMIN }
+        - { path: '^%back_office_path%/conseil/(\d+)/(editer|modifier|desactiver)$', roles: ROLE_ADMIN }
+        
+
+
+         # - { path: ^/author, roles: ROLE_AUTHOR }
+        - { path: '^%back_office_path%/auteur/(\d+)/(editer|modifier|desactiver)$', roles: ROLE_AUTHOR }
+       
+         # - { path: ^/profile, roles: ROLE_USER }
+        
 
 when@test:
     security:
