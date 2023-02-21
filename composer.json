@@ -105,4 +105,6 @@
         "symfony/stopwatch": "5.4.*",
         "symfony/web-profiler-bundle": "5.4.*"
     }
+
+   
 }

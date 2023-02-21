@@ -22,7 +22,7 @@ class UserController extends AbstractController
             'users' => $userRepository->findAll(),
         ]);
     }
-
+ 
     /**
      * @Route("/back_office/utilisateurs/nouveau", name="app_user_new", methods={"GET" , "POST"})
      */
@@ -43,9 +43,8 @@ class UserController extends AbstractController
             'form' => $form,
         ]);
     }
-
     /**
-     * @Route("/back_office/utilisateurs/{id}", name="app_user_show", methods={"GET"})
+     * @Route("/back_office/utilisateurs/{id}", name="app_user_show", methods={"GET" , "PATCH"})
      */
     public function show(User $user): Response
     {
@@ -55,7 +54,7 @@ class UserController extends AbstractController
     }
 
     /**
-     * @Route("/back_office/utilisateurs/[user-id]/modifier", name="app_user_", methods={"GET", "PUT"})
+     * @Route("/back_office/utilisateurs/{id}/modifier", name="app_user_edit", methods={"GET", "PUT"})
      */
     public function edit(Request $request, User $user, UserRepository $userRepository): Response
     {
@@ -75,9 +74,19 @@ class UserController extends AbstractController
     }
 
     /**
+     * @Route("/back_office/utilisateurs/auteurs", name="app_user_listAuthor", methods={"GET"})
+     */
+    public function listAuthor(UserRepository $userRepository): Response
+    {
+        return $this->render('user/index.html.twig', [
+            'users' => $userRepository->findAll(),
+        ]);
+    }
+
+    /**
      * @Route("/{id}", name="app_user_delete", methods={"POST"})
      */
-    public function delete(Request $request, User $user, UserRepository $userRepository): Response
+    /*public function delete(Request $request, User $user, UserRepository $userRepository): Response
     {
         if ($this->isCsrfTokenValid('delete' . $user->getId(), $request->request->get('_token'))) {
             $userRepository->remove($user, true);
@@ -85,4 +94,6 @@ class UserController extends AbstractController
 
         return $this->redirectToRoute('app_user_list', [], Response::HTTP_SEE_OTHER);
     }
+    */
+    
 }
