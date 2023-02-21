@@ -5,6 +5,7 @@ namespace App\Entity;
 use App\Repository\ArticleRepository;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
+use Symfony\Component\Serializer\Annotation\Groups;
 
 /**
  * @ORM\Entity(repositoryClass=ArticleRepository::class)
@@ -15,6 +16,7 @@ class Article
      * @ORM\Id
      * @ORM\GeneratedValue
      * @ORM\Column(type="integer")
+     * @Groups({"articles"})
      */
     private $id;
 
@@ -22,12 +24,14 @@ class Article
      * @ORM\Column(type="string", length=128)
      * @Assert\Length(min = 1, max = 128)
      * @Assert\NotBlank
+     * @Groups({"articles"})
      */
     private $title;
 
     /**
      * @ORM\Column(type="text")
      * @Assert\NotBlank
+     * @Groups({"articles"})
      */
     private $content;
 
@@ -35,6 +39,7 @@ class Article
      * @ORM\Column(type="string", length=128)
      * @Assert\Length(min = 1, max = 128)
      * @Assert\NotBlank
+     * @Groups({"articles"})
      */
     private $slug;
 
@@ -42,6 +47,7 @@ class Article
      * @ORM\Column(type="string", length=255)
      * @Assert\Url
      * @Assert\Length(min = 10, max = 255)
+     * @Groups({"articles"})
      */
     private $picture;
 
@@ -49,17 +55,20 @@ class Article
      * @ORM\Column(type="integer")
      * @Assert\Range(min = 0, max = 2)
      * @Assert\NotBlank
+     * @Groups({"articles"})
      */
     private $status;
 
     /**
      * @ORM\Column(type="datetime")
      * @Assert\NotBlank
+     * @Groups({"articles"})
      */
     private $created_at;
 
     /**
      * @ORM\Column(type="datetime")
+     * @Groups({"articles"})
      */
     private $updated_at;
 
@@ -67,6 +76,7 @@ class Article
      * @ORM\ManyToOne(targetEntity=User::class, inversedBy="articles")
      * @ORM\JoinColumn(nullable=false)
      * @Assert\NotBlank
+     * @Groups({"articles"})
      */
     private $author;
 
@@ -74,10 +84,9 @@ class Article
      * @ORM\ManyToOne(targetEntity=Category::class, inversedBy="articles")
      * @ORM\JoinColumn(nullable=false)
      * @Assert\NotBlank
+     * @Groups({"articles"})
      */
     private $category;
-
-    
 
     public function getId(): ?int
     {
