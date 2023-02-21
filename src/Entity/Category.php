@@ -19,8 +19,11 @@ class Category
      * @ORM\GeneratedValue
      * @ORM\Column(type="integer")
      * @Groups({"articles"})
+<<<<<<< HEAD
      * @Groups({"advices"})
      * @Groups({"users"})
+=======
+>>>>>>> FEAT: ArticleController added with groups on relevant entities
      */
     private $id;
 
@@ -29,8 +32,11 @@ class Category
      * @Assert\Length(min = 1, max = 32)
      * @Assert\NotBlank
      * @Groups({"articles"})
+<<<<<<< HEAD
      * @Groups({"advices"})
      * @Groups({"users"})
+=======
+>>>>>>> FEAT: ArticleController added with groups on relevant entities
      */
     private $name;
 
@@ -39,8 +45,11 @@ class Category
      * @Assert\Length(min = 1, max = 128)
      * @Assert\NotBlank
      * @Groups({"articles"})
+<<<<<<< HEAD
      * @Groups({"advices"})
      * @Groups({"users"})
+=======
+>>>>>>> FEAT: ArticleController added with groups on relevant entities
      */
     private $tagline;
 
@@ -49,8 +58,11 @@ class Category
      * @Assert\Length(min = 1, max = 32)
      * @Assert\NotBlank
      * @Groups({"articles"})
+<<<<<<< HEAD
      * @Groups({"advices"})
      * @Groups({"users"})
+=======
+>>>>>>> FEAT: ArticleController added with groups on relevant entities
      */
     private $slug;
 

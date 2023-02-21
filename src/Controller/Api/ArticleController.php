@@ -3,7 +3,11 @@
 namespace App\Controller\Api;
 
 use App\Entity\Article;
+<<<<<<< HEAD
 use App\Entity\User;
+=======
+use App\Entity\Category;
+>>>>>>> FEAT: ArticleController added with groups on relevant entities
 use App\Repository\ArticleRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
@@ -17,12 +21,22 @@ class ArticleController extends AbstractController
      */
     public function index(ArticleRepository $articleRepository): Response
     {
+<<<<<<< HEAD
         return $this->json($articleRepository->findAll(), Response::HTTP_OK, [], ['groups' => 'articles']);
+=======
+        return $this->json(
+            $articleRepository->findAll(),
+            Response::HTTP_OK,
+            [],
+            ['groups' => 'articles']
+        );
+>>>>>>> FEAT: ArticleController added with groups on relevant entities
     }
 
     /**
      * @Route("/api/articles/{id}", name="app_api_articles_read", requirements={"id":"\d+"}, methods={"GET"})
      */
+<<<<<<< HEAD
     public function read(?Article $article, ArticleRepository $articleRepository): Response
     {
         if (!$article) {
@@ -38,4 +52,10 @@ class ArticleController extends AbstractController
     {
         return $this->json($articleRepository->findAllOrderByUserId($author), Response::HTTP_OK, [], ['groups' => 'articles']);
     }
+=======
+    public function read(Article $article, ArticleRepository $articleRepository): Response
+    {
+        return $this->json($articleRepository->find($article->getId()), Response::HTTP_OK, [], ['groups' => 'articles']);
+    }
+>>>>>>> FEAT: ArticleController added with groups on relevant entities
 }

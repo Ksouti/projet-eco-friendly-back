@@ -22,8 +22,11 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
      * @ORM\GeneratedValue
      * @ORM\Column(type="integer")
      * @Groups({"articles"})
+<<<<<<< HEAD
      * @Groups({"advices"})
      * @Groups({"users"})
+=======
+>>>>>>> FEAT: ArticleController added with groups on relevant entities
      */
     private $id;
 
@@ -32,12 +35,25 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
      * @Assert\Length(min = 1, max = 180)
      * @Assert\NotBlank
      * @Groups({"articles"})
+<<<<<<< HEAD
      * @Groups({"advices"})
      * @Groups({"users"})
+=======
+>>>>>>> FEAT: ArticleController added with groups on relevant entities
      */
     private $email;
 
     /**
+<<<<<<< HEAD
+=======
+     * @ORM\Column(type="json")
+     * @Assert\NotBlank
+     * @Groups({"articles"})
+     */
+    private $roles = [];
+
+    /**
+>>>>>>> FEAT: ArticleController added with groups on relevant entities
      * @var string The hashed password
      * @ORM\Column(type="string")
      * @Assert\NotBlank
@@ -58,8 +74,11 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
      * @ORM\Column(type="string", length=64, nullable=true)
      * @Assert\Length(min = 1, max = 64)
      * @Groups({"articles"})
+<<<<<<< HEAD
      * @Groups({"advices"})
      * @Groups({"users"})
+=======
+>>>>>>> FEAT: ArticleController added with groups on relevant entities
      */
     private $firstname;
 
@@ -67,8 +86,11 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
      * @ORM\Column(type="string", length=64, nullable=true)
      * @Assert\Length(min = 1, max = 64)
      * @Groups({"articles"})
+<<<<<<< HEAD
      * @Groups({"advices"})
      * @Groups({"users"})
+=======
+>>>>>>> FEAT: ArticleController added with groups on relevant entities
      */
     private $lastname;
 
@@ -77,8 +99,11 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
      * @Assert\NotBlank
      * @Assert\Length(min = 1, max = 64)
      * @Groups({"articles"})
+<<<<<<< HEAD
      * @Groups({"advices"})
      * @Groups({"users"})
+=======
+>>>>>>> FEAT: ArticleController added with groups on relevant entities
      */
     private $nickname;
 
@@ -87,8 +112,11 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
      * @Assert\Length(min = 1, max = 255)
      * @Assert\Url
      * @Groups({"articles"})
+<<<<<<< HEAD
      * @Groups({"advices"})
      * @Groups({"users"})
+=======
+>>>>>>> FEAT: ArticleController added with groups on relevant entities
      */
     private $avatar;
 
@@ -96,8 +124,11 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
      * @ORM\Column(type="boolean")
      * @Assert\Type("bool")
      * @Groups({"articles"})
+<<<<<<< HEAD
      * @Groups({"advices"})
      * @Groups({"users"})
+=======
+>>>>>>> FEAT: ArticleController added with groups on relevant entities
      */
     private $is_active;
 
@@ -106,8 +137,11 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
      * @Assert\NotBlank
      * @Assert\Type("DateTimeImmutable")
      * @Groups({"articles"})
+<<<<<<< HEAD
      * @Groups({"advices"})
      * @Groups({"users"})
+=======
+>>>>>>> FEAT: ArticleController added with groups on relevant entities
      */
     private $created_at;
 
@@ -115,8 +149,11 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
      * @ORM\Column(type="datetime_immutable", nullable=true)
      * @Assert\Type("DateTimeImmutable")
      * @Groups({"articles"})
+<<<<<<< HEAD
      * @Groups({"advices"})
      * @Groups({"users"})
+=======
+>>>>>>> FEAT: ArticleController added with groups on relevant entities
      */
     private $updated_at;
 
