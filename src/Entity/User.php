@@ -22,6 +22,8 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
      * @ORM\GeneratedValue
      * @ORM\Column(type="integer")
      * @Groups({"articles"})
+     * @Groups({"advices"})
+     * @Groups({"users"})
      */
     private $id;
 
@@ -30,6 +32,8 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
      * @Assert\Length(min = 1, max = 180)
      * @Assert\NotBlank
      * @Groups({"articles"})
+     * @Groups({"advices"})
+     * @Groups({"users"})
      */
     private $email;
 
@@ -37,6 +41,8 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
      * @ORM\Column(type="json")
      * @Assert\NotBlank
      * @Groups({"articles"})
+     * @Groups({"advices"})
+     * @Groups({"users"})
      */
     private $roles = [];
 
@@ -44,6 +50,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
      * @var string The hashed password
      * @ORM\Column(type="string")
      * @Assert\NotBlank
+     * @Groups({"users"})
      */
     private $password;
 
@@ -54,6 +61,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 
     /**
      * @ORM\OneToMany(targetEntity=Advice::class, mappedBy="contributor")
+     * @Groups({"users"})
      */
     private $advices;
 
@@ -61,6 +69,8 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
      * @ORM\Column(type="string", length=64, nullable=true)
      * @Assert\Length(min = 1, max = 64)
      * @Groups({"articles"})
+     * @Groups({"advices"})
+     * @Groups({"users"})
      */
     private $firstname;
 
@@ -68,6 +78,8 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
      * @ORM\Column(type="string", length=64, nullable=true)
      * @Assert\Length(min = 1, max = 64)
      * @Groups({"articles"})
+     * @Groups({"advices"})
+     * @Groups({"users"})
      */
     private $lastname;
 
@@ -76,6 +88,8 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
      * @Assert\NotBlank
      * @Assert\Length(min = 1, max = 64)
      * @Groups({"articles"})
+     * @Groups({"advices"})
+     * @Groups({"users"})
      */
     private $nickname;
 
@@ -84,14 +98,17 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
      * @Assert\Length(min = 1, max = 255)
      * @Assert\Url
      * @Groups({"articles"})
+     * @Groups({"advices"})
+     * @Groups({"users"})
      */
     private $avatar;
 
     /**
      * @ORM\Column(type="boolean")
-     * @Assert\NotBlank
      * @Assert\Type("bool")
      * @Groups({"articles"})
+     * @Groups({"advices"})
+     * @Groups({"users"})
      */
     private $is_active;
 
@@ -100,6 +117,8 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
      * @Assert\NotBlank
      * @Assert\Type("DateTimeImmutable")
      * @Groups({"articles"})
+     * @Groups({"advices"})
+     * @Groups({"users"})
      */
     private $created_at;
 
@@ -107,6 +126,8 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
      * @ORM\Column(type="datetime_immutable", nullable=true)
      * @Assert\Type("DateTimeImmutable")
      * @Groups({"articles"})
+     * @Groups({"advices"})
+     * @Groups({"users"})
      */
     private $updated_at;
 
