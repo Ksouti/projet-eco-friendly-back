@@ -27,7 +27,7 @@ class AdviceController extends AbstractController
     }
 
     /**
-     * @Route("/api/advices", name="app_api_advice_new", methods={"POST"})
+     * @Route("/api/advices", name="app_api_advices_new", methods={"POST"})
      */
     public function new(Request $request, SerializerInterface $serializer, ValidatorInterface $validator, SluggerInterface $slugger, AdviceRepository $adviceRepository, UserRepository $userRepository, CategoryRepository $categoryRepository): Response
     {
@@ -85,10 +85,14 @@ class AdviceController extends AbstractController
     }
 
     /**
-     * @Route("/api/advices/{id}", name="app_api_advice_update", requirements={"id":"\d+"}, methods={"PUT"})
+     * @Route("/api/advices/{id}", name="app_api_advices_update", requirements={"id":"\d+"}, methods={"PUT"})
      */
     public function update(Request $request, ?Advice $advice, SerializerInterface $serializer, ValidatorInterface $validator, SluggerInterface $slugger, AdviceRepository $adviceRepository, UserRepository $userRepository, CategoryRepository $categoryRepository): Response
     {
+        if (!$advice) {
+            return $this->json(['errors' => ['Conseil' => 'Ce conseil n\'existe pas']], Response::HTTP_NOT_FOUND);
+        }
+
         $adviceId = $advice->getId();
         try {
             $advice = $serializer->deserialize($request->getContent(), Advice::class, 'json');
@@ -132,7 +136,7 @@ class AdviceController extends AbstractController
     }
 
     /**
-     * @Route("/api/advices/{id}", name="app_api_advice_update", requirements={"id":"\d+"}, methods={"DELETE"})
+     * @Route("/api/advices/{id}", name="app_api_advices_delete", requirements={"id":"\d+"}, methods={"DELETE"})
      */
     public function delete(?Advice $advice, AdviceRepository $adviceRepository): Response
     {
