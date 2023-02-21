@@ -29,6 +29,11 @@ class AppFixtures extends Fixture
 
         $faker = Faker\Factory::create();
 
+
+        // ! Instantiation of slugger
+
+        $slugger = $this->slugger;
+
         // ! Adding Categories
 
         $categories = [
@@ -42,8 +47,8 @@ class AppFixtures extends Fixture
             $category = new Category();
             $category->setName($categoryName);
             $category->setTagline($faker->sentence(6, true));
-            $category->setSlug($categoryName);
-            $manager->persist($category);
+            $category->setSlug((strtolower($categoryName)));
+            $manager->persist($slugger->slug(strtolower($category)));
         }
 
         // ! Adding Users
@@ -130,10 +135,6 @@ class AppFixtures extends Fixture
 
         $users = $manager->getRepository(User::class)->findAll();
 
-        // ! Instantiation of slugger
-
-        $slugger = $this->slugger;
-
         // ! Adding Articles
 
         $authors = array_filter($users, function ($user) {
@@ -144,7 +145,7 @@ class AppFixtures extends Fixture
             $article = new Article();
             $article->setTitle($faker->sentence(6, true));
             $article->setContent($faker->paragraph(6, true));
-            $article->setSlug($slugger->slug($article->getTitle(), '-'));
+            $article->setSlug($slugger->slug(strtolower($article->getTitle(), '-')));
             $article->setPicture('https://picsum.photos/id/' . $faker->numberBetween(1, 200) . '/300/450.jpg');
             $article->setStatus($faker->numberBetween(0, 2));
             $article->setAuthor($authors[array_rand($authors)]);
@@ -164,7 +165,7 @@ class AppFixtures extends Fixture
             $advice = new Advice();
             $advice->setTitle($faker->sentence(6, true));
             $advice->setContent($faker->paragraph(6, true));
-            $advice->setSlug($slugger->slug($advice->getTitle(), '-'));
+            $advice->setSlug($slugger->slug(strtolower($advice->getTitle(), '-')));
             $advice->setStatus($faker->numberBetween(0, 2));
             $advice->setContributor($contributors[array_rand($contributors)]);
             $advice->setCategory($categories[$faker->numberBetween(0, count($categories) - 1)]);

@@ -16,6 +16,8 @@ class Advice
      * @ORM\Id
      * @ORM\GeneratedValue
      * @ORM\Column(type="integer")
+     * @Groups({"advices"})
+     * @Groups({"users"})
      */
     private $id;
 
@@ -23,12 +25,16 @@ class Advice
      * @ORM\Column(type="string", length=128)
      * @Assert\Length(min = 1, max = 128)
      * @Assert\NotBlank
+     * @Groups({"advices"})
+     * @Groups({"users"})
      */
     private $title;
 
     /**
      * @ORM\Column(type="text")
      * @Assert\NotBlank
+     * @Groups({"advices"})
+     * @Groups({"users"})
      */
     private $Content;
 
@@ -36,6 +42,8 @@ class Advice
      * @ORM\Column(type="string", length=128)
      * @Assert\Length(min = 1, max = 128)
      * @Assert\NotBlank
+     * @Groups({"advices"})
+     * @Groups({"users"})
      */
     private $Slug;
 
@@ -43,17 +51,23 @@ class Advice
      * @ORM\Column(type="integer")
      * @Assert\Length(min = 1, max = 128)
      * @Assert\NotBlank
+     * @Groups({"advices"})
+     * @Groups({"users"})
      */
     private $status;
 
     /**
      * @ORM\Column(type="datetime_immutable")
      * @Assert\NotBlank
+     * @Groups({"advices"})
+     * @Groups({"users"})
      */
     private $created_at;
 
     /**
      * @ORM\Column(type="datetime_immutable", nullable=true)
+     * @Groups({"advices"})
+     * @Groups({"users"})
      */
     private $updated_at;
 
@@ -61,6 +75,7 @@ class Advice
      * @ORM\ManyToOne(targetEntity=User::class, inversedBy="advices")
      * @ORM\JoinColumn(nullable=false)
      * @Assert\NotBlank
+     * @Groups({"advices"})
      */
     private $contributor;
 
@@ -68,6 +83,8 @@ class Advice
      * @ORM\ManyToOne(targetEntity=Category::class, inversedBy="advices")
      * @ORM\JoinColumn(nullable=false)
      * @Assert\NotBlank
+     * @Groups({"advices"})
+     * @Groups({"users"})
      */
     private $category;
 

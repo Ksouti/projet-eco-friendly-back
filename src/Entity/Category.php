@@ -19,6 +19,8 @@ class Category
      * @ORM\GeneratedValue
      * @ORM\Column(type="integer")
      * @Groups({"articles"})
+     * @Groups({"advices"})
+     * @Groups({"users"})
      */
     private $id;
 
@@ -27,6 +29,8 @@ class Category
      * @Assert\Length(min = 1, max = 32)
      * @Assert\NotBlank
      * @Groups({"articles"})
+     * @Groups({"advices"})
+     * @Groups({"users"})
      */
     private $name;
 
@@ -35,6 +39,8 @@ class Category
      * @Assert\Length(min = 1, max = 128)
      * @Assert\NotBlank
      * @Groups({"articles"})
+     * @Groups({"advices"})
+     * @Groups({"users"})
      */
     private $tagline;
 
@@ -43,6 +49,8 @@ class Category
      * @Assert\Length(min = 1, max = 32)
      * @Assert\NotBlank
      * @Groups({"articles"})
+     * @Groups({"advices"})
+     * @Groups({"users"})
      */
     private $slug;
 
