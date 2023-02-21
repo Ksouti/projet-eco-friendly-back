@@ -74,14 +74,14 @@ class UserController extends AbstractController
     }
 
     /**
-     * @Route("/{id}", name="app_user_delete", methods={"POST"})
+     * @Route("/back_office/utilisateus/{id}", name="app_backoffice_users_deactivate", methods={"POST"})
      */
     public function deactivate(Request $request, User $user, UserRepository $userRepository): Response
     {
-        if ($this->isCsrfTokenValid('deactibate' . $user->getId(), $request->request->get('_token'))) {
+        /*if ($this->isCsrfTokenValid('deactibate' . $user->getId(), $request->request->get('_token'))) {*/
             $user->setIsActive(false);
             $userRepository->add($user, true);
-        }
+      /*  }*/
 
         return $this->redirectToRoute('app_backoffice_users_list', [], Response::HTTP_SEE_OTHER);
     }

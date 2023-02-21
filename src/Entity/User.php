@@ -81,7 +81,6 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 
     /**
      * @ORM\Column(type="boolean")
-     * @Assert\NotBlank
      * @Assert\Type("bool")
      */
     private $is_active;
