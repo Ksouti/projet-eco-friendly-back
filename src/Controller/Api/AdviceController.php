@@ -93,19 +93,19 @@ class AdviceController extends AbstractController
             return $this->json(['errors' => ['Conseil' => 'Ce conseil n\'existe pas']], Response::HTTP_NOT_FOUND);
         }
 
-        $adviceId = $advice->getId();
         try {
-            $advice = $serializer->deserialize($request->getContent(), Advice::class, 'json');
+            $data = json_decode($request->getContent(), true);
+            $advice->setTitle($data['title'] ?? $advice->getTitle());
+            $advice->setContent($data['content'] ?? $advice->getContent());
+            $advice->setStatus($data['status'] ?? $advice->getStatus());
+            if (isset($data['category']) && !$categoryRepository->find($data['category'])) {
+                return $this->json(['errors' => ['category' => 'Cette catégorie n\'existe pas']], Response::HTTP_NOT_FOUND);
+            }
+            $advice->setCategory($categoryRepository->find($data['category']) ?? $advice->getCategory());
             $advice->setSlug(strtolower($slugger->slug($advice->getTitle(), '-')));
-            $advice->setCreatedAt($adviceRepository->find($adviceId)->getCreatedAt());
             $advice->setUpdatedAt(new \DateTimeImmutable());
-            $json = $request->getContent();
-            $contributorId = json_decode($json, true)['contributorId'];
-            $advice->setContributor($userRepository->find($contributorId));
-            $categoryId = json_decode($json, true)['categoryId'];
-            $advice->setCategory($categoryRepository->find($categoryId));
         } catch (NotEncodableValueException $e) {
-            return $this->json(['errors' => 'Json non valide'], Response::HTTP_BAD_REQUEST);
+            return $this->json(['errors' => ['json' => 'Json non valide']], Response::HTTP_BAD_REQUEST);
         }
 
         $errors = $validator->validate($advice);

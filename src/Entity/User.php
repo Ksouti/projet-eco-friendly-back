@@ -38,15 +38,6 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     private $email;
 
     /**
-     * @ORM\Column(type="json")
-     * @Assert\NotBlank
-     * @Groups({"articles"})
-     * @Groups({"advices"})
-     * @Groups({"users"})
-     */
-    private $roles = [];
-
-    /**
      * @var string The hashed password
      * @ORM\Column(type="string")
      * @Assert\NotBlank
@@ -55,15 +46,13 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     private $password;
 
     /**
-     * @ORM\OneToMany(targetEntity=Article::class, mappedBy="author")
-     */
-    private $articles;
-
-    /**
-     * @ORM\OneToMany(targetEntity=Advice::class, mappedBy="contributor")
+     * @ORM\Column(type="json")
+     * @Assert\NotBlank
+     * @Groups({"articles"})
+     * @Groups({"advices"})
      * @Groups({"users"})
      */
-    private $advices;
+    private $roles = [];
 
     /**
      * @ORM\Column(type="string", length=64, nullable=true)
@@ -130,6 +119,17 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
      * @Groups({"users"})
      */
     private $updated_at;
+
+    /**
+     * @ORM\OneToMany(targetEntity=Article::class, mappedBy="author")
+     */
+    private $articles;
+
+    /**
+     * @ORM\OneToMany(targetEntity=Advice::class, mappedBy="contributor")
+     * @Groups({"users"})
+     */
+    private $advices;
 
     public function __construct()
     {
