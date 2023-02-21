@@ -5,6 +5,7 @@ namespace App\Entity;
 use App\Repository\AdviceRepository;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
+use Symfony\Component\Serializer\Annotation\Groups;
 
 /**
  * @ORM\Entity(repositoryClass=AdviceRepository::class)
@@ -69,7 +70,7 @@ class Advice
      * @Assert\NotBlank
      */
     private $category;
-    
+
 
     public function getId(): ?int
     {
