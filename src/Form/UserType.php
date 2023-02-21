@@ -30,12 +30,20 @@ class UserType extends AbstractType
                     "placeholder" => "L'email"
                 ]
             ])
+<<<<<<< HEAD
             ->add('roles', ChoiceType::class, [
                 "choices" => [
                     "Auteur" => "ROLE_AUTHOR",
                     "Admin" =>  "ROLE_ADMIN",
                     "User" =>   "ROLE_USER"
 >>>>>>> FIX: access_control
+=======
+                ->add('roles',ChoiceType::class,[
+                "choices"=>[
+                    "Manager" => "ROLE_AUTHOR",
+                    "Admin" => "ROLE_ADMIN",
+                    "User" => "ROLE_USER"
+>>>>>>> FIX: route correction and UserType correction
                 ],
                 "expanded" => true,
                 "multiple" => true
@@ -81,9 +89,15 @@ class UserType extends AbstractType
                 "attr" => [
                     "placeholder" => "Votre avatar"
                 ],
+<<<<<<< HEAD
                 "help" => "* L'url d'un avatar"
             ])
             /*
+=======
+                "help"=> "* L'url d'un avatar"
+            ]) 
+/*
+>>>>>>> FIX: route correction and UserType correction
             ->add('is_active' ,ChoiceType::class,[
                 "choices" => [
                     "Activé" => "0",
@@ -92,8 +106,12 @@ class UserType extends AbstractType
                 "label" => "Activé ou désactivé"
             ])
 <<<<<<< HEAD
+<<<<<<< HEAD
      */      
 >>>>>>> FIX: debug UserType
+=======
+     */      
+>>>>>>> FIX: route correction and UserType correction
         ;
 =======
      */;
