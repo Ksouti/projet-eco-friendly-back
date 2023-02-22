@@ -42,6 +42,7 @@ class ArticleRepository extends ServiceEntityRepository
 
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
     // public function findAllByUser(Article $entity, bool $flush = false): void
     // {
@@ -64,10 +65,18 @@ class ArticleRepository extends ServiceEntityRepository
         return $this->createQueryBuilder('ar')
             ->where("ar.author = :author")
             ->setParameter("author",$author)
+=======
+    public function findAllWithParameters(?int $offset, ?int $limit): array
+    {
+        return $this->createQueryBuilder('a')
+            ->setFirstResult($offset)
+            ->setMaxResults($limit)
+>>>>>>> WIP: api lists param
             ->getQuery()
             ->getResult();
     }
 
+<<<<<<< HEAD
 //    /**
 //     * @return Article[] Returns an array of Article objects
 //     */
@@ -93,4 +102,30 @@ class ArticleRepository extends ServiceEntityRepository
 //        ;
 //    }
 
+=======
+    //    /**
+    //     * @return Article[] Returns an array of Article objects
+    //     */
+    //    public function findByExampleField($value): array
+    //    {
+    //        return $this->createQueryBuilder('a')
+    //            ->andWhere('a.exampleField = :val')
+    //            ->setParameter('val', $value)
+    //            ->orderBy('a.id', 'ASC')
+    //            ->setMaxResults(10)
+    //            ->getQuery()
+    //            ->getResult()
+    //        ;
+    //    }
+
+    //    public function findOneBySomeField($value): ?Article
+    //    {
+    //        return $this->createQueryBuilder('a')
+    //            ->andWhere('a.exampleField = :val')
+    //            ->setParameter('val', $value)
+    //            ->getQuery()
+    //            ->getOneOrNullResult()
+    //        ;
+    //    }
+>>>>>>> WIP: api lists param
 }
