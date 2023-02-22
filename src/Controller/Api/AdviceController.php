@@ -7,12 +7,18 @@ use App\Repository\AdviceRepository;
 use App\Repository\CategoryRepository;
 use App\Repository\UserRepository;
 <<<<<<< HEAD
+<<<<<<< HEAD
 use Doctrine\Common\Util\Debug;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\ErrorHandler\Debug as ErrorHandlerDebug;
 =======
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 >>>>>>> FEAT: AdviceController (not list)  +  ArticleController (not list) + UserController read
+=======
+use Doctrine\Common\Util\Debug;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\ErrorHandler\Debug as ErrorHandlerDebug;
+>>>>>>> FEAT: advice entity annotations improved
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -22,9 +28,13 @@ use Symfony\Component\String\Slugger\SluggerInterface;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 <<<<<<< HEAD
+<<<<<<< HEAD
 
 =======
 >>>>>>> FEAT: AdviceController (not list)  +  ArticleController (not list) + UserController read
+=======
+
+>>>>>>> FEAT: advice entity annotations improved
 class AdviceController extends AbstractController
 {
     // TODO : add url parameters to filter advices
@@ -55,12 +65,15 @@ class AdviceController extends AbstractController
      */
     public function new(Request $request, SerializerInterface $serializer, ValidatorInterface $validator, SluggerInterface $slugger, AdviceRepository $adviceRepository, UserRepository $userRepository, CategoryRepository $categoryRepository): Response
     {
-        try {
+        try {;
             $advice = $serializer->deserialize($request->getContent(), Advice::class, 'json');
             $advice->setSlug(strtolower($slugger->slug($advice->getTitle(), '-')));
             $advice->setCreatedAt(new \DateTimeImmutable());
+<<<<<<< HEAD
 
 >>>>>>> FEAT: AdviceController (not list)  +  ArticleController (not list) + UserController read
+=======
+>>>>>>> FEAT: advice entity annotations improved
             $json = $request->getContent();
             $contributorId = json_decode($json, true)['contributorId'];
             $advice->setContributor($userRepository->find($contributorId));
