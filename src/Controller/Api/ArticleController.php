@@ -12,6 +12,7 @@ use App\Entity\Category;
 =======
 >>>>>>> FEAT: AdviceController (not list)  +  ArticleController (not list) + UserController read
 use App\Repository\ArticleRepository;
+use FOS\RestBundle\Request\ParamFetcher;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -21,7 +22,10 @@ class ArticleController extends AbstractController
 {
     /**
      * @Route("/api/articles", name="app_api_articles_list")
+     * @QueryParam(name="offset", requirements="\d+", default="", description="Index de début de l'extraction")
+     * @QueryParam(name="limit", requirements="\d+", default="", description="Nombre d'éléments à extraire")
      */
+<<<<<<< HEAD
     public function list(Request $request, ArticleRepository $articleRepository): Response
     {
 <<<<<<< HEAD
@@ -60,17 +64,24 @@ class ArticleController extends AbstractController
         return $this->json($articleRepository->findAll(), Response::HTTP_OK, [], ['groups' => 'articles']);
 >>>>>>> FEAT: AdviceController (not list)  +  ArticleController (not list) + UserController read
 =======
+=======
+    public function index(ParamFetcher $paramFetcher, ArticleRepository $articleRepository): Response
+    {
+>>>>>>> WIP: api lists param
         $offset = $paramFetcher->get('offset');
         $limit = $paramFetcher->get('limit');
         return $this
             ->json($articleRepository
                 ->findAllWithParameters($offset, $limit), Response::HTTP_OK, [], ['groups' => 'articles']);
+<<<<<<< HEAD
 >>>>>>> WIP: api lists param
 =======
         return $this->json($articleRepository->findAllWithParameters($request->query->all()), Response::HTTP_OK, [], ['groups' => 'articles']);
 >>>>>>> FEAT: Api ArticleController working
 =======
 >>>>>>> WIP: api Articles list
+=======
+>>>>>>> WIP: api lists param
     }
 
     /**
