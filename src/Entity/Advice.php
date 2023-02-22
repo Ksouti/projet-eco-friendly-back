@@ -73,7 +73,7 @@ class Advice
 
     /**
      * @ORM\ManyToOne(targetEntity=User::class, inversedBy="advices")
-     * @ORM\JoinColumn(nullable=false)
+     * @ORM\JoinColumn(name="contributor_id", referencedColumnName="id")
      * @Assert\NotBlank
      * @Groups({"advices"})
      */
