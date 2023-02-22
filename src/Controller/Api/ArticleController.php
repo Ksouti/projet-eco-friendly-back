@@ -4,6 +4,7 @@ namespace App\Controller\Api;
 
 use App\Entity\Article;
 use App\Repository\ArticleRepository;
+use FOS\RestBundle\Request\ParamFetcher;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -13,10 +14,16 @@ class ArticleController extends AbstractController
     // TODO : add url parameters to filter articles
     /**
      * @Route("/api/articles", name="app_api_articles_list")
+     * @QueryParam(name="offset", requirements="\d+", default="", description="Index de début de l'extraction")
+     * @QueryParam(name="limit", requirements="\d+", default="", description="Nombre d'éléments à extraire")
      */
-    public function index(ArticleRepository $articleRepository): Response
+    public function index(ParamFetcher $paramFetcher, ArticleRepository $articleRepository): Response
     {
-        return $this->json($articleRepository->findAll(), Response::HTTP_OK, [], ['groups' => 'articles']);
+        $offset = $paramFetcher->get('offset');
+        $limit = $paramFetcher->get('limit');
+        return $this
+            ->json($articleRepository
+                ->findAllWithParameters($offset, $limit), Response::HTTP_OK, [], ['groups' => 'articles']);
     }
 
     /**
