@@ -50,6 +50,7 @@
             "migrations/.gitignore"
         ]
     },
+<<<<<<< HEAD
     "lexik/jwt-authentication-bundle": {
         "version": "2.18",
         "recipe": {
@@ -61,6 +62,16 @@
         "files": [
             "config/packages/lexik_jwt_authentication.yaml"
         ]
+=======
+    "friendsofsymfony/rest-bundle": {
+        "version": "3.5",
+        "recipe": {
+            "repo": "github.com/symfony/recipes-contrib",
+            "branch": "main",
+            "version": "2.2",
+            "ref": "fa845143b7e0a4c70aedd1a88c549e6d977e9ae5"
+        }
+>>>>>>> BUILD: friendsofsymfony/rest-bundle install
     },
     "phpunit/phpunit": {
         "version": "9.6",
