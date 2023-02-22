@@ -38,13 +38,41 @@ class ArticleRepository extends ServiceEntityRepository
             $this->getEntityManager()->flush();
         }
     }
-
-    public function findAllWithParameters(?int $offset, ?int $limit): array
+    // Available parameters: category, page, limit, offset, sorttype, order, search
+    public function findAllWithParameters(array $needles): array
     {
-        return $this->createQueryBuilder('a')
-            ->setFirstResult($offset)
-            ->setMaxResults($limit)
-            ->getQuery()
+        if (empty($needles)) {
+            // Returns all articles without any parameters
+            return $this->createQueryBuilder('ar')
+                ->getQuery()
+                ->getResult();
+        }
+
+        $qb = $this->createQueryBuilder('ar')
+            ->join('ar.category', 'c')
+            ->orderBy('ar.' . ($needles['sorttype'] ?? 'created_at'), $needles['order'] ?? 'DESC')
+            ->where('ar.category = :category')
+            ->setParameter('category', $needles['category'] ?? null);
+
+        if (isset($needles['page'])) {
+            $qb->setFirstResult($needles['page'] * 10 - 9)
+                ->setMaxResults(10);
+        }
+
+        if (isset($needles['offset'])) {
+            $qb->setFirstResult($needles['offset']);
+        }
+
+        if (isset($needles['limit'])) {
+            $qb->setMaxResults($needles['limit']);
+        }
+
+        if (isset($needles['search'])) {
+            $qb->andWhere('a.content LIKE :search')
+                ->setParameter('search', '%' . $needles['search'] . '%');
+        }
+
+        return $qb->getQuery()
             ->getResult();
     }
 
