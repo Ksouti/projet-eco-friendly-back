@@ -59,9 +59,17 @@ class ArticleType extends AbstractType
 
             ->add('category', EntityType::class, [
                 "class" => Category::class,
+<<<<<<< HEAD
                 "label" => "Catégorie",
                 "multiple" => false,
             ]);
+=======
+                "label" => "Catégorie" ,
+                "multiple" => false,     
+                          
+            ]) 
+        ;
+>>>>>>> FIX: modification of the role in UserType
     }
 
     public function configureOptions(OptionsResolver $resolver): void
