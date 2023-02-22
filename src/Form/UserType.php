@@ -16,22 +16,22 @@ class UserType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
-            ->add('email',EmailType::class,[
+            ->add('email', EmailType::class, [
                 "label" => "L'email",
                 "attr" => [
                     "placeholder" => "L'email"
                 ]
             ])
-                ->add('roles',ChoiceType::class,[
-                "choices"=>[
-                    "Manager" => "ROLE_AUTHOR",
-                    "Admin" => "ROLE_ADMIN",
-                    "User" => "ROLE_USER"
+            ->add('roles', ChoiceType::class, [
+                "choices" => [
+                    "Auteur" => "ROLE_AUTHOR",
+                    "Admin" =>  "ROLE_ADMIN",
+                    "User" =>   "ROLE_USER"
                 ],
                 "expanded" => true,
                 "multiple" => true
             ])
-           
+
             ->add("firstname", TextType::class, [
                 "label" => "Prénom",
                 "attr" => [
@@ -53,14 +53,14 @@ class UserType extends AbstractType
                 ]
             ])
 
-            ->add('avatar',UrlType::class,[
+            ->add('avatar', UrlType::class, [
                 "label" => "Votre avatar *",
                 "attr" => [
                     "placeholder" => "Votre avatar"
                 ],
-                "help"=> "* L'url d'un avatar"
-            ]) 
-/*
+                "help" => "* L'url d'un avatar"
+            ])
+            /*
             ->add('is_active' ,ChoiceType::class,[
                 "choices" => [
                     "Activé" => "0",
@@ -68,8 +68,7 @@ class UserType extends AbstractType
                 ],
                 "label" => "Activé ou désactivé"
             ])
-     */      
-        ;
+     */;
     }
 
     public function configureOptions(OptionsResolver $resolver): void

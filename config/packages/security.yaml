@@ -38,13 +38,13 @@ security:
         # - { path: ^/author, roles: ROLE_AUTHOR }
         - {
               # path: '^back_office/auteurs/(\d+)/(editer|modifier|desactiver)$',
-              path: '^/back_office/connexion',
+              path: '^/back_office/connexion|deconnexion',
               roles: [],
           }
         - {
-              # path: '^back_office/auteur/(\d+)/(editer|modifier|desactiver)$',
-              path: '^/back_office',
-              roles: ROLE_AUTHOR,
+              # path: '^/back_office/auteurs/(\d+)/(editer|modifier|desactiver)$',
+              path: '^/back_office/auteurs|utilisateurs|conseils',
+              roles: ROLE_ADMIN,
           }
         - {
               # path: '^back_office/auteur/(\d+)/(editer|modifier|desactiver)$',
@@ -57,9 +57,9 @@ security:
               roles: ROLE_AUTHOR,
           }
         - {
-              # path: '^/back_office/auteurs/(\d+)/(editer|modifier|desactiver)$',
-              path: '^/back_office/auteurs|utilisateurs|conseils',
-              roles: ROLE_ADMIN,
+              # path: '^back_office/auteur/(\d+)/(editer|modifier|desactiver)$',
+              path: '^/back_office/',
+              roles: ROLE_AUTHOR,
           }
         #- {
         #      path: '^/back_office/utilisateurs/(\d+)/(desactiver)$',
