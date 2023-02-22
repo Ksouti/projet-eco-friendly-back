@@ -10,7 +10,15 @@ use Doctrine\Migrations\AbstractMigration;
 /**
  * Auto-generated Migration: Please modify to your needs!
  */
+<<<<<<< HEAD
 final class Version20230222203142 extends AbstractMigration
+=======
+<<<<<<< HEAD:migrations/Version20230223092131.php
+final class Version20230223092131 extends AbstractMigration
+=======
+final class Version20230222203142 extends AbstractMigration
+>>>>>>> FEAT: Api ArticleController working:migrations/Version20230222203142.php
+>>>>>>> FEAT: Api ArticleController working
 {
     public function getDescription(): string
     {

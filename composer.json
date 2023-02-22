@@ -1,5 +1,6 @@
 {
 <<<<<<< HEAD
+<<<<<<< HEAD
     "type": "project",
     "license": "proprietary",
     "minimum-stability": "stable",
@@ -118,6 +119,8 @@
 
    
 =======
+=======
+>>>>>>> FEAT: Api ArticleController working
 	"type": "project",
 	"license": "proprietary",
 	"minimum-stability": "stable",
@@ -224,5 +227,8 @@
 		"symfony/stopwatch": "5.4.*",
 		"symfony/web-profiler-bundle": "5.4.*"
 	}
+<<<<<<< HEAD
+>>>>>>> FEAT: Api ArticleController working
+=======
 >>>>>>> FEAT: Api ArticleController working
 }

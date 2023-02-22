@@ -40,6 +40,7 @@ class ArticleRepository extends ServiceEntityRepository
         }
     }
 <<<<<<< HEAD
+<<<<<<< HEAD
 
 <<<<<<< HEAD
 <<<<<<< HEAD
@@ -111,6 +112,11 @@ class ArticleRepository extends ServiceEntityRepository
     }
 <<<<<<< HEAD
     /* $qb = $this->createQueryBuilder('ar')
+=======
+    // Available parameters: category, page, limit, offset, sorttype, order, search
+    public function findAllWithParameters(array $needles): array
+    {
+>>>>>>> FEAT: Api ArticleController working
         if (empty($needles)) {
             // Returns all articles without any parameters
             return $this->createQueryBuilder('ar')
@@ -118,6 +124,10 @@ class ArticleRepository extends ServiceEntityRepository
                 ->getResult();
         }
 
+<<<<<<< HEAD
+=======
+        $qb = $this->createQueryBuilder('ar')
+>>>>>>> FEAT: Api ArticleController working
             ->join('ar.category', 'c')
             ->orderBy('ar.' . ($needles['sorttype'] ?? 'created_at'), $needles['order'] ?? 'DESC')
             ->where('ar.category = :category')
@@ -137,6 +147,7 @@ class ArticleRepository extends ServiceEntityRepository
         }
 
         if (isset($needles['search'])) {
+<<<<<<< HEAD
             $qb->andWhere('ar.content LIKE :search')
                 ->setParameter('search', "%" . $needles['search'] . "%");
         }
@@ -192,6 +203,13 @@ class ArticleRepository extends ServiceEntityRepository
 
 =======
             ->getQuery()
+=======
+            $qb->andWhere('a.content LIKE :search')
+                ->setParameter('search', '%' . $needles['search'] . '%');
+        }
+
+        return $qb->getQuery()
+>>>>>>> FEAT: Api ArticleController working
             ->getResult();
     }
 

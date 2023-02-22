@@ -53,6 +53,7 @@
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
     "lexik/jwt-authentication-bundle": {
         "version": "2.18",
         "recipe": {
@@ -83,6 +84,8 @@
 =======
     },
 >>>>>>> BUILD: friendsofsymfony/rest-bundle install
+=======
+>>>>>>> FEAT: Api ArticleController working
     "phpunit/phpunit": {
         "version": "9.6",
         "recipe": {

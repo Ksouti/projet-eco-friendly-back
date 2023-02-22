@@ -9,6 +9,7 @@ use App\Repository\UserRepository;
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 use Doctrine\Common\Util\Debug;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\ErrorHandler\Debug as ErrorHandlerDebug;
@@ -20,6 +21,9 @@ use Doctrine\Common\Util\Debug;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\ErrorHandler\Debug as ErrorHandlerDebug;
 >>>>>>> FEAT: advice entity annotations improved
+=======
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+>>>>>>> FEAT: Api ArticleController working
 =======
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 >>>>>>> FEAT: Api ArticleController working

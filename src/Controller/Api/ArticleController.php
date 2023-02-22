@@ -12,7 +12,6 @@ use App\Entity\Category;
 =======
 >>>>>>> FEAT: AdviceController (not list)  +  ArticleController (not list) + UserController read
 use App\Repository\ArticleRepository;
-use FOS\RestBundle\Request\ParamFetcher;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -22,9 +21,8 @@ class ArticleController extends AbstractController
 {
     /**
      * @Route("/api/articles", name="app_api_articles_list")
-     * @QueryParam(name="offset", requirements="\d+", default="", description="Index de début de l'extraction")
-     * @QueryParam(name="limit", requirements="\d+", default="", description="Nombre d'éléments à extraire")
      */
+<<<<<<< HEAD
 <<<<<<< HEAD
     public function list(Request $request, ArticleRepository $articleRepository): Response
     {
@@ -82,6 +80,11 @@ class ArticleController extends AbstractController
 >>>>>>> WIP: api Articles list
 =======
 >>>>>>> WIP: api lists param
+=======
+    public function index(Request $request, ArticleRepository $articleRepository): Response
+    {
+        return $this->json($articleRepository->findAllWithParameters($request->query->all()), Response::HTTP_OK, [], ['groups' => 'articles']);
+>>>>>>> FEAT: Api ArticleController working
     }
 
     /**
