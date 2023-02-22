@@ -15,7 +15,11 @@
         "doctrine/orm": "^2.14",
         "fakerphp/faker": "^1.21",
 <<<<<<< HEAD
+<<<<<<< HEAD
         "lexik/jwt-authentication-bundle": "^2.18",
+=======
+        "friendsofsymfony/rest-bundle": "^3.5",
+>>>>>>> BUILD: friendsofsymfony/rest-bundle install
 =======
         "friendsofsymfony/rest-bundle": "^3.5",
 >>>>>>> BUILD: friendsofsymfony/rest-bundle install

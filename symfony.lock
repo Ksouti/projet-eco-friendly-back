@@ -52,6 +52,7 @@
     },
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
     "lexik/jwt-authentication-bundle": {
         "version": "2.18",
         "recipe": {
@@ -64,6 +65,8 @@
             "config/packages/lexik_jwt_authentication.yaml"
         ]
 =======
+=======
+>>>>>>> BUILD: friendsofsymfony/rest-bundle install
     "friendsofsymfony/rest-bundle": {
         "version": "3.5",
         "recipe": {
@@ -72,10 +75,14 @@
             "version": "2.2",
             "ref": "fa845143b7e0a4c70aedd1a88c549e6d977e9ae5"
         }
+<<<<<<< HEAD
 >>>>>>> BUILD: friendsofsymfony/rest-bundle install
     },
 =======
 >>>>>>> FEAT: Api ArticleController working
+=======
+    },
+>>>>>>> BUILD: friendsofsymfony/rest-bundle install
     "phpunit/phpunit": {
         "version": "9.6",
         "recipe": {
