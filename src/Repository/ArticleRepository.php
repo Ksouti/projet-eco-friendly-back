@@ -3,6 +3,7 @@
 namespace App\Repository;
 
 use App\Entity\Article;
+use App\Entity\User;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
 
@@ -38,6 +39,19 @@ class ArticleRepository extends ServiceEntityRepository
             $this->getEntityManager()->flush();
         }
     }
+    
+    /**
+     * @return Article[] Returns an array of articles objects ordered by userId
+     */
+    public function findAllOrderByUserId($author){
+        
+        return $this->createQueryBuilder('ar')
+            ->where("ar.author = :author")
+            ->setParameter("author",$author)
+            ->getQuery()
+            ->getResult();
+    }
+    
     // Available parameters: category, page, limit, offset, sorttype, order, search
     public function findAllWithParameters(
         ?int $category,

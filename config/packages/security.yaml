@@ -40,6 +40,14 @@ security:
               # path: '^back_office/auteurs/(\d+)/(editer|modifier|desactiver)$',
               path: '^/back_office/connexion|deconnexion',
               roles: [],
+
+
+            #    { path: ^/api/articles, roles: [] }
+            #    { path: ^/api/advices, roles: [] }
+            #    { path: ^/api/users/\d+$, roles: ROLE_USER }
+            #  { path: ^/api/users/d+$, roles: ROLE_USER }
+            #    { path: ^/api/login_check, roles: ROLE_USER }
+            
           }
         - {
               # path: '^/back_office/auteurs/(\d+)/(editer|modifier|desactiver)$',
