@@ -1,15 +1,15 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Category index{% endblock %}
+{% block title %}Liste des catégories{% endblock %}
 
 {% block body %}
-    <h1>Category index</h1>
+    <h1>Liste des catégories</h1>
 
-    <table class="table">
+    <table class="table table-dark table-striped">
         <thead>
             <tr>
                 <th>Id</th>
-                <th>Name</th>
+                <th>Nom</th>
                 <th>Tagline</th>
                 <th>Slug</th>
                 <th>actions</th>
@@ -24,7 +24,7 @@
                 <td>{{ category.slug }}</td>
                 <td>
                     <a href="{{ path('app_backoffice_categories_show', {'id': category.id}) }}">show</a>
-                    <a href="{{ path('app_backoffice_categories_edit', {'id': category.id}) }}">edit</a>
+                    <a href="{{ path('app_backoffice_categories_edit', {'id': category.id}) }}">Modifier</a>
                 </td>
             </tr>
         {% else %}
@@ -35,5 +35,5 @@
         </tbody>
     </table>
 
-    <a href="{{ path('app_backoffice_categories_new') }}">Create new</a>
+    <a href="{{ path('app_backoffice_categories_new') }}">Créer une nouvelle catégorie</a>
 {% endblock %}

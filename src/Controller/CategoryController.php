@@ -13,7 +13,7 @@ use Symfony\Component\Routing\Annotation\Route;
 class CategoryController extends AbstractController
 {
     /**
-     * @Route("/back_office/categories/", name="app_backoffice_categories_list", methods={"GET"})
+     * @Route("/back_office/categories", name="app_backoffice_categories_list", methods={"GET"})
      */
     public function list(CategoryRepository $categoryRepository): Response
     {

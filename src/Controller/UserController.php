@@ -22,9 +22,9 @@ class UserController extends AbstractController
             'users' => $userRepository->findAll(),
         ]);
     }
- 
+
     /**
-     * @Route("/back_office/utilisateurs/nouveau", name="app_backoffice_users_new", methods={"GET" , "POST"})
+     * @Route("/back_office/utilisateurs/ajouter", name="app_backoffice_users_new", methods={"GET" , "POST"})
      */
     public function new(Request $request, UserRepository $userRepository): Response
     {
@@ -74,17 +74,15 @@ class UserController extends AbstractController
     }
 
     /**
-     * @Route("/back_office/utilisateus/{id}", name="app_backoffice_users_deactivate", methods={"POST"})
+     * @Route("/back_office/utilisateurs/{id}", name="app_backoffice_users_deactivate", requirements={"id":"\d+"}, methods={"POST"})
      */
     public function deactivate(Request $request, User $user, UserRepository $userRepository): Response
     {
-        /*if ($this->isCsrfTokenValid('deactibate' . $user->getId(), $request->request->get('_token'))) {*/
+        if ($this->isCsrfTokenValid('deactivate' . $user->getId(), $request->request->get('_token'))) {
             $user->setIsActive(false);
             $userRepository->add($user, true);
-      /*  }*/
+        }
 
         return $this->redirectToRoute('app_backoffice_users_list', [], Response::HTTP_SEE_OTHER);
     }
-    
-    
 }

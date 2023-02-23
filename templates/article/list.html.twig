@@ -5,7 +5,7 @@
 {% block body %}
     <h1>Liste des articles</h1>
 
-    <table class="table">
+    <table class="table table-dark table-striped">
         <thead>
             <tr>
                 <th>Id</th>
@@ -43,5 +43,5 @@
         </tbody>
     </table>
 
-    <a href="{{ path('app_backoffice_articles_new') }}">Créer un nouveau</a>
+    <a href="{{ path('app_backoffice_articles_new') }}">Créer un nouvel article</a>
 {% endblock %}

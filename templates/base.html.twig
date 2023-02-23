@@ -2,6 +2,9 @@
 <html>
     <head>
         <meta charset="UTF-8">
+
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+
         <title>{% block title %}Welcome!{% endblock %}</title>
             <link rel="icon" type="image/png" sizes="16x16" href="{{asset('favicon-16x16.png')}}">
         {# <link rel="icon" href="{{asset('favicon.ico')}}"> #}
@@ -22,20 +25,21 @@
     <nav class="navbar navbar-expand-lg bg-body-tertiary">
         <div class="container-fluid">
             <a class="navbar-brand" href="#">
-                <img src="{{asset('assets/img/logos/icon-32x32.png')}}" alt="Logo" width="32" height="32" class="d-inline-block align-text-top">
+                <img src="{{asset('assets/img/logos/icon-32x32.png')}}" alt="Logo" width="32" height="32" class="d-inline-block align-text-top" />
                 Back Office Eco-Friendly
             </a>
-        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavAltMarkup" aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
-            <span class="navbar-toggler-icon"></span>
-        </button>
-        <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
-        <div class="navbar-nav">
-            <a class="nav-link active" aria-current="page" href="{{ path('app_backoffice_users_list') }}">Inscrits</a>
-            <a class="nav-link" href="{{ path('app_backoffice_users_list') }}">Auteurs</a>
-            <a class="nav-link" href="{{ path('app_backoffice_articles_list') }}">Articles</a>
-            <a class="nav-link" href="{{ path('app_backoffice_advices_list') }}">Conseils</a>
-        </div>
-    </div>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavAltMarkup" aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
+            <div class="navbar-nav">
+                <a class="nav-link active" aria-current="page" href="{{ path('app_backoffice_users_list') }}">Inscrits</a>
+                <a class="nav-link" href="{{ path('app_backoffice_users_list') }}">Auteurs</a>
+                <a class="nav-link" href="{{ path('app_backoffice_articles_list') }}">Articles</a>
+                <a class="nav-link" href="{{ path('app_backoffice_advices_list') }}">Conseils</a>
+                <a class="btn btn-outline-success" href="{{ path('app_backoffice_security_logout') }}">Déconnexion</a>
+            </div>
+            </div>
         </div>
     </nav>
 
