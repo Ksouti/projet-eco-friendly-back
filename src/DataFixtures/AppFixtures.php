@@ -6,19 +6,19 @@ use App\Entity\Advice;
 use App\Entity\Article;
 use App\Entity\Category;
 use App\Entity\User;
+use App\Service\SluggerService;
 use DateTimeImmutable;
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Persistence\ObjectManager;
 use Faker;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
-use Symfony\Component\String\Slugger\SluggerInterface;
 
 class AppFixtures extends Fixture
 {
     private $passwordHasher;
     private $slugger;
 
-    public function __construct(UserPasswordHasherInterface $passwordHasher, SluggerInterface $slugger)
+    public function __construct(SluggerService $slugger, UserPasswordHasherInterface $passwordHasher)
     {
         $this->passwordHasher = $passwordHasher;
         $this->slugger = $slugger;
@@ -42,7 +42,7 @@ class AppFixtures extends Fixture
             $category = new Category();
             $category->setName($categoryName);
             $category->setTagline($faker->sentence(6, true));
-            $category->setSlug($categoryName);
+            $category->setSlug($this->slugger->slugify($categoryName));
             $manager->persist($category);
         }
 
@@ -130,10 +130,6 @@ class AppFixtures extends Fixture
 
         $users = $manager->getRepository(User::class)->findAll();
 
-        // ! Instantiation of slugger
-
-        $slugger = $this->slugger;
-
         // ! Adding Articles
 
         $authors = array_filter($users, function ($user) {
@@ -144,7 +140,7 @@ class AppFixtures extends Fixture
             $article = new Article();
             $article->setTitle($faker->sentence(6, true));
             $article->setContent($faker->paragraph(6, true));
-            $article->setSlug($slugger->slug($article->getTitle(), '-'));
+            $article->setSlug($this->slugger->slugify($article->getTitle()));
             $article->setPicture('https://picsum.photos/id/' . $faker->numberBetween(1, 200) . '/300/450.jpg');
             $article->setStatus($faker->numberBetween(0, 2));
             $article->setAuthor($authors[array_rand($authors)]);
@@ -164,7 +160,7 @@ class AppFixtures extends Fixture
             $advice = new Advice();
             $advice->setTitle($faker->sentence(6, true));
             $advice->setContent($faker->paragraph(6, true));
-            $advice->setSlug($slugger->slug($advice->getTitle(), '-'));
+            $advice->setSlug($this->slugger->slugify($advice->getTitle()));
             $advice->setStatus($faker->numberBetween(0, 2));
             $advice->setContributor($contributors[array_rand($contributors)]);
             $advice->setCategory($categories[$faker->numberBetween(0, count($categories) - 1)]);

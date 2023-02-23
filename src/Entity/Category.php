@@ -7,6 +7,7 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
+use Symfony\Component\Serializer\Annotation\Groups;
 
 /**
  * @ORM\Entity(repositoryClass=CategoryRepository::class)
@@ -17,6 +18,9 @@ class Category
      * @ORM\Id
      * @ORM\GeneratedValue
      * @ORM\Column(type="integer")
+     * @Groups({"articles"})
+     * @Groups({"advices"})
+     * @Groups({"users"})
      */
     private $id;
 
@@ -24,6 +28,9 @@ class Category
      * @ORM\Column(type="string", length=32)
      * @Assert\Length(min = 1, max = 32)
      * @Assert\NotBlank
+     * @Groups({"articles"})
+     * @Groups({"advices"})
+     * @Groups({"users"})
      */
     private $name;
 
@@ -31,6 +38,9 @@ class Category
      * @ORM\Column(type="string", length=128)
      * @Assert\Length(min = 1, max = 128)
      * @Assert\NotBlank
+     * @Groups({"articles"})
+     * @Groups({"advices"})
+     * @Groups({"users"})
      */
     private $tagline;
 
@@ -38,6 +48,9 @@ class Category
      * @ORM\Column(type="string", length=32)
      * @Assert\Length(min = 1, max = 32)
      * @Assert\NotBlank
+     * @Groups({"articles"})
+     * @Groups({"advices"})
+     * @Groups({"users"})
      */
     private $slug;
 

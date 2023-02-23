@@ -39,9 +39,8 @@ class ArticleRepository extends ServiceEntityRepository
             $this->getEntityManager()->flush();
         }
     }
-
+    
     /**
-     * 
      * @return Article[] Returns an array of articles objects ordered by userId
      */
     public function findAllOrderByUserId($author){
@@ -52,29 +51,60 @@ class ArticleRepository extends ServiceEntityRepository
             ->getQuery()
             ->getResult();
     }
+    
+    // Available parameters: category, page, limit, offset, sorttype, order, search
+    public function findAllWithParameters(
+        ?int $category,
+        ?int $status,
+        int $limit,
+        int $offset,
+        string $sortType,
+        string $order,
+        ?string $search
+    ) {
+        $qb = $this->createQueryBuilder('ar');
 
-//    /**
-//     * @return Article[] Returns an array of Article objects
-//     */
-//    public function findByExampleField($value): array
-//    {
-//        return $this->createQueryBuilder('a')
-//            ->andWhere('a.exampleField = :val')
-//            ->setParameter('val', $value)
-//            ->orderBy('a.id', 'ASC')
-//            ->setMaxResults(10)
-//            ->getQuery()
-//            ->getResult()
-//        ;
-//    }
+        if ($category) {
+            $qb->andWhere('ar.category = :category')
+                ->setParameter('category', $category);
+        }
 
-//    public function findOneBySomeField($value): ?Article
-//    {
-//        return $this->createQueryBuilder('a')
-//            ->andWhere('a.exampleField = :val')
-//            ->setParameter('val', $value)
-//            ->getQuery()
-//            ->getOneOrNullResult()
-//        ;
-//    }
+        if ($search) {
+            $qb->andWhere('ar.content LIKE :search')->setParameter('search', "%$search%");
+        }
+
+        if ($status) {
+            $qb->andWhere('ar.status = :status')->setParameter('status', $status);
+        }
+
+        $qb->orderBy('ar.' . $sortType, $order);
+        $qb->setFirstResult($offset)->setMaxResults($limit);
+
+        return $qb->getQuery()->getResult();
+    }
+
+    //    /**
+    //     * @return Article[] Returns an array of Article objects
+    //     */
+    //    public function findByExampleField($value): array
+    //    {
+    //        return $this->createQueryBuilder('a')
+    //            ->andWhere('a.exampleField = :val')
+    //            ->setParameter('val', $value)
+    //            ->orderBy('a.id', 'ASC')
+    //            ->setMaxResults(10)
+    //            ->getQuery()
+    //            ->getResult()
+    //        ;
+    //    }
+
+    //    public function findOneBySomeField($value): ?Article
+    //    {
+    //        return $this->createQueryBuilder('a')
+    //            ->andWhere('a.exampleField = :val')
+    //            ->setParameter('val', $value)
+    //            ->getQuery()
+    //            ->getOneOrNullResult()
+    //        ;
+    //    }
 }

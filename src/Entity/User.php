@@ -9,6 +9,7 @@ use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\Validator\Constraints as Assert;
+use Symfony\Component\Serializer\Annotation\Groups;
 
 /**
  * @ORM\Entity(repositoryClass=UserRepository::class)
@@ -20,6 +21,9 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
      * @ORM\Id
      * @ORM\GeneratedValue
      * @ORM\Column(type="integer")
+     * @Groups({"articles"})
+     * @Groups({"advices"})
+     * @Groups({"users"})
      */
     private $id;
 
@@ -27,21 +31,94 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
      * @ORM\Column(type="string", length=180, unique=true)
      * @Assert\Length(min = 1, max = 180)
      * @Assert\NotBlank
+     * @Groups({"articles"})
+     * @Groups({"advices"})
+     * @Groups({"users"})
      */
     private $email;
-
-    /**
-     * @ORM\Column(type="json")
-     * @Assert\NotBlank
-     */
-    private $roles = [];
 
     /**
      * @var string The hashed password
      * @ORM\Column(type="string")
      * @Assert\NotBlank
+     * @Groups({"users"})
      */
     private $password;
+
+    /**
+     * @ORM\Column(type="json")
+     * @Assert\NotBlank
+     * @Groups({"articles"})
+     * @Groups({"advices"})
+     * @Groups({"users"})
+     */
+    private $roles = [];
+
+    /**
+     * @ORM\Column(type="string", length=64, nullable=true)
+     * @Assert\Length(min = 1, max = 64)
+     * @Groups({"articles"})
+     * @Groups({"advices"})
+     * @Groups({"users"})
+     */
+    private $firstname;
+
+    /**
+     * @ORM\Column(type="string", length=64, nullable=true)
+     * @Assert\Length(min = 1, max = 64)
+     * @Groups({"articles"})
+     * @Groups({"advices"})
+     * @Groups({"users"})
+     */
+    private $lastname;
+
+    /**
+     * @ORM\Column(type="string", length=64)
+     * @Assert\NotBlank
+     * @Assert\Length(min = 1, max = 64)
+     * @Groups({"articles"})
+     * @Groups({"advices"})
+     * @Groups({"users"})
+     */
+    private $nickname;
+
+    /**
+     * @ORM\Column(type="string", length=255, nullable=true)
+     * @Assert\Length(min = 1, max = 255)
+     * @Assert\Url
+     * @Groups({"articles"})
+     * @Groups({"advices"})
+     * @Groups({"users"})
+     */
+    private $avatar;
+
+    /**
+     * @ORM\Column(type="boolean")
+     * @Assert\Type("bool")
+     * @Groups({"articles"})
+     * @Groups({"advices"})
+     * @Groups({"users"})
+     */
+    private $is_active;
+
+    /**
+     * @ORM\Column(type="datetime_immutable")
+     * @Assert\NotBlank
+     * @Assert\Type("DateTimeImmutable")
+     * @Groups({"articles"})
+     * @Groups({"advices"})
+     * @Groups({"users"})
+     */
+    private $created_at;
+
+    /**
+     * @ORM\Column(type="datetime_immutable", nullable=true)
+     * @Assert\Type("DateTimeImmutable")
+     * @Groups({"articles"})
+     * @Groups({"advices"})
+     * @Groups({"users"})
+     */
+    private $updated_at;
 
     /**
      * @ORM\OneToMany(targetEntity=Article::class, mappedBy="author")
@@ -50,54 +127,9 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 
     /**
      * @ORM\OneToMany(targetEntity=Advice::class, mappedBy="contributor")
+     * @Groups({"users"})
      */
     private $advices;
-
-    /**
-     * @ORM\Column(type="string", length=64, nullable=true)
-     * @Assert\Length(min = 1, max = 64)
-     */
-    private $firstname;
-
-    /**
-     * @ORM\Column(type="string", length=64, nullable=true)
-     * @Assert\Length(min = 1, max = 64)
-     */
-    private $lastname;
-
-    /**
-     * @ORM\Column(type="string", length=64)
-     * @Assert\NotBlank
-     * @Assert\Length(min = 1, max = 64)
-     */
-    private $nickname;
-
-    /**
-     * @ORM\Column(type="string", length=255, nullable=true)
-     * @Assert\Length(min = 1, max = 255)
-     * @Assert\Url
-     */
-    private $avatar;
-
-    /**
-     * @ORM\Column(type="boolean")
-     * @Assert\NotBlank
-     * @Assert\Type("bool")
-     */
-    private $is_active;
-
-    /**
-     * @ORM\Column(type="datetime_immutable")
-     * @Assert\NotBlank
-     * @Assert\Type("DateTimeImmutable")
-     */
-    private $created_at;
-
-    /**
-     * @ORM\Column(type="datetime_immutable", nullable=true)
-     * @Assert\Type("DateTimeImmutable")
-     */
-    private $updated_at;
 
     public function __construct()
     {
