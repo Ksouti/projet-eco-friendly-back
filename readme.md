@@ -2,37 +2,34 @@
 
 ## What are the requirements?
 
-PHP 7.4.3 (minimum)
+PHP 7.4.3 avec le framework Symfony 5.4
+
+_You can use [nvm](https://github.com/nvm-sh/nvm) to install node with the command `nvm install 18.14.1`_
 
 ## How to install the project?
 
 1. Clone project
 
-`git clone git@github.com:O-clock-Lara/projet-11-eco-friendly-back.git`
+`git clone git@github.com:O-clock-Lara/projet-11-eco-friendly-front.git`
 
 2. Move in the project
 
-`cd projet-11-eco-friendly-back`
+`cd projet-11-eco-friendly-front`
 
 3. Installing dependencies
 
-`composer install`
-
-4. Configure a database and fill in the `.env` file
-
-`DATABASE_URL="<db_type>://<username>:<password>@127.0.0.1:3306/<db_name>?serverVersion=<server_version>"`
-
-5. Run migration
-
-`php bin/console make:migration`
-`php bin/console doctrine:make:migrations`
-
-6. (optionnal) Load fixtures
-
-`php bin/console doctrine:fixtures:load`
+`npm install` ou `yarn install` ou `pnpm install`
 
 ## What command can I use for in project?
 
 1. Start a development server
 
-From the project's root: `php -S 0.0.0.0:8000 -t public`
+- with npm :
+  `npm run start`
+
+- with yarn :
+  `yarn start`
+
+- with pnpm :
+  `pnpm start`
+  s

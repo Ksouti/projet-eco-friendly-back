@@ -1,4 +1,0 @@
-<form method="post" action="{{ path('app_backoffice_articles_deactivate', {'id': article.id}) }}" onsubmit="return confirm('Etes-vous sûr de vouloir désactiver cet article?');" class="d-flex justify-content-end align-items-center">
-    <input type="hidden" name="_token" value="{{ csrf_token('désactiver' ~ article.id) }}">
-    <button type="submit" class="btn btn-danger" style="margin-right: 10px;">Désactiver</button>
-</form>
