@@ -76,8 +76,35 @@ class ArticleRepository extends ServiceEntityRepository
             ->getQuery()
 =======
     // Available parameters: category, page, limit, offset, sorttype, order, search
-    public function findAllWithParameters(array $needles): array
-    {
+    public function findAllWithParameters(
+        $category = null,
+        $limit = 10,
+        $offset = 0,
+        $sortType = 'created_at',
+        $order = 'desc',
+        $search = null,
+        $status = null
+    ) {
+        $qb = $this->createQueryBuilder('ar');
+
+        if ($category) {
+            $qb->andWhere('ar.category = :category')->setParameter('category', $category);
+        }
+
+        if ($search) {
+            $qb->andWhere('ar.name LIKE :search')->setParameter('search', '%' . $search . '%');
+        }
+
+        if ($status) {
+            $qb->andWhere('ar.status = :status')->setParameter('status', $status);
+        }
+
+        $qb->orderBy('ar.' . $sortType, $order);
+        $qb->setFirstResult($offset)->setMaxResults($limit);
+
+        return $qb->getQuery()->getResult();
+    }
+    /* $qb = $this->createQueryBuilder('ar')
         if (empty($needles)) {
             // Returns all articles without any parameters
             return $this->createQueryBuilder('ar')
@@ -85,7 +112,6 @@ class ArticleRepository extends ServiceEntityRepository
                 ->getResult();
         }
 
-        $qb = $this->createQueryBuilder('ar')
             ->join('ar.category', 'c')
             ->orderBy('ar.' . ($needles['sorttype'] ?? 'created_at'), $needles['order'] ?? 'DESC')
             ->where('ar.category = :category')
@@ -105,14 +131,14 @@ class ArticleRepository extends ServiceEntityRepository
         }
 
         if (isset($needles['search'])) {
-            $qb->andWhere('a.content LIKE :search')
-                ->setParameter('search', '%' . $needles['search'] . '%');
+            $qb->andWhere('ar.content LIKE :search')
+                ->setParameter('search', "%" . $needles['search'] . "%");
         }
 
         return $qb->getQuery()
 >>>>>>> FEAT: Api ArticleController working
             ->getResult();
-    }
+    } */
 
 <<<<<<< HEAD
 //    /**
