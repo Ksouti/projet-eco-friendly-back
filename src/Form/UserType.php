@@ -129,6 +129,7 @@ class UserType extends AbstractType
                     "Activé" => "1",
                     "Désactivé" => "0"
                 ],
+<<<<<<< HEAD
                 "label" => "Activé ou désactivé"
             ])
 <<<<<<< HEAD
@@ -156,6 +157,8 @@ class UserType extends AbstractType
                     "Desactivé" => "0"
                 ],
 <<<<<<< HEAD
+=======
+>>>>>>> FIX: Typo
                 "label" => "Activé ou désactivé"
 <<<<<<< HEAD
 =======
