@@ -24,14 +24,9 @@ class UserType extends AbstractType
             ])
             ->add('roles', ChoiceType::class, [
                 "choices" => [
-<<<<<<< HEAD
                     "Auteur" => "ROLE_AUTHOR",
                     "Admin" =>  "ROLE_ADMIN",
                     "User" =>   "ROLE_USER"
-=======
-                    "Manager" => "ROLE_AUTHOR",
-                    "Admin" => "ROLE_ADMIN"
->>>>>>> 023e8847b6a3c26c50db1eaed76e8d4474cdab1b
                 ],
                 "expanded" => true,
                 "multiple" => true
@@ -65,17 +60,6 @@ class UserType extends AbstractType
                 ],
                 "help" => "* L'url d'un avatar"
             ])
-<<<<<<< HEAD
-            /*
-            ->add('is_active' ,ChoiceType::class,[
-                "choices" => [
-                    "Activé" => "0",
-                    "Désactivé" => "1"
-                ],
-                "label" => "Activé ou désactivé"
-            ])
-     */;
-=======
 
             ->add('is_active', ChoiceType::class, [
                 "choices" => [
@@ -84,7 +68,6 @@ class UserType extends AbstractType
                 ],
                 "label" => "Activé ou désactivé"
             ]);
->>>>>>> 023e8847b6a3c26c50db1eaed76e8d4474cdab1b
     }
 
     public function configureOptions(OptionsResolver $resolver): void
