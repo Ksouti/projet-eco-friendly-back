@@ -70,16 +70,7 @@ security:
         #      roles: ROLE_ADMIN,
         #  }
 
-        # ! API
-        # - { path: ^/api/login, roles: PUBLIC_ACCESS }
-        # - { path: ^/api,       roles: IS_AUTHENTICATED_FULLY }
-
-        - { path: ^/api/login, roles: IS_AUTHENTICATED_ANONYMOUSLY }
-        - { path: ^/api/users, roles: ROLE_ADMIN }
-        - { path: ^/api/articles, roles: ROLE_ADMIN }
-        - { path: ^/api/articles/(?<userId>[0-9]+), roles: ROLE_AUTHOR, methods: [GET], requirements: { userId: '^[0-9]+$' } }
-        - { path: ^/api/advice, roles: [ROLE_AUTHOR] }
-
+        
 
 
     role_hierarchy:
