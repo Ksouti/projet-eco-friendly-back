@@ -5,6 +5,7 @@ namespace App\Entity;
 use App\Repository\AdviceRepository;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
+use Symfony\Component\Serializer\Annotation\Groups;
 
 /**
  * @ORM\Entity(repositoryClass=AdviceRepository::class)
@@ -15,6 +16,8 @@ class Advice
      * @ORM\Id
      * @ORM\GeneratedValue
      * @ORM\Column(type="integer")
+     * @Groups({"advices"})
+     * @Groups({"users"})
      */
     private $id;
 
@@ -22,54 +25,70 @@ class Advice
      * @ORM\Column(type="string", length=128)
      * @Assert\Length(min = 1, max = 128)
      * @Assert\NotBlank
+     * @Groups({"advices"})
+     * @Groups({"users"})
      */
     private $title;
 
     /**
      * @ORM\Column(type="text")
      * @Assert\NotBlank
+     * @Groups({"advices"})
+     * @Groups({"users"})
      */
-    private $Content;
+    private $content;
 
     /**
      * @ORM\Column(type="string", length=128)
      * @Assert\Length(min = 1, max = 128)
      * @Assert\NotBlank
+     * @Groups({"advices"})
+     * @Groups({"users"})
      */
-    private $Slug;
+    private $slug;
 
     /**
      * @ORM\Column(type="integer")
      * @Assert\Length(min = 1, max = 128)
      * @Assert\NotBlank
+     * @Groups({"advices"})
+     * @Groups({"users"})
      */
     private $status;
 
     /**
      * @ORM\Column(type="datetime_immutable")
      * @Assert\NotBlank
+     * @Groups({"advices"})
+     * @Groups({"users"})
      */
     private $created_at;
 
     /**
      * @ORM\Column(type="datetime_immutable", nullable=true)
+     * @Groups({"advices"})
+     * @Groups({"users"})
      */
     private $updated_at;
 
     /**
      * @ORM\ManyToOne(targetEntity=User::class, inversedBy="advices")
-     * @ORM\JoinColumn(nullable=false)
+     * @ORM\JoinColumn(nullable=false, name="contributor_id", referencedColumnName="id")
      * @Assert\NotBlank
+     * @Groups({"advices"})
      */
+
     private $contributor;
 
     /**
      * @ORM\ManyToOne(targetEntity=Category::class, inversedBy="advices")
      * @ORM\JoinColumn(nullable=false)
      * @Assert\NotBlank
+     * @Groups({"advices"})
+     * @Groups({"users"})
      */
     private $category;
-    
+
 
     public function getId(): ?int
     {
@@ -90,24 +109,24 @@ class Advice
 
     public function getContent(): ?string
     {
-        return $this->Content;
+        return $this->content;
     }
 
-    public function setContent(string $Content): self
+    public function setContent(string $content): self
     {
-        $this->Content = $Content;
+        $this->content = $content;
 
         return $this;
     }
 
     public function getSlug(): ?string
     {
-        return $this->Slug;
+        return $this->slug;
     }
 
-    public function setSlug(string $Slug): self
+    public function setSlug(string $slug): self
     {
-        $this->Slug = $Slug;
+        $this->slug = $slug;
 
         return $this;
     }

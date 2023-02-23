@@ -59,17 +59,17 @@ class UserType extends AbstractType
                 "attr" => [
                     "placeholder" => "Votre avatar"
                 ],
-
-                "help"=> "* L'url d'un avatar"
-            ]) 
-
-            ->add('is_active' ,ChoiceType::class,[
-                "choices" => [
-                    "Activé" => "0",
-                    "Désactivé" => "1"
-                ],
-                "label" => "Activé ou désactivé"
+                "help" => "* L'url d'un avatar"
             ])
+
+            ->add('is_active', ChoiceType::class, [
+                "choices" => [
+                    "Activé" => "1",
+                    "Desactivé" => "0"
+                ],
+<<<<<<< HEAD
+                "label" => "Activé ou désactivé"
+            ]);
     }
 
     public function configureOptions(OptionsResolver $resolver): void

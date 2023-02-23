@@ -39,28 +39,59 @@ class AdviceRepository extends ServiceEntityRepository
         }
     }
 
-//    /**
-//     * @return Advice[] Returns an array of Advice objects
-//     */
-//    public function findByExampleField($value): array
-//    {
-//        return $this->createQueryBuilder('a')
-//            ->andWhere('a.exampleField = :val')
-//            ->setParameter('val', $value)
-//            ->orderBy('a.id', 'ASC')
-//            ->setMaxResults(10)
-//            ->getQuery()
-//            ->getResult()
-//        ;
-//    }
+    // Available parameters: category, page, limit, offset, sorttype, order, search
+    public function findAllWithParameters(
+        ?int $category,
+        ?int $status,
+        int $limit,
+        int $offset,
+        string $sortType,
+        string $order,
+        ?string $search
+    ) {
+        $qb = $this->createQueryBuilder('ad');
 
-//    public function findOneBySomeField($value): ?Advice
-//    {
-//        return $this->createQueryBuilder('a')
-//            ->andWhere('a.exampleField = :val')
-//            ->setParameter('val', $value)
-//            ->getQuery()
-//            ->getOneOrNullResult()
-//        ;
-//    }
+        if ($category) {
+            $qb->andWhere('ad.category = :category')
+                ->setParameter('category', $category);
+        }
+
+        if ($search) {
+            $qb->andWhere('ad.content LIKE :search')->setParameter('search', "%$search%");
+        }
+
+        if ($status) {
+            $qb->andWhere('ad.status = :status')->setParameter('status', $status);
+        }
+
+        $qb->orderBy('ad.' . $sortType, $order);
+        $qb->setFirstResult($offset)->setMaxResults($limit);
+
+        return $qb->getQuery()->getResult();
+    }
+
+    //    /**
+    //     * @return Advice[] Returns an array of Advice objects
+    //     */
+    //    public function findByExampleField($value): array
+    //    {
+    //        return $this->createQueryBuilder('a')
+    //            ->andWhere('a.exampleField = :val')
+    //            ->setParameter('val', $value)
+    //            ->orderBy('a.id', 'ASC')
+    //            ->setMaxResults(10)
+    //            ->getQuery()
+    //            ->getResult()
+    //        ;
+    //    }
+
+    //    public function findOneBySomeField($value): ?Advice
+    //    {
+    //        return $this->createQueryBuilder('a')
+    //            ->andWhere('a.exampleField = :val')
+    //            ->setParameter('val', $value)
+    //            ->getQuery()
+    //            ->getOneOrNullResult()
+    //        ;
+    //    }
 }
