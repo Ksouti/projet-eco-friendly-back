@@ -139,10 +139,14 @@ class UserType extends AbstractType
             ->add('is_active' ,ChoiceType::class,[
                 "choices" => [
                     "Activé" => "1",
-                    "dasactivé" => "0"
+                    "Desactivé" => "0"
                 ],
+<<<<<<< HEAD
                 "label" => "Activé ou désactivé"
 <<<<<<< HEAD
+=======
+                "label" => "Activer ou désactiver"
+>>>>>>> Update UserType.php
             ]);
 >>>>>>> FIX: fixtures loading ok
 =======
