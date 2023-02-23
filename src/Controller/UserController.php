@@ -99,6 +99,7 @@ class UserController extends AbstractController
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
      * @Route("/back_office/utilisateurs/{id}", name="app_backoffice_users_deactivate", methods={"POST"})
      */
     public function deactivate(Request $request, User $user, UserRepository $userRepository): Response
@@ -112,6 +113,9 @@ class UserController extends AbstractController
 =======
      * @Route("/back_office/utilisateurs/{id}", name="app_backoffice_users_deactivate", methods={"POST"})
 >>>>>>> FIX: fixtures loading ok
+=======
+     * @Route("/back_office/utilisateurs/{id}", name="app_backoffice_users_deactivate", requirements={"id":"\d+"}, methods={"POST"})
+>>>>>>> Update UserController.php
      */
     public function deactivate(Request $request, User $user, UserRepository $userRepository): Response
     {
