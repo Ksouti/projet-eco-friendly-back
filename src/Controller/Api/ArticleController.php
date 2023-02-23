@@ -44,8 +44,12 @@ class ArticleController extends AbstractController
         $search = $request->get('search', null);
 
         return $this->json(
+<<<<<<< HEAD
             $articleRepository->findAllWithParameters($category, $status, $page, $offset, $limit, $sortType, $order, $search),
 >>>>>>> WIP: api Articles list
+=======
+            $articleRepository->findAllWithParameters($category, $status, $limit, $offset, $sortType, $order, $search),
+>>>>>>> WIP: Api Articles list with parameters
             Response::HTTP_OK,
             [],
             ['groups' => 'articles']
