@@ -64,9 +64,9 @@ class UserType extends AbstractType
             ->add('is_active', ChoiceType::class, [
                 "choices" => [
                     "Activé" => "1",
-                    "dasactivé" => "0"
+                    "Desactivé" => "0"
                 ],
-                "label" => "Activé ou désactivé"
+                "label" => "Activer ou désactiver"
             ]);
     }
 
