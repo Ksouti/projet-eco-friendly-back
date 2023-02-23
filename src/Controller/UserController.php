@@ -98,6 +98,7 @@ class UserController extends AbstractController
     /**
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
      * @Route("/back_office/utilisateurs/{id}", name="app_backoffice_users_deactivate", methods={"POST"})
      */
     public function deactivate(Request $request, User $user, UserRepository $userRepository): Response
@@ -108,6 +109,9 @@ class UserController extends AbstractController
         /* } */
 =======
      * @Route("/back_office/utilisateurs/{id}", name="app_backoffice_users_deactivate", requirements={"id":"\d+"}, methods={"POST"})
+=======
+     * @Route("/back_office/utilisateurs/{id}", name="app_backoffice_users_deactivate", methods={"POST"})
+>>>>>>> FIX: fixtures loading ok
      */
     public function deactivate(Request $request, User $user, UserRepository $userRepository): Response
     {
@@ -115,6 +119,7 @@ class UserController extends AbstractController
             $user->setIsActive(false);
             $userRepository->add($user, true);
         }
+<<<<<<< HEAD
 >>>>>>> FIX: access_control and login coordination
 =======
      * @Route("/back_office/utilisateus/{id}", name="app_backoffice_users_deactivate", methods={"POST"})
@@ -126,6 +131,8 @@ class UserController extends AbstractController
             $userRepository->add($user, true);
       /*  }*/
 >>>>>>> FIX: route correction and UserType correction
+=======
+>>>>>>> FIX: fixtures loading ok
 
         return $this->redirectToRoute('app_backoffice_users_list', [], Response::HTTP_SEE_OTHER);
     }

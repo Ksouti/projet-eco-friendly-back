@@ -36,6 +36,7 @@ class UserType extends AbstractType
                     "Auteur" => "ROLE_AUTHOR",
                     "Admin" =>  "ROLE_ADMIN",
                     "User" =>   "ROLE_USER"
+<<<<<<< HEAD
 >>>>>>> FIX: access_control
 =======
                 ->add('roles',ChoiceType::class,[
@@ -44,6 +45,8 @@ class UserType extends AbstractType
                     "Admin" => "ROLE_ADMIN",
                     "User" => "ROLE_USER"
 >>>>>>> FIX: route correction and UserType correction
+=======
+>>>>>>> FIX: fixtures loading ok
                 ],
                 "expanded" => true,
                 "multiple" => true
@@ -92,6 +95,7 @@ class UserType extends AbstractType
 <<<<<<< HEAD
                 "help" => "* L'url d'un avatar"
             ])
+<<<<<<< HEAD
             /*
 =======
                 "help"=> "* L'url d'un avatar"
@@ -116,6 +120,16 @@ class UserType extends AbstractType
 =======
      */;
 >>>>>>> FIX: access_control
+=======
+
+            ->add('is_active', ChoiceType::class, [
+                "choices" => [
+                    "Activé" => "1",
+                    "dasactivé" => "0"
+                ],
+                "label" => "Activé ou désactivé"
+            ]);
+>>>>>>> FIX: fixtures loading ok
     }
 
     public function configureOptions(OptionsResolver $resolver): void
