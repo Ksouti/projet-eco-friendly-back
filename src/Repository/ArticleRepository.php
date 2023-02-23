@@ -40,13 +40,13 @@ class ArticleRepository extends ServiceEntityRepository
     }
     // Available parameters: category, page, limit, offset, sorttype, order, search
     public function findAllWithParameters(
-        $category = null,
-        $status = null,
-        $limit = 10,
-        $offset = 0,
-        $sortType = 'created_at',
-        $order = 'desc',
-        $search = null
+        ?int $category,
+        ?int $status,
+        int $limit,
+        int $offset,
+        string $sortType,
+        string $order,
+        ?string $search
     ) {
         $qb = $this->createQueryBuilder('ar');
 

@@ -18,12 +18,26 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 class AdviceController extends AbstractController
 {
-    // TODO : add url parameters to filter advices
     /**
      * @Route("/api/advices", name="app_api_advices_list", methods={"GET"})
      */
-    public function index(AdviceRepository $adviceRepository): Response
+    public function list(Request $request, AdviceRepository $adviceRepository): Response
     {
+        $category = $request->get('category', null);
+        $status = $request->get('status', null);
+        $page = $request->get('page', 1);
+        $limit = $request->get('limit', 10);
+        $offset = $request->get('offset', ($page - 1) * $limit ?? 0);
+        $sortType = $request->get('sorttype', 'created_at');
+        $order = $request->get('order', 'desc');
+        $search = $request->get('search', null);
+
+        return $this->json(
+            $adviceRepository->findAllWithParameters($category, $status, $limit, $offset, $sortType, $order, $search),
+            Response::HTTP_OK,
+            [],
+            ['groups' => 'advices']
+        );
         return $this->json($adviceRepository->findAll(), Response::HTTP_OK, [], ['groups' => 'advices']);
     }
 

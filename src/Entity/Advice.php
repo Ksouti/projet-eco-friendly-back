@@ -36,7 +36,7 @@ class Advice
      * @Groups({"advices"})
      * @Groups({"users"})
      */
-    private $Content;
+    private $content;
 
     /**
      * @ORM\Column(type="string", length=128)
@@ -45,7 +45,7 @@ class Advice
      * @Groups({"advices"})
      * @Groups({"users"})
      */
-    private $Slug;
+    private $slug;
 
     /**
      * @ORM\Column(type="integer")
@@ -73,12 +73,10 @@ class Advice
 
     /**
      * @ORM\ManyToOne(targetEntity=User::class, inversedBy="advices")
-     * @ORM\JoinColumn(nullable=false)
+     * @ORM\JoinColumn(name="contributor_id", referencedColumnName="id")
      * @Assert\NotBlank
      * @Groups({"advices"})
      */
-
-    /* @ORM\JoinColumn(name="contributor_id", referencedColumnName="id")*/
 
     private $contributor;
 
@@ -111,24 +109,24 @@ class Advice
 
     public function getContent(): ?string
     {
-        return $this->Content;
+        return $this->content;
     }
 
-    public function setContent(string $Content): self
+    public function setContent(string $content): self
     {
-        $this->Content = $Content;
+        $this->content = $content;
 
         return $this;
     }
 
     public function getSlug(): ?string
     {
-        return $this->Slug;
+        return $this->slug;
     }
 
-    public function setSlug(string $Slug): self
+    public function setSlug(string $slug): self
     {
-        $this->Slug = $Slug;
+        $this->slug = $slug;
 
         return $this;
     }
