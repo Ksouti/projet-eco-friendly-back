@@ -70,6 +70,13 @@ security:
         #      roles: ROLE_ADMIN,
         #  }
 
+        # ! API
+
+        - { path: ^/api/login, roles: IS_AUTHENTICATED_ANONYMOUSLY }
+        - { path: ^/api/users, roles: ROLE_ADMIN }
+        - { path: ^/api/articles, roles: ROLE_ADMIN }
+        - { path: ^/api/advices, roles: [ROLE_AUTHOR] }
+
         
 
 
