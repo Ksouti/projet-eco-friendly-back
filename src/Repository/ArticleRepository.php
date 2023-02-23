@@ -56,7 +56,7 @@ class ArticleRepository extends ServiceEntityRepository
         }
 
         if ($search) {
-            $qb->andWhere('ar.name LIKE :search')->setParameter('search', '%' . $search . '%');
+            $qb->andWhere('ar.content LIKE :search')->setParameter('search', "%$search%");
         }
 
         if ($status) {
@@ -68,40 +68,6 @@ class ArticleRepository extends ServiceEntityRepository
 
         return $qb->getQuery()->getResult();
     }
-    /* $qb = $this->createQueryBuilder('ar')
-        if (empty($needles)) {
-            // Returns all articles without any parameters
-            return $this->createQueryBuilder('ar')
-                ->getQuery()
-                ->getResult();
-        }
-
-            ->join('ar.category', 'c')
-            ->orderBy('ar.' . ($needles['sorttype'] ?? 'created_at'), $needles['order'] ?? 'DESC')
-            ->where('ar.category = :category')
-            ->setParameter('category', $needles['category'] ?? null);
-
-        if (isset($needles['page'])) {
-            $qb->setFirstResult($needles['page'] * 10 - 9)
-                ->setMaxResults(10);
-        }
-
-        if (isset($needles['offset'])) {
-            $qb->setFirstResult($needles['offset']);
-        }
-
-        if (isset($needles['limit'])) {
-            $qb->setMaxResults($needles['limit']);
-        }
-
-        if (isset($needles['search'])) {
-            $qb->andWhere('ar.content LIKE :search')
-                ->setParameter('search', "%" . $needles['search'] . "%");
-        }
-
-        return $qb->getQuery()
-            ->getResult();
-    } */
 
     //    /**
     //     * @return Article[] Returns an array of Article objects
