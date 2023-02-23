@@ -11,13 +11,26 @@ use Symfony\Component\Routing\Annotation\Route;
 
 class ArticleController extends AbstractController
 {
-    // TODO : add url parameters to filter articles
     /**
      * @Route("/api/articles", name="app_api_articles_list")
      */
-    public function index(Request $request, ArticleRepository $articleRepository): Response
+    public function list(Request $request, ArticleRepository $articleRepository): Response
     {
-        return $this->json($articleRepository->findAllWithParameters($request->query->all()), Response::HTTP_OK, [], ['groups' => 'articles']);
+        $category = $request->get('category', null);
+        $status = $request->get('status');
+        $page = $request->get('page', 1);
+        $limit = $request->get('limit', 10);
+        $offset = $request->get('offset', ($page - 1) * $limit ?? 0);
+        $sortType = $request->get('sorttype', 'created_at');
+        $order = $request->get('order', 'desc');
+        $search = $request->get('search', null);
+
+        return $this->json(
+            $articleRepository->findAllWithParameters($category, $status, $page, $offset, $limit, $sortType, $order, $search),
+            Response::HTTP_OK,
+            [],
+            ['groups' => 'articles']
+        );
     }
 
     /**
