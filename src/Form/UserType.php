@@ -67,7 +67,6 @@ class UserType extends AbstractType
                     "Activé" => "1",
                     "Désactivé" => "0"
                 ],
-<<<<<<< HEAD
                 "label" => "Activé ou désactivé"
             ]);
     }
