@@ -39,6 +39,15 @@ class ArticleRepository extends ServiceEntityRepository
         }
     }
 
+    public function findAllOrderByUserId($author){
+        
+        return $this->createQueryBuilder('ar')
+            ->where("ar.author = :author")
+            ->setParameter("author",$author)
+            ->getQuery()
+            ->getResult();
+    }
+
 //    /**
 //     * @return Article[] Returns an array of Article objects
 //     */
@@ -63,4 +72,5 @@ class ArticleRepository extends ServiceEntityRepository
 //            ->getOneOrNullResult()
 //        ;
 //    }
+
 }

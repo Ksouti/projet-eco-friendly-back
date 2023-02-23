@@ -76,6 +76,7 @@ security:
         - { path: ^/api/users, roles: ROLE_ADMIN }
         - { path: ^/api/articles, roles: ROLE_ADMIN }
         - { path: ^/api/advices, roles: [ROLE_AUTHOR] }
+        - { path: ^/api/authors/(\d+), roles: [ROLE_AUTHOR] }
 
         
 
