@@ -41,6 +41,7 @@ class ArticleRepository extends ServiceEntityRepository
     }
 
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
     // public function findAllByUser(Article $entity, bool $flush = false): void
     // {
@@ -51,6 +52,8 @@ class ArticleRepository extends ServiceEntityRepository
     //     }
     // }
 
+=======
+>>>>>>> FEAT: list authors et list members
     /**
      * 
      * @return Article[] Returns an array of articles objects ordered by userId

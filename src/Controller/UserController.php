@@ -54,13 +54,24 @@ class UserController extends AbstractController
     }
 
     /**
-     * @Route("/back_office/auteurs", name="app_backoffice_authors_findAllByUser", requirements={"id":"\d+"}, methods={"GET"})
+     * @Route("/back_office/auteurs", name="app_backoffice_authors_list", requirements={"id":"\d+"}, methods={"GET"})
      */
-    public function findAllAuthors(User $authors, UserRepository $userRepository): Response
+    public function listAllAuthors(UserRepository $userRepository)
     {
         
         return $this->render('user/index.html.twig', [
-            'users' => $userRepository->findAllAuthor($authors),
+            'users' => $userRepository->listAllAuthors(),
+        ]);
+    }
+
+    /**
+     * @Route("/back_office/membres", name="app_backoffice_members_list", requirements={"id":"\d+"}, methods={"GET"})
+     */
+    public function listAllMembers(UserRepository $userRepository)
+    {
+        
+        return $this->render('user/index.html.twig', [
+            'users' => $userRepository->listAllMembers(),
         ]);
     }
 
