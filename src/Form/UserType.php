@@ -22,7 +22,7 @@ class UserType extends AbstractType
                     "placeholder" => "L'email"
                 ]
             ])
-            ->add('roles', ChoiceType::class, [
+                ->add('roles', ChoiceType::class, [
                 "choices" => [
                     "Auteur" => "ROLE_AUTHOR",
                     "Admin" =>  "ROLE_ADMIN",
@@ -31,7 +31,7 @@ class UserType extends AbstractType
                 "expanded" => true,
                 "multiple" => true
             ])
-
+           
             ->add("firstname", TextType::class, [
                 "label" => "Prénom",
                 "attr" => [
@@ -59,8 +59,8 @@ class UserType extends AbstractType
                     "placeholder" => "Votre avatar"
                 ],
                 "help" => "* L'url d'un avatar"
-            ])
-            /*
+            ]) 
+/*
             ->add('is_active' ,ChoiceType::class,[
                 "choices" => [
                     "Activé" => "0",
@@ -69,6 +69,7 @@ class UserType extends AbstractType
                 "label" => "Activé ou désactivé"
             ])
      */;
+
     }
 
     public function configureOptions(OptionsResolver $resolver): void
