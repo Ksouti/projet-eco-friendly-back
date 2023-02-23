@@ -53,15 +53,16 @@ class UserController extends AbstractController
         ]);
     }
 
-    // /**
-    //  * @Route("/back_office/articles/utilisateurs/{id}", name="app_backoffice_articles_findAllByUser", requirements={"id":"\d+"}, methods={"GET"})
-    //  */
-    // public function findAllArticles(User $user): Response
-    // {
-    //     return $this->render('user/show.html.twig', [
-    //         'user' => $user,
-    //     ]);
-    // }
+    /**
+     * @Route("/back_office/auteurs", name="app_backoffice_authors_findAllByUser", requirements={"id":"\d+"}, methods={"GET"})
+     */
+    public function findAllAuthors(User $authors, UserRepository $userRepository): Response
+    {
+        
+        return $this->render('user/index.html.twig', [
+            'users' => $userRepository->findAllAuthor($authors),
+        ]);
+    }
 
     /**
      * @Route("/back_office/utilisateurs/{id}/modifier", name="app_backoffice_users_edit", requirements={"id":"\d+"}, methods={"GET", "POST"})
