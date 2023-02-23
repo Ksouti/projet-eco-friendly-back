@@ -31,10 +31,15 @@ class UserType extends AbstractType
                 ]
             ])
 <<<<<<< HEAD
+<<<<<<< HEAD
+=======
+
+>>>>>>> FIX: merge conflicts management
             ->add('roles', ChoiceType::class, [
                 "choices" => [
                     "Auteur" => "ROLE_AUTHOR",
                     "Admin" =>  "ROLE_ADMIN",
+<<<<<<< HEAD
                     "User" =>   "ROLE_USER"
 <<<<<<< HEAD
 >>>>>>> FIX: access_control
@@ -47,6 +52,9 @@ class UserType extends AbstractType
 >>>>>>> FIX: route correction and UserType correction
 =======
 >>>>>>> FIX: fixtures loading ok
+=======
+                    "Utilisateur" => "ROLE_USER"
+>>>>>>> FIX: merge conflicts management
                 ],
                 "expanded" => true,
                 "multiple" => true
@@ -93,6 +101,7 @@ class UserType extends AbstractType
                     "placeholder" => "Votre avatar"
                 ],
 <<<<<<< HEAD
+<<<<<<< HEAD
                 "help" => "* L'url d'un avatar"
             ])
 <<<<<<< HEAD
@@ -121,15 +130,24 @@ class UserType extends AbstractType
      */;
 >>>>>>> FIX: access_control
 =======
+=======
+>>>>>>> FIX: merge conflicts management
 
-            ->add('is_active', ChoiceType::class, [
+                "help"=> "* L'url d'un avatar"
+            ]) 
+
+            ->add('is_active' ,ChoiceType::class,[
                 "choices" => [
                     "Activé" => "1",
                     "dasactivé" => "0"
                 ],
                 "label" => "Activé ou désactivé"
+<<<<<<< HEAD
             ]);
 >>>>>>> FIX: fixtures loading ok
+=======
+            ])
+>>>>>>> FIX: merge conflicts management
     }
 
     public function configureOptions(OptionsResolver $resolver): void
