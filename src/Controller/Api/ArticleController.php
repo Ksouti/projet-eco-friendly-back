@@ -35,7 +35,7 @@ class ArticleController extends AbstractController
             $articleRepository->findAll(),
 =======
         $category = $request->get('category', null);
-        $status = $request->get('status');
+        $status = $request->get('status', null);
         $page = $request->get('page', 1);
         $limit = $request->get('limit', 10);
         $offset = $request->get('offset', ($page - 1) * $limit ?? 0);
