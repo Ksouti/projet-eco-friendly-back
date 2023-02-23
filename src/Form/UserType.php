@@ -126,8 +126,8 @@ class UserType extends AbstractType
 >>>>>>> FIX: spelling correction
             ->add('is_active' ,ChoiceType::class,[
                 "choices" => [
-                    "Activé" => "0",
-                    "Désactivé" => "1"
+                    "Activé" => "1",
+                    "Désactivé" => "0"
                 ],
                 "label" => "Activé ou désactivé"
             ])
