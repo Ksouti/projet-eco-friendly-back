@@ -93,7 +93,7 @@ class ArticleRepository extends ServiceEntityRepository
         }
 
         if ($search) {
-            $qb->andWhere('ar.name LIKE :search')->setParameter('search', '%' . $search . '%');
+            $qb->andWhere('ar.content LIKE :search')->setParameter('search', "%$search%");
         }
 
         if ($status) {
@@ -105,6 +105,7 @@ class ArticleRepository extends ServiceEntityRepository
 
         return $qb->getQuery()->getResult();
     }
+<<<<<<< HEAD
     /* $qb = $this->createQueryBuilder('ar')
         if (empty($needles)) {
             // Returns all articles without any parameters
@@ -140,6 +141,8 @@ class ArticleRepository extends ServiceEntityRepository
 >>>>>>> FEAT: Api ArticleController working
             ->getResult();
     } */
+=======
+>>>>>>> FEAT: Api Articles list with parameters
 
 <<<<<<< HEAD
 //    /**
