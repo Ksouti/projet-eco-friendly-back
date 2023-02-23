@@ -3,6 +3,7 @@
 namespace App\Controller;
 
 use App\Entity\Article;
+use App\Entity\User;
 use App\Form\ArticleType;
 use App\Repository\ArticleRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -19,6 +20,16 @@ class ArticleController extends AbstractController
     {
         return $this->render('article/list.html.twig', [
             'articles' => $articleRepository->findAll(),
+        ]);
+    }
+
+    /**
+     * @Route("/back_office/auteurs/{id}", name="app_backoffice_articles_findAllByUser", requirements={"id":"\d+"}, methods={"GET"})
+     */
+    public function findAllByUser(User $author, ArticleRepository $articleRepository): Response
+    {
+        return $this->render('article/list.html.twig', [
+            'articles' => $articleRepository->findAllOrderByUserId($author),
         ]);
     }
 
