@@ -32,10 +32,14 @@ class UserType extends AbstractType
             ])
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
 
 >>>>>>> FIX: merge conflicts management
             ->add('roles', ChoiceType::class, [
+=======
+                ->add('roles', ChoiceType::class, [
+>>>>>>> FIX: spelling correction
                 "choices" => [
                     "Auteur" => "ROLE_AUTHOR",
                     "Admin" =>  "ROLE_ADMIN",
@@ -61,6 +65,7 @@ class UserType extends AbstractType
             ])
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
             ->add('password')
             ->add('firstname')
             ->add('lastname')
@@ -74,6 +79,9 @@ class UserType extends AbstractType
 =======
 
 >>>>>>> FIX: access_control
+=======
+           
+>>>>>>> FIX: spelling correction
             ->add("firstname", TextType::class, [
                 "label" => "Prénom",
                 "attr" => [
@@ -103,6 +111,7 @@ class UserType extends AbstractType
 <<<<<<< HEAD
 <<<<<<< HEAD
                 "help" => "* L'url d'un avatar"
+<<<<<<< HEAD
             ])
 <<<<<<< HEAD
             /*
@@ -111,6 +120,10 @@ class UserType extends AbstractType
             ]) 
 /*
 >>>>>>> FIX: route correction and UserType correction
+=======
+            ]) 
+/*
+>>>>>>> FIX: spelling correction
             ->add('is_active' ,ChoiceType::class,[
                 "choices" => [
                     "Activé" => "0",
@@ -128,6 +141,7 @@ class UserType extends AbstractType
         ;
 =======
      */;
+<<<<<<< HEAD
 >>>>>>> FIX: access_control
 =======
 =======
@@ -152,6 +166,9 @@ class UserType extends AbstractType
 =======
             ])
 >>>>>>> FIX: merge conflicts management
+=======
+
+>>>>>>> FIX: spelling correction
     }
 
     public function configureOptions(OptionsResolver $resolver): void
