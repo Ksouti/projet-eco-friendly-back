@@ -6,36 +6,33 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    <title>{% block title %}Welcome!{% endblock %}</title>
+    <title>{% block title %}Back-office | Eco Friendly{% endblock %}</title>
         
     <link rel="icon" type="image/x-icon" href="{{asset('favicon.ico')}}">
-    <link rel="stylesheet" href="{{asset('/assets/css/bootstrap.min.css')}}" />
-    <script src="{{asset('/assets/js/bootstrap.bundle.min.js')}}" defer />
+    <link rel="stylesheet" href="{{asset('/assets/css/bootstrap.min.css')}}">
+    <script href="{{asset('/assets/js/bootstrap.bundle.min.js')}}" defer></script>
 </head>
 
 <body>
-<div class="container">
-    {% if error %}
+    <div class="container">
+        {% if error %}
         <div>{{ error.messageKey|trans(error.messageData, 'security') }}</div>
-    {% endif %}
+        {% endif %}
 
-    <form action="{{ path('app_backoffice_security_login') }}" method="post">
-    <div class="form-group">
-        <label for="username">Email:</label>
-        <input class="form-control" type="text" id="username" name="_username" value="{{ last_username }}"/>
+        <form action="{{ path('app_backoffice_security_login') }}" method="post">
+        <div class="form-group">
+            <label for="username">Email:</label>
+            <input class="form-control" type="text" id="username" name="_username" value="{{ last_username }}"/>
+        </div>
+
+        <div class="form-group">
+            <label for="password">Password:</label>
+            <input class="form-control" type="password" id="password" name="_password"/>
+        </div>
+        <input type="hidden" name="_csrf_token" value="{{ csrf_token('authenticate') }}" />
+
+        <button  class="btn btn-success my-3" type="submit">login</button>
+        </form>
     </div>
-
-    <div class="form-group">
-        <label for="password">Password:</label>
-        <input class="form-control" type="password" id="password" name="_password"/>
-    </div>
-    <input type="hidden" name="_csrf_token" value="{{ csrf_token('authenticate') }}">
-
-        {# If you want to control the URL the user is redirected to on success
-        <input type="hidden" name="_target_path" value="/account"/> #}
-
-    <button  class="btn btn-success my-3" type="submit">login</button>
-    </form>
-</div>
 </body>
 </html>
