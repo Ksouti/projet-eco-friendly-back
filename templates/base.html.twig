@@ -10,7 +10,7 @@
         
     <link rel="icon" type="image/x-icon" href="{{asset('favicon.ico')}}">
     <link rel="stylesheet" href="{{asset('/assets/css/bootstrap.min.css')}}" />
-    <script src="{{asset('/assets/js/bootstrap.bundle.min.js')}}" defer />
+    <script src="{{asset('/assets/js/bootstrap.bundle.min.js')}}" defer /></script>
 </head>
 
 <body>
@@ -26,6 +26,7 @@
             </button>
             <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
                 <div class="navbar-nav">
+                    <a class >
                     <a class="nav-link active" aria-current="page" href="{{ path('app_backoffice_users_list') }}">Membres</a>
                     <a class="nav-link" href="{{ path('app_backoffice_users_list') }}">Auteurs</a>
                     <a class="nav-link" href="{{ path('app_backoffice_articles_list') }}">Articles</a>
@@ -34,6 +35,8 @@
             </div>
         </div>
     </nav>
-        {% block body %}{% endblock %}
+        
+    {% block body %}{% endblock %}
+        
     </body>
 </html>
