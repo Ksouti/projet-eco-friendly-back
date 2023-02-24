@@ -18,7 +18,7 @@ class UserController extends AbstractController
      */
     public function list(UserRepository $userRepository): Response
     {
-        return $this->render('user/index.html.twig', [
+        return $this->render('user/list.html.twig', [
             'users' => $userRepository->findAll(),
         ]);
     }
@@ -58,8 +58,8 @@ class UserController extends AbstractController
      */
     public function listAllAuthors(UserRepository $userRepository)
     {
-        
-        return $this->render('user/index.html.twig', [
+
+        return $this->render('user/list.html.twig', [
             'users' => $userRepository->listAllAuthors(),
         ]);
     }
@@ -69,8 +69,8 @@ class UserController extends AbstractController
      */
     public function listAllMembers(UserRepository $userRepository)
     {
-        
-        return $this->render('user/index.html.twig', [
+
+        return $this->render('user/list.html.twig', [
             'users' => $userRepository->listAllMembers(),
         ]);
     }

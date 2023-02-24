@@ -1,47 +1,58 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Liste des articles{% endblock %}
+{% block title %}Liste des articles | Eco Friendly{% endblock %}
 
 {% block body %}
-    <h1>Liste des articles</h1>
-
-    <table class="table table-dark table-striped">
-        <thead>
-            <tr>
-                <th>Id</th>
-                <th>Titre</th>
-                <th>Contenu</th>
-                <th>Slug</th>
-                <th>Image</th>
-                <th>Statut</th>
-                <th>Créé le</th>
-                <th>Edité le</th>
-                <th>Actions</th>
-            </tr>
-        </thead>
-        <tbody>
-        {% for article in articles %}
-            <tr>
-                <td>{{ article.id }}</td>
-                <td>{{ article.title }}</td>
-                <td>{{ article.content }}</td>
-                <td>{{ article.slug }}</td>
-                <td><img src="{{ article.picture }}" alt="{{ article.slug }}" style="max-width: 150px; max-height: 150px;"></td>
-                <td>{{ article.status }}</td>
-                <td>{{ article.createdAt ? article.createdAt|date('Y-m-d H:i:s') : '' }}</td>
-                <td>{{ article.updatedAt ? article.updatedAt|date('Y-m-d H:i:s') : '' }}</td>
-                <td>
-                    <a href="{{ path('app_backoffice_articles_show', {'id': article.id}) }}">show</a>
-                    <a href="{{ path('app_backoffice_articles_edit', {'id': article.id}) }}">edit</a>
-                </td>
-            </tr>
-        {% else %}
-            <tr>
-                <td colspan="9">Aucun article trouvé</td>
-            </tr>
-        {% endfor %}
-        </tbody>
-    </table>
-
-    <a href="{{ path('app_backoffice_articles_new') }}">Créer un nouvel article</a>
-{% endblock %}
+    
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h1>Liste des articles</h1>
+        <a class="btn btn-primary" href="{{ path('app_backoffice_articles_new') }}">Créer un nouvel article</a>
+    </div>
+    <div class="table-responsive-lg">
+        <table class="table table-striped table-hover table-sm">
+            <thead>
+                <tr>
+                    <th>#</th>
+                    <th>Titre</th>
+                    <th>Contenu</th>
+                    <th>Auteur</th>
+                    <th class="text-center">Image</th>
+                    <th class="text-center">Catégorie</th>
+                    <th class="text-center">Statut</th>
+                    <th>Créé le</th>
+                    <th>Edité le</th>
+                    <th class="text-center">Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+            {% for article in articles %}
+                <tr>
+                    <td>{{ article.id }}</td>
+                    <td>{{ article.title }}</td>
+                    <td>{{ article.content|slice(0, 100) }}</td>
+                    <td>{{ article.author.firstname }} {{ article.author.lastname }}</td>
+                    <td class="text-center"><img src="{{ article.picture }}" alt="{{ article.slug }}" style="max-width: 80px; max-height: 80px;"></td>
+                    <td class="text-center">{{ article.category.name }}</td>
+                    <td class="text-center">
+                        {% include "_fragments/_content_status_tag.html.twig" with {status:article.status} %}
+                    </td>
+                    <td>{{ article.createdAt|date('d/m/Y') }}</td>
+                    <td>{{ article.updatedAt ? article.updatedAt|date('d/m/Y') : '' }}</td>
+                    <td class="d-flex flex-nowrap text-center">
+                        <a class="m-1 btn-sm btn btn-success" data-bs-toggle="tooltip" data-bs-placement="top" title="Voir" href="{{ path('app_backoffice_articles_show', {'id': article.id}) }}"><i class="bi bi-eye"></i></a>
+                        <a class="m-1 btn-sm btn btn-warning" data-bs-toggle="tooltip" data-bs-placement="top" title="&Eacute;diter" href="{{ path('app_backoffice_articles_edit', {'id': article.id}) }}"><i class="bi bi-pencil"></i></a>
+                        <form method="post" action="{{ path('app_backoffice_articles_deactivate', {'id': article.id}) }}" onsubmit="return confirm('Êtes-vous sûr de vouloir désactiver cet article ?');">
+                            <input type="hidden" name="_token" value="{{ csrf_token('deactivate' ~ article.id) }}" />
+                            <button class="m-1 btn-sm btn btn-danger" data-bs-toggle="tooltip" data-bs-placement="top" title="D&eacute;sactiver"><i class="bi bi-x-circle"></i></button>
+                        </form>
+                    </td>
+                </tr>
+            {% else %}
+                <tr>
+                    <td colspan="8">Aucun article trouvé</td>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+    </div>
+    {% endblock %}
