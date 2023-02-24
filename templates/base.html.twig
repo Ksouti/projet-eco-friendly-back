@@ -1,27 +1,21 @@
 <!DOCTYPE html>
-<html>
-    <head>
-        <meta charset="UTF-8">
+<html lang="fr">
 
-        <meta name="viewport" content="width=device-width, initial-scale=1">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-         <!-- Bootstrap CSS -->
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.1/dist/css/bootstrap.min.css" rel="stylesheet"
-        integrity="sha384-F3w7mX95PdgyTmZZMECAngseQB83DfGTowi0iMjiWaeVhAn4FJkqJByhZMI3AhiU" crossorigin="anonymous">
+    <title>{% block title %}Welcome!{% endblock %}</title>
+        
+    <link rel="icon" type="image/x-icon" href="{{asset('favicon.ico')}}">
+    <link rel="stylesheet" href="{{asset('/assets/css/bootstrap.min.css')}}" />
+    <script src="{{asset('/assets/js/bootstrap.bundle.min.js')}}" defer />
+</head>
 
-        <title>{% block title %}Welcome!{% endblock %}</title>
-        <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 128 128%22><text y=%221.2em%22 font-size=%2296%22>⚫️</text></svg>">
-        {# Run `composer require symfony/webpack-encore-bundle` to start using Symfony UX #}
-        {% block stylesheets %}
-            {{ encore_entry_link_tags('app') }}
-        {% endblock %}
+<body>
 
-        {% block javascripts %}
-            {{ encore_entry_script_tags('app') }}
-        {% endblock %}
-    </head>
-    <body>
-        <nav class="navbar navbar-expand-lg bg-body-tertiary">
+    <nav class="navbar navbar-expand-lg bg-body-tertiary">
         <div class="container-fluid">
             <a class="navbar-brand" href="#">
                 <img src="{{asset('assets/img/logos/icon-32x32.png')}}" alt="Logo" width="32" height="32" class="d-inline-block align-text-top" />
@@ -31,22 +25,15 @@
                 <span class="navbar-toggler-icon"></span>
             </button>
             <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
-            <div class="navbar-nav">
-                <a class="nav-link active" aria-current="page" href="{{ path('app_backoffice_users_list') }}">Inscrits</a>
-                <a class="nav-link" href="{{ path('app_backoffice_users_list') }}">Auteurs</a>
-                <a class="nav-link" href="{{ path('app_backoffice_articles_list') }}">Articles</a>
-                <a class="nav-link" href="{{ path('app_backoffice_advices_list') }}">Conseils</a>
-                <a class="btn btn-outline-success" href="{{ path('app_backoffice_security_logout') }}">Déconnexion</a>
-            </div>
+                <div class="navbar-nav">
+                    <a class="nav-link active" aria-current="page" href="{{ path('app_backoffice_users_list') }}">Membres</a>
+                    <a class="nav-link" href="{{ path('app_backoffice_users_list') }}">Auteurs</a>
+                    <a class="nav-link" href="{{ path('app_backoffice_articles_list') }}">Articles</a>
+                    <a class="nav-link" href="{{ path('app_backoffice_advices_list') }}">Conseils</a>
+                </div>
             </div>
         </div>
     </nav>
         {% block body %}{% endblock %}
-
-         <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.1/dist/js/bootstrap.bundle.min.js"
-        integrity="sha384-/bQdsTh/da6pkI1MST/rWKFNjaCP5gBSY4sEBT38Q/9RBh9AH40zEOg7Hlq2THRZ"
-        crossorigin="anonymous"></script>
-        
-
     </body>
 </html>
