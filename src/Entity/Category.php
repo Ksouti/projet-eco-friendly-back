@@ -21,6 +21,7 @@ class Category
      * @Groups({"articles"})
      * @Groups({"advices"})
      * @Groups({"users"})
+     * @Groups({"categories"})
      */
     private $id;
 
@@ -31,6 +32,7 @@ class Category
      * @Groups({"articles"})
      * @Groups({"advices"})
      * @Groups({"users"})
+     * @Groups({"categories"})
      */
     private $name;
 
@@ -41,6 +43,7 @@ class Category
      * @Groups({"articles"})
      * @Groups({"advices"})
      * @Groups({"users"})
+     * @Groups({"categories"})
      */
     private $tagline;
 
@@ -51,6 +54,7 @@ class Category
      * @Groups({"articles"})
      * @Groups({"advices"})
      * @Groups({"users"})
+     * @Groups({"categories"})
      */
     private $slug;
 
