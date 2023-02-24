@@ -65,7 +65,7 @@ class ArticleController extends AbstractController
     }
 
     /**
-     * @Route("/back_office/articles/{id}/editer", name="app_backoffice_articles_edit", requirements={"id":"\d+"}, methods={"GET", "POST"})
+     * @Route("/back_office/articles/{id}/modifier", name="app_backoffice_articles_edit", requirements={"id":"\d+"}, methods={"GET", "POST"})
      */
     public function edit(Request $request, Article $article, ArticleRepository $articleRepository): Response
     {
@@ -85,7 +85,7 @@ class ArticleController extends AbstractController
     }
 
     /**
-     * @Route("/back_office/articles/{id}/desactiver", name="app_backoffice_articles_deactivate", requirements={"id":"\d+"}, methods={"POST"})
+     * @Route("/back_office/articles/{id}", name="app_backoffice_articles_deactivate", requirements={"id":"\d+"}, methods={"POST"})
      */
     public function deactivate(Request $request, Article $article, ArticleRepository $articleRepository): Response
     {

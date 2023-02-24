@@ -1,4 +1,4 @@
-<form method="post" action="{{ path('app_backoffice_advices_deactivate', {'id': advice.id}) }}" onsubmit="return confirm('Êtes-vous sûr de vouloir désactiver ce conseil ?');">
+<form method="post" action="{{ path('app_backoffice_advices_deactivate', {'id': advice.id}) }}" onsubmit="return confirm('Êtes-vous sûr de vouloir désactiver ce conseil ?');" class="d-flex justify-content-end align-items-center">
     <input type="hidden" name="_token" value="{{ csrf_token('désactiver' ~ advice.id) }}">
-    <button class="btn btn-danger">désactiver</button>
+    <button class="btn btn-danger" style="margin-right: 150px;">désactiver</button>
 </form>

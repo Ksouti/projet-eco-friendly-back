@@ -54,7 +54,7 @@ class AdviceController extends AbstractController
     }
 
     /**
-     * @Route("/back_office/conseils/{id}/editer", name="app_backoffice_advices_edit", requirements={"id":"\d+"}, methods={"GET", "POST"})
+     * @Route("/back_office/conseils/{id}/modifier", name="app_backoffice_advices_edit", requirements={"id":"\d+"}, methods={"GET", "POST"})
      */
     public function edit(Request $request, Advice $advice, AdviceRepository $adviceRepository): Response
     {
@@ -74,7 +74,7 @@ class AdviceController extends AbstractController
     }
 
     /**
-     * @Route("/back_office/conseils/{id}/desactiver", name="app_backoffice_advices_deactivate", requirements={"id":"\d+"}, methods={"POST"})
+     * @Route("/back_office/conseils/{id}", name="app_backoffice_advices_deactivate", requirements={"id":"\d+"}, methods={"POST"})
      */
     public function deactivate(Request $request, Advice $advice, AdviceRepository $adviceRepository): Response
     {

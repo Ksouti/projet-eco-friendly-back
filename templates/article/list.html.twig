@@ -1,11 +1,11 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Liste des articles{% endblock %}
+{% block title %}Les articles{% endblock %}
 
 {% block body %}
-    <h1>Liste des articles</h1>
+    <h1>Les articles</h1>
 
-    <table class="table table-dark table-striped">
+    <table class="table table-hover">
         <thead>
             <tr>
                 <th>Id</th>
@@ -42,6 +42,7 @@
         {% endfor %}
         </tbody>
     </table>
+    
 
-    <a href="{{ path('app_backoffice_articles_new') }}">Créer un nouvel article</a>
+    <a href="{{ path('app_backoffice_articles_new') }}">Créer un article</a>
 {% endblock %}

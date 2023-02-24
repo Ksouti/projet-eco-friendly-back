@@ -54,7 +54,7 @@ class CategoryController extends AbstractController
     }
 
     /**
-     * @Route("/back_office/categories/{id}/editer", name="app_backoffice_categories_edit", methods={"GET", "POST"})
+     * @Route("/back_office/categories/{id}/modifier", name="app_backoffice_categories_edit", methods={"GET", "POST"})
      */
     public function edit(Request $request, Category $category, CategoryRepository $categoryRepository): Response
     {

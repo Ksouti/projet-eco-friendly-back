@@ -1,9 +1,9 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Liste des catégories{% endblock %}
+{% block title %}Les catégories{% endblock %}
 
 {% block body %}
-    <h1>Liste des catégories</h1>
+    <h1>Les catégories</h1>
 
     <table class="table table-hover">
         <thead>
@@ -35,5 +35,5 @@
         </tbody>
     </table>
 
-    <a href="{{ path('app_backoffice_categories_new') }}">Créer une nouvelle catégorie</a>
+    <a href="{{ path('app_backoffice_categories_new') }}">Créer une catégorie</a>
 {% endblock %}

@@ -1,9 +1,9 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Liste des utilisateurs{% endblock %}
+{% block title %}Les utilisateurs{% endblock %}
 
 {% block body %}
-    <h1>Liste des utilisateurs</h1>
+    <h1>Les utilisateurs</h1>
 
     <table class="table table-hover">
         <thead>
@@ -47,5 +47,5 @@
         </tbody>
     </table>
 
-    <a href="{{ path('app_backoffice_users_new') }}">Créer un nouvel utilisateur</a>
+    <a href="{{ path('app_backoffice_users_new') }}">Créer un utilisateur</a>
 {% endblock %}
