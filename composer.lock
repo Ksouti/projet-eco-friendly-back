@@ -8,6 +8,7 @@
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
     "content-hash": "b41a4e7497d5d8d2b7f722c8e86a4ddf",
 =======
     "content-hash": "c3a518bff82fb7be8c2e468d806563c9",
@@ -21,6 +22,9 @@
 =======
     "content-hash": "6a237cad1d52963323a87688137ea3eb",
 >>>>>>> FEAT: Api ArticleController working
+=======
+    "content-hash": "6a237cad1d52963323a87688137ea3eb",
+>>>>>>> c3b7c9e2b232ba2b63e327a802af86ad5c732c78
     "packages": [
         {
             "name": "doctrine/annotations",

@@ -23,12 +23,16 @@ class Category
 <<<<<<< HEAD
      * @Groups({"advices"})
      * @Groups({"users"})
+<<<<<<< HEAD
 =======
 >>>>>>> FEAT: ArticleController added with groups on relevant entities
 =======
      * @Groups({"advices"})
      * @Groups({"users"})
 >>>>>>> FEAT: AdviceController (not list)  +  ArticleController (not list) + UserController read
+=======
+     * @Groups({"categories"})
+>>>>>>> c3b7c9e2b232ba2b63e327a802af86ad5c732c78
      */
     private $id;
 
@@ -46,7 +50,11 @@ class Category
 =======
      * @Groups({"advices"})
      * @Groups({"users"})
+<<<<<<< HEAD
 >>>>>>> FEAT: AdviceController (not list)  +  ArticleController (not list) + UserController read
+=======
+     * @Groups({"categories"})
+>>>>>>> c3b7c9e2b232ba2b63e327a802af86ad5c732c78
      */
     private $name;
 
@@ -59,12 +67,16 @@ class Category
 <<<<<<< HEAD
      * @Groups({"advices"})
      * @Groups({"users"})
+<<<<<<< HEAD
 =======
 >>>>>>> FEAT: ArticleController added with groups on relevant entities
 =======
      * @Groups({"advices"})
      * @Groups({"users"})
 >>>>>>> FEAT: AdviceController (not list)  +  ArticleController (not list) + UserController read
+=======
+     * @Groups({"categories"})
+>>>>>>> c3b7c9e2b232ba2b63e327a802af86ad5c732c78
      */
     private $tagline;
 
@@ -82,7 +94,11 @@ class Category
 =======
      * @Groups({"advices"})
      * @Groups({"users"})
+<<<<<<< HEAD
 >>>>>>> FEAT: AdviceController (not list)  +  ArticleController (not list) + UserController read
+=======
+     * @Groups({"categories"})
+>>>>>>> c3b7c9e2b232ba2b63e327a802af86ad5c732c78
      */
     private $slug;
 

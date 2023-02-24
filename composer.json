@@ -1,6 +1,7 @@
 {
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
     "type": "project",
     "license": "proprietary",
     "minimum-stability": "stable",
@@ -121,6 +122,8 @@
 =======
 =======
 >>>>>>> FEAT: Api ArticleController working
+=======
+>>>>>>> c3b7c9e2b232ba2b63e327a802af86ad5c732c78
 	"type": "project",
 	"license": "proprietary",
 	"minimum-stability": "stable",
@@ -227,7 +230,10 @@
 		"symfony/web-profiler-bundle": "5.4.*"
 	}
 <<<<<<< HEAD
+<<<<<<< HEAD
 >>>>>>> FEAT: Api ArticleController working
 =======
 >>>>>>> FEAT: Api ArticleController working
+=======
+>>>>>>> c3b7c9e2b232ba2b63e327a802af86ad5c732c78
 }

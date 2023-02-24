@@ -41,6 +41,7 @@ class ArticleRepository extends ServiceEntityRepository
     }
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 
 <<<<<<< HEAD
 <<<<<<< HEAD
@@ -229,6 +230,67 @@ class ArticleRepository extends ServiceEntityRepository
     //    }
 
 >>>>>>> WIP: api lists param
+=======
+    
+    /**
+     * @return Article[] Returns an array of articles objects ordered by userId
+     */
+    public function findAllOrderByUserId($author){
+        
+        return $this->createQueryBuilder('ar')
+            ->where("ar.author = :author")
+            ->setParameter("author",$author)
+            ->getQuery()
+            ->getResult();
+    }
+    
+    // Available parameters: category, page, limit, offset, sorttype, order, search
+    public function findAllWithParameters(
+        ?int $category,
+        ?int $status,
+        int $limit,
+        int $offset,
+        string $sortType,
+        string $order,
+        ?string $search
+    ) {
+        $qb = $this->createQueryBuilder('ar');
+
+        if ($category) {
+            $qb->andWhere('ar.category = :category')
+                ->setParameter('category', $category);
+        }
+
+        if ($search) {
+            $qb->andWhere('ar.content LIKE :search')->setParameter('search', "%$search%");
+        }
+
+        if ($status) {
+            $qb->andWhere('ar.status = :status')->setParameter('status', $status);
+        }
+
+        $qb->orderBy('ar.' . $sortType, $order);
+        $qb->setFirstResult($offset)->setMaxResults($limit);
+
+        return $qb->getQuery()->getResult();
+    }
+
+    //    /**
+    //     * @return Article[] Returns an array of Article objects
+    //     */
+    //    public function findByExampleField($value): array
+    //    {
+    //        return $this->createQueryBuilder('a')
+    //            ->andWhere('a.exampleField = :val')
+    //            ->setParameter('val', $value)
+    //            ->orderBy('a.id', 'ASC')
+    //            ->setMaxResults(10)
+    //            ->getQuery()
+    //            ->getResult()
+    //        ;
+    //    }
+
+>>>>>>> c3b7c9e2b232ba2b63e327a802af86ad5c732c78
     //    public function findOneBySomeField($value): ?Article
     //    {
     //        return $this->createQueryBuilder('a')
@@ -239,7 +301,10 @@ class ArticleRepository extends ServiceEntityRepository
     //        ;
     //    }
 <<<<<<< HEAD
+<<<<<<< HEAD
 >>>>>>> WIP: api lists param
 =======
 >>>>>>> WIP: api lists param
+=======
+>>>>>>> c3b7c9e2b232ba2b63e327a802af86ad5c732c78
 }

@@ -33,9 +33,13 @@ class UserType extends AbstractType
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
 
 >>>>>>> FIX: merge conflicts management
+=======
+
+>>>>>>> c3b7c9e2b232ba2b63e327a802af86ad5c732c78
             ->add('roles', ChoiceType::class, [
 =======
                 ->add('roles', ChoiceType::class, [
@@ -43,6 +47,7 @@ class UserType extends AbstractType
                 "choices" => [
                     "Auteur" => "ROLE_AUTHOR",
                     "Admin" =>  "ROLE_ADMIN",
+<<<<<<< HEAD
 <<<<<<< HEAD
                     "User" =>   "ROLE_USER"
 <<<<<<< HEAD
@@ -59,6 +64,9 @@ class UserType extends AbstractType
 =======
                     "Utilisateur" => "ROLE_USER"
 >>>>>>> FIX: merge conflicts management
+=======
+                    "Utilisateur" => "ROLE_USER"
+>>>>>>> c3b7c9e2b232ba2b63e327a802af86ad5c732c78
                 ],
                 "expanded" => true,
                 "multiple" => true
@@ -154,7 +162,11 @@ class UserType extends AbstractType
             ->add('is_active' ,ChoiceType::class,[
                 "choices" => [
                     "Activé" => "1",
+<<<<<<< HEAD
                     "Desactivé" => "0"
+=======
+                    "Désactivé" => "0"
+>>>>>>> c3b7c9e2b232ba2b63e327a802af86ad5c732c78
                 ],
 <<<<<<< HEAD
 =======

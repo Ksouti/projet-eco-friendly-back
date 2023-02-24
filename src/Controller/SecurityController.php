@@ -27,10 +27,14 @@ class SecurityController extends AbstractController
     }
 
 <<<<<<< HEAD
+<<<<<<< HEAD
      /**
 =======
     /**
 >>>>>>> FIX: quickfix of 2 typos
+=======
+    /**
+>>>>>>> c3b7c9e2b232ba2b63e327a802af86ad5c732c78
      * @Route("/back_office/deconnexion", name="app_backoffice_security_logout", methods={"GET"})
      */
     public function logout(): void
@@ -39,6 +43,7 @@ class SecurityController extends AbstractController
         throw new \Exception('Don\'t forget to activate logout in security.yaml');
     }
 }
+<<<<<<< HEAD
 
     /**
      * @Route("/back_office/deconnexion", name="app_backoffice_security_logout", methods={"GET"})
@@ -49,3 +54,5 @@ class SecurityController extends AbstractController
         throw new \Exception('Don\'t forget to activate logout in security.yaml');
     }
 }
+=======
+>>>>>>> c3b7c9e2b232ba2b63e327a802af86ad5c732c78

@@ -24,6 +24,7 @@ class ArticleController extends AbstractController
      */
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
     public function list(Request $request, ArticleRepository $articleRepository): Response
     {
 <<<<<<< HEAD
@@ -36,6 +37,10 @@ class ArticleController extends AbstractController
         return $this->json(
             $articleRepository->findAll(),
 =======
+=======
+    public function list(Request $request, ArticleRepository $articleRepository): Response
+    {
+>>>>>>> c3b7c9e2b232ba2b63e327a802af86ad5c732c78
         $category = $request->get('category', null);
         $status = $request->get('status', null);
         $page = $request->get('page', 1);
@@ -47,15 +52,20 @@ class ArticleController extends AbstractController
 
         return $this->json(
 <<<<<<< HEAD
+<<<<<<< HEAD
             $articleRepository->findAllWithParameters($category, $status, $page, $offset, $limit, $sortType, $order, $search),
 >>>>>>> WIP: api Articles list
 =======
             $articleRepository->findAllWithParameters($category, $status, $limit, $offset, $sortType, $order, $search),
 >>>>>>> WIP: Api Articles list with parameters
+=======
+            $articleRepository->findAllWithParameters($category, $status, $limit, $offset, $sortType, $order, $search),
+>>>>>>> c3b7c9e2b232ba2b63e327a802af86ad5c732c78
             Response::HTTP_OK,
             [],
             ['groups' => 'articles']
         );
+<<<<<<< HEAD
 <<<<<<< HEAD
 >>>>>>> FEAT: ArticleController added with groups on relevant entities
 =======
@@ -85,6 +95,8 @@ class ArticleController extends AbstractController
     {
         return $this->json($articleRepository->findAllWithParameters($request->query->all()), Response::HTTP_OK, [], ['groups' => 'articles']);
 >>>>>>> FEAT: Api ArticleController working
+=======
+>>>>>>> c3b7c9e2b232ba2b63e327a802af86ad5c732c78
     }
 
     /**

@@ -10,6 +10,7 @@ use App\Repository\UserRepository;
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 use Doctrine\Common\Util\Debug;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\ErrorHandler\Debug as ErrorHandlerDebug;
@@ -27,6 +28,9 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 =======
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 >>>>>>> FEAT: Api ArticleController working
+=======
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+>>>>>>> c3b7c9e2b232ba2b63e327a802af86ad5c732c78
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
