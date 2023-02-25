@@ -39,6 +39,18 @@ class AdviceRepository extends ServiceEntityRepository
         }
     }
 
+    /**
+     * @return Advice[] Returns an array of advices objects ordered by descending date with a limit of 5 by default
+     */
+    public function findForHome(int $limit = 5)
+    {
+        return $this->createQueryBuilder('ad')
+            ->orderBy('ad.created_at', 'DESC')
+            ->setMaxResults($limit)
+            ->getQuery()
+            ->getResult();
+    }
+
     // Available parameters: category, page, limit, offset, sorttype, order, search
     public function findAllWithParameters(
         ?int $category,

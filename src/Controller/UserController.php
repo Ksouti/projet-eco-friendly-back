@@ -9,17 +9,30 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 
 
 class UserController extends AbstractController
 {
     /**
-     * @Route("/back_office/utilisateurs/inscrits", name="app_backoffice_users_list", methods={"GET"})
+     * @Route("/back_office/utilisateurs/membres", name="app_backoffice_members_list", requirements={"id":"\d+"}, methods={"GET"})
+     * @isGranted("ROLE_ADMIN", message="Accès réservé aux administrateurs")
      */
-    public function list(UserRepository $userRepository): Response
+    public function listMembers(UserRepository $userRepository): Response
     {
         return $this->render('user/list.html.twig', [
-            'users' => $userRepository->findAll(),
+            'users' => $userRepository->listAllMembers(),
+        ]);
+    }
+
+    /**
+     * @Route("/back_office/utilisateurs/auteurs", name="app_backoffice_authors_list", requirements={"id":"\d+"}, methods={"GET"})
+     * @isGranted("ROLE_ADMIN", message="Accès réservé aux administrateurs")
+     */
+    public function listAuthors(UserRepository $userRepository): Response
+    {
+        return $this->render('user/list.html.twig', [
+            'users' => $userRepository->listAllAuthors(),
         ]);
     }
 
@@ -35,7 +48,7 @@ class UserController extends AbstractController
         if ($form->isSubmitted() && $form->isValid()) {
             $userRepository->add($user, true);
 
-            return $this->redirectToRoute('app_backoffice_users_list', [], Response::HTTP_SEE_OTHER);
+            return $this->redirectToRoute('app_backoffice_members_list', [], Response::HTTP_SEE_OTHER);
         }
 
         return $this->renderForm('user/new.html.twig', [
@@ -54,28 +67,6 @@ class UserController extends AbstractController
     }
 
     /**
-     * @Route("/back_office/auteurs", name="app_backoffice_authors_list", requirements={"id":"\d+"}, methods={"GET"})
-     */
-    public function listAllAuthors(UserRepository $userRepository)
-    {
-
-        return $this->render('user/list.html.twig', [
-            'users' => $userRepository->listAllAuthors(),
-        ]);
-    }
-
-    /**
-     * @Route("/back_office/membres", name="app_backoffice_members_list", requirements={"id":"\d+"}, methods={"GET"})
-     */
-    public function listAllMembers(UserRepository $userRepository)
-    {
-
-        return $this->render('user/list.html.twig', [
-            'users' => $userRepository->listAllMembers(),
-        ]);
-    }
-
-    /**
      * @Route("/back_office/utilisateurs/{id}/modifier", name="app_backoffice_users_edit", requirements={"id":"\d+"}, methods={"GET", "POST"})
      */
     public function edit(Request $request, User $user, UserRepository $userRepository): Response
@@ -86,7 +77,7 @@ class UserController extends AbstractController
         if ($form->isSubmitted() && $form->isValid()) {
             $userRepository->add($user, true);
 
-            return $this->redirectToRoute('app_backoffice_users_list', [], Response::HTTP_SEE_OTHER);
+            return $this->redirectToRoute('app_backoffice_members_list', [], Response::HTTP_SEE_OTHER);
         }
 
         return $this->renderForm('user/edit.html.twig', [
@@ -105,6 +96,6 @@ class UserController extends AbstractController
             $userRepository->add($user, true);
         }
 
-        return $this->redirectToRoute('app_backoffice_users_list', [], Response::HTTP_SEE_OTHER);
+        return $this->redirectToRoute('app_backoffice_members_list', [], Response::HTTP_SEE_OTHER);
     }
 }

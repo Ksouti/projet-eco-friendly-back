@@ -30,17 +30,25 @@
                 </button>
                 <div class="collapse navbar-collapse mx-auto" id="navbarNavAltMarkup">
                     <div class="navbar-nav ms-auto">
+                        <a class="d-flex justify-content-center align-items-center nav-link{% if app.request.pathinfo is same as (path('app_backoffice_home'))%} active{% endif %}" 
+                        href="{{ path('app_backoffice_home') }}">Accueil</a>
                         {% if "ROLE_ADMIN" in app.user.roles %}
-                        <a class="d-flex justify-content-center align-items-center nav-link active" aria-current="page" href="{{ path('app_backoffice_users_list') }}">Accueil administrateur</a>
-                        <a class="d-flex justify-content-center align-items-center nav-link" href="{{ path('app_backoffice_users_list') }}">Membres</a>
-                        <a class="d-flex justify-content-center align-items-center nav-link" href="{{ path('app_backoffice_users_list') }}">Auteurs</a>
-                        <a class="d-flex justify-content-center align-items-center nav-link" href="{{ path('app_backoffice_articles_list') }}">Articles</a>
-                        <a class="d-flex justify-content-center align-items-center nav-link mr-5" href="{{ path('app_backoffice_advices_list') }}">Conseils</a>
-                        <a class="d-flex justify-content-center align-items-center nav-link mr-5" href="{{ path('app_backoffice_advices_list') }}">Cat&eacute;gories</a>
+                        <a class="d-flex justify-content-center align-items-center nav-link{% if app.request.pathinfo is same as (path('app_backoffice_members_list'))%} active{% endif %}" 
+                        href="{{ path('app_backoffice_members_list') }}">Membres</a>
+                        <a class="d-flex justify-content-center align-items-center nav-link{% if app.request.pathinfo is same as (path('app_backoffice_authors_list'))%} active{% endif %}" 
+                            href="{{ path('app_backoffice_authors_list') }}">Auteurs</a>
+                        <a class="d-flex justify-content-center align-items-center nav-link{% if app.request.pathinfo is same as (path('app_backoffice_articles_list'))%} active{% endif %}" 
+                            href="{{ path('app_backoffice_articles_list') }}">Articles</a>
+                        <a class="d-flex justify-content-center align-items-center nav-link{% if app.request.pathinfo is same as (path('app_backoffice_advices_list'))%} active{% endif %}" 
+                            href="{{ path('app_backoffice_advices_list') }}">Conseils</a>
+                        {# TODO replace when categories are done #}
+                        <a class="d-flex justify-content-center align-items-center nav-link{% if app.request.pathinfo is same as (path('app_backoffice_advices_list'))%} active{% endif %}" 
+                            href="{{ path('app_backoffice_advices_list') }}">Cat&eacute;gories</a>
                         {% else %}
-                        <a class="d-flex justify-content-center align-items-center nav-link active" aria-current="page" href="{{ path('app_backoffice_users_list') }}">Accueil auteur</a>
-                        <a class="d-flex justify-content-center align-items-center nav-link" href="{{ path('app_backoffice_articles_list') }}">Mes articles</a>
-                        <a class="d-flex justify-content-center align-items-center nav-link" href="{{ path('app_backoffice_articles_list') }}">&Eacute;crire un article</a>
+                        <a class="d-flex justify-content-center align-items-center nav-link{% if app.request.pathinfo is same as (path('app_backoffice_articles_user', {id:app.user.id}))%} active{% endif %}" 
+                            href="{{path("app_backoffice_articles_user",{id:app.user.id}) }}">Mes articles</a>
+                        <a class="d-flex justify-content-center align-items-center nav-link{% if app.request.pathinfo is same as (path('app_backoffice_articles_new'))%} active{% endif %}" 
+                            href="{{ path('app_backoffice_articles_new') }}">&Eacute;crire un article</a>
                         {% endif %}
                         <a class="d-flex justify-content-center align-items-center nav-link" href="{{ path('app_backoffice_users_show',{id:app.user.id}) }}" style="margin: 0 25px;">
                             <img  class="d-flex align-self-center" src="{{ app.user.avatar }}" style="height: 32px; width: 32px; border-radius: 50%; margin-right: 10px;" />

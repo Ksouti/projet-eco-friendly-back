@@ -58,57 +58,94 @@ class UserRepository extends ServiceEntityRepository implements PasswordUpgrader
 
     /**
      * 
-     * @return Users[] Returns an array of users objects ordered by authors
+     * @return Users[] Returns an array of users objects filtered by users with ROLE_USER only ordered by descending date with a limit of 5 by default
      */
-public function listAllAuthors(){
-        
+    public function findMembersForHome(int $limit = 5)
+    {
+
+        return $this->createQueryBuilder('u')
+            ->where("u.roles NOT LIKE :roles")
+            ->setParameter("roles", "%ROLE_AUTHOR%")
+            ->andWhere("u.roles NOT LIKE :admin_roles")
+            ->setParameter("admin_roles", "%ROLE_ADMIN%")
+            ->addOrderBy('u.created_at', 'DESC')
+            ->setMaxResults($limit)
+            ->getQuery()
+            ->getResult();
+    }
+
+    /**
+     * @return Users[] Returns an array of users objects filtered by users with ROLE_AUTHOR ordered by descending date with a limit of 5 by default
+     */
+    public function findAuthorsForHome(int $limit = 5)
+    {
+
         return $this->createQueryBuilder('u')
             ->where("u.roles LIKE :roles")
-            ->setParameter("roles","%ROLE_AUTHOR%")
+            ->setParameter("roles", "%ROLE_AUTHOR%")
+            ->addOrderBy('u.created_at', 'DESC')
+            ->setMaxResults($limit)
             ->getQuery()
             ->getResult();
     }
 
     /**
      * 
-     * @return Users[] Returns an array of users objects ordered by members
+     * @return Users[] Returns an array of users objects filtered by authors role ordered by descending date
      */
-public function listAllMembers(){
-        
-    return $this->createQueryBuilder('u')
-        ->where("u.roles NOT LIKE :roles")
-        ->setParameter("roles","%ROLE_AUTHOR%")
-        ->andWhere("u.roles NOT LIKE :admin_roles")
-        ->setParameter("admin_roles","%ROLE_ADMIN%")
-        ->getQuery()
-        ->getResult();
-}
+    public function listAllAuthors()
+    {
+
+        return $this->createQueryBuilder('u')
+            ->where("u.roles LIKE :roles")
+            ->setParameter("roles", "%ROLE_AUTHOR%")
+            ->addOrderBy('u.created_at', 'DESC')
+            ->getQuery()
+            ->getResult();
+    }
+
+    /**
+     * 
+     * @return Users[] Returns an array of users objects filtered by only user's role ordered by descending date
+     */
+    public function listAllMembers()
+    {
+
+        return $this->createQueryBuilder('u')
+            ->where("u.roles NOT LIKE :roles")
+            ->setParameter("roles", "%ROLE_AUTHOR%")
+            ->andWhere("u.roles NOT LIKE :admin_roles")
+            ->setParameter("admin_roles", "%ROLE_ADMIN%")
+            ->addOrderBy('u.created_at', 'DESC')
+            ->getQuery()
+            ->getResult();
+    }
 
 
 
 
-//    /**
-//     * @return User[] Returns an array of User objects
-//     */
-//    public function findByExampleField($value): array
-//    {
-//        return $this->createQueryBuilder('u')
-//            ->andWhere('u.exampleField = :val')
-//            ->setParameter('val', $value)
-//            ->orderBy('u.id', 'ASC')
-//            ->setMaxResults(10)
-//            ->getQuery()
-//            ->getResult()
-//        ;
-//    }
+    //    /**
+    //     * @return User[] Returns an array of User objects
+    //     */
+    //    public function findByExampleField($value): array
+    //    {
+    //        return $this->createQueryBuilder('u')
+    //            ->andWhere('u.exampleField = :val')
+    //            ->setParameter('val', $value)
+    //            ->orderBy('u.id', 'ASC')
+    //            ->setMaxResults(10)
+    //            ->getQuery()
+    //            ->getResult()
+    //        ;
+    //    }
 
-//    public function findOneBySomeField($value): ?User
-//    {
-//        return $this->createQueryBuilder('u')
-//            ->andWhere('u.exampleField = :val')
-//            ->setParameter('val', $value)
-//            ->getQuery()
-//            ->getOneOrNullResult()
-//        ;
-//    }
+    //    public function findOneBySomeField($value): ?User
+    //    {
+    //        return $this->createQueryBuilder('u')
+    //            ->andWhere('u.exampleField = :val')
+    //            ->setParameter('val', $value)
+    //            ->getQuery()
+    //            ->getOneOrNullResult()
+    //        ;
+    //    }
 }

@@ -1,11 +1,21 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Liste des articles | Eco Friendly{% endblock %}
+{% block title %}
+    {% if app.request.pathinfo is same as (path('app_backoffice_articles_user', {id:app.user.id}))%}
+        Mes articles | Eco Friendly
+    {% else %}
+        Liste des articles | Eco Friendly
+    {% endif %}
+{% endblock %}
 
 {% block body %}
     
     <div class="d-flex justify-content-between align-items-center mb-4">
+    {% if app.request.pathinfo is same as (path('app_backoffice_articles_user', {id:app.user.id}))%}
+        <h1>Mes articles</h1>
+    {% else %}
         <h1>Liste des articles</h1>
+    {% endif %}
         <a class="btn btn-primary" href="{{ path('app_backoffice_articles_new') }}">Créer un nouvel article</a>
     </div>
     <div class="table-responsive-lg">

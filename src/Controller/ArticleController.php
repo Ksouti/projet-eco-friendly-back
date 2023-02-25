@@ -19,17 +19,17 @@ class ArticleController extends AbstractController
     public function list(ArticleRepository $articleRepository): Response
     {
         return $this->render('article/list.html.twig', [
-            'articles' => $articleRepository->findAll(),
+            'articles' => $articleRepository->findAllOrderByDate(),
         ]);
     }
 
     /**
-     * @Route("/back_office/auteurs/{id}", name="app_backoffice_articles_findAllByUser", requirements={"id":"\d+"}, methods={"GET"})
+     * @Route("/back_office/auteurs/{id}", name="app_backoffice_articles_user", requirements={"id":"\d+"}, methods={"GET"})
      */
     public function findAllByUser(User $author, ArticleRepository $articleRepository): Response
     {
         return $this->render('article/list.html.twig', [
-            'articles' => $articleRepository->findAllOrderByUserId($author),
+            'articles' => $articleRepository->findAllByUser($author),
         ]);
     }
 
@@ -45,7 +45,7 @@ class ArticleController extends AbstractController
         if ($form->isSubmitted() && $form->isValid()) {
             $articleRepository->add($article, true);
 
-            return $this->redirectToRoute('app_backoffice_articles_list', [], Response::HTTP_SEE_OTHER);
+            return $this->redirectToRoute('app_backoffice_articles_show', [], Response::HTTP_SEE_OTHER);
         }
 
         return $this->renderForm('article/new.html.twig', [
