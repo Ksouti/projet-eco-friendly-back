@@ -3,6 +3,9 @@
 namespace App\Controller\Api;
 
 use App\Entity\Advice;
+use App\Entity\Category;
+use App\Entity\User;
+use App\Normalizer\EntityDenormalizer;
 use App\Repository\AdviceRepository;
 use App\Repository\CategoryRepository;
 use App\Repository\UserRepository;
@@ -46,15 +49,10 @@ class AdviceController extends AbstractController
      */
     public function new(Request $request, SerializerInterface $serializer, ValidatorInterface $validator, SluggerInterface $slugger, AdviceRepository $adviceRepository, UserRepository $userRepository, CategoryRepository $categoryRepository): Response
     {
-        try {;
+        try {
             $advice = $serializer->deserialize($request->getContent(), Advice::class, 'json');
             $advice->setSlug(strtolower($slugger->slug($advice->getTitle(), '-')));
             $advice->setCreatedAt(new \DateTimeImmutable());
-            $json = $request->getContent();
-            $contributorId = json_decode($json, true)['contributorId'];
-            $advice->setContributor($userRepository->find($contributorId));
-            $categoryId = json_decode($json, true)['categoryId'];
-            $advice->setCategory($categoryRepository->find($categoryId));
         } catch (NotEncodableValueException $e) {
             return $this->json(['errors' => 'Json non valide'], Response::HTTP_BAD_REQUEST);
         }
