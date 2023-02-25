@@ -28,3 +28,42 @@ services:
         autowire: true
         autoconfigure: true
         tags: [serializer.normalizer]
+
+    App\EventListener\TitleListener:
+        tags:
+            - {
+                  name: 'doctrine.orm.event_listener',
+                  event: 'preUpdate',
+                  entity: 'App\Entity\Article',
+                  method: 'updateArticleSlug',
+              }
+            - {
+                  name: 'doctrine.orm.event_listener',
+                  event: 'prePersist',
+                  entity: 'App\Entity\Article',
+                  method: 'updateArticleSlug',
+              }
+            - {
+                  name: 'doctrine.orm.event_listener',
+                  event: 'preUpdate',
+                  entity: 'App\Entity\Advice',
+                  method: 'updateAdviceSlug',
+              }
+            - {
+                  name: 'doctrine.orm.event_listener',
+                  event: 'prePersist',
+                  entity: 'App\Entity\Advice',
+                  method: 'updateAdviceSlug',
+              }
+            - {
+                  name: 'doctrine.orm.event_listener',
+                  event: 'preUpdate',
+                  entity: 'App\Entity\Category',
+                  method: 'updateCategorySlug',
+              }
+            - {
+                  name: 'doctrine.orm.event_listener',
+                  event: 'prePersist',
+                  entity: 'App\Entity\Category',
+                  method: 'updateCategorySlug',
+              }
