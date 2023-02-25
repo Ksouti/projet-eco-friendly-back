@@ -5,70 +5,85 @@
 {% block body %}
     
     <div class="d-flex justify-content-between align-items-center mb-4">
-        <h1>Accueil administrateur</h1>
+        <h1>Accueil auteur</h1>
     </div>
     
-      <!-- Left Sidebar -->
-      <div class="container-fluid">
+    <div class="container-fluid">
         <div class="row">
-          <div class="col-md-3 bg-light">
-            <h4>User Info</h4>
-            <p>Name: John Doe</p>
-            <p>Email: johndoe@example.com</p>
-          </div>
+            <!-- Left Sidebar -->
+            <div class="col-md-3">
+                <div class="card bg-light mb-3">
+                    <div class="card-header d-flex align-items-center">
+                        <img class="d-flex align-self-left" src="{{ user.avatar }}" style="height: 48px; width: 48px; border-radius: 50%; margin-right: 10px;" />
+                        <h5 class="card-title m-0">{{ user.nickname }}</h5>
+                        <h6 class="card-subtitle m-0 text-muted">#{{ user.id }}</h6>
+                    </div>
+                    <div class="card-body">
+                        <h5 class="card-title">{{ user.firstname }} {{ user.lastname }}</h5>
+                        <h6 class="card-subtitle mb-2 text-muted">{{ user.email }}</h6>
+                        <p class="card-text">
+                            Rôle : 
+                            {% if "ROLE_AUTHOR" in user.roles %}
+                            <span class="badge bg-info">Auteur</span>
+                            {% else %}
+                            <span class="badge bg-info">Membre</span>
+                            {% endif %}
+                        </p>
+                        <p class="card-text">
+                            Status : 
+                            {% include "_fragments/_user_verified_tag.html.twig" with {status:user.isActive} %}
+                            {% include "_fragments/_user_active_tag.html.twig" with {status:user.isActive} %}
+                        </p>
+                        <p class="card-text">Inscrit depuis le {{ user.createdAt|date('d/m/Y') }}</p>
+                        {% if "ROLE_AUTHOR" in user.roles %}
+                        <p class="card-text">Nombre d'articles : {{ user.articles|length }}</p>
+                        {% else %}
+                        <p class="card-text">Nombre de conseils : {{ user.advices|length }}</p>
+                        {% endif %}
+                        {% if "ROLE_ADMIN" in app.user.roles %}
+                        <form method="post" action="{{ path('app_backoffice_users_deactivate', {'id': user.id}) }}" onsubmit="return confirm('Etes-vous sûr de vouloir désactiver cet utilisateur?');">
+                            <input type="hidden" name="_token" value="{{ csrf_token('deactivate' ~ user.id) }}" />
+                            <button class="m-1 btn-sm btn btn-danger"><i class="bi bi-x-circle"></i></button>
+                        </form>
+                        {% endif %}
+                        <a href="{{ path('app_backoffice_users_edit', {'id': user.id}) }}" class="btn btn-primary ">Modifier</a>
+                    </div>
+                    <div class="card-footer bg-transparent">
+                        <div class="float-right text-muted small">Mis à jour : {{ user.updatedAt ? user.updatedAt|date('d/m/Y') : 'jamais' }}</div>
+                    </div>
+                </div>
+            </div>
     
           <!-- Main Content -->
-          <div class="col-md-9">
-            <div class="row">
-              <!-- Card 1 -->
-              <div class="col-md-4 mb-4">
-                <div class="card">
-                  <img src="https://picsum.photos/300/200" class="card-img-top" alt="...">
-                  <div class="card-body">
-                    <h5 class="card-title">Card Title 1</h5>
-                    <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
-                    <a href="#" class="btn btn-primary">Go somewhere</a>
-                  </div>
+            <div class="col-md-9">
+                <div class="row">
+                    {% for article in articles %}
+                    <div class="col-md-4 mb-4">
+                        <div class="card">
+                            <img src="https://picsum.photos/300/200" class="card-img-top" alt="..." />
+                            <div class="card-body">
+                                <h5 class="card-title">{{ article.title }}</h5>
+                                <div class="d-flex justify-content-between align-items-center">
+                                    <h6 class="card-subtitle mb-2 text-muted">Crée le {{ article.createdAt|date('d/m/Y') }}</h6>
+                                    <p class="float-end">{% include "_fragments/_content_status_tag.html.twig" with {status:article.status} %}</p>
+                                </div>
+                                <p class="card-text">{{ article.content|slice(0, 100) }} [...]</p>
+                                <div class="d-flex flex-nowrap justify-content-end align-items-center">
+                                    <a class="m-1 btn-sm btn btn-success" data-bs-toggle="tooltip" data-bs-placement="top" title="Voir" href="{{ path('app_backoffice_articles_show', {'id': article.id}) }}"><i class="bi bi-eye"></i></a>
+                                    <a class="m-1 btn-sm btn btn-warning" data-bs-toggle="tooltip" data-bs-placement="top" title="&Eacute;diter" href="{{ path('app_backoffice_articles_edit', {'id': article.id}) }}"><i class="bi bi-pencil"></i></a>
+                                    <form method="post" action="{{ path('app_backoffice_articles_deactivate', {'id': article.id}) }}" onsubmit="return confirm('Êtes-vous sûr de vouloir désactiver cet article ?');">
+                                        <input type="hidden" name="_token" value="{{ csrf_token('deactivate' ~ article.id) }}" />
+                                        <button class="m-1 btn-sm btn btn-danger" data-bs-toggle="tooltip" data-bs-placement="top" title="D&eacute;sactiver"><i class="bi bi-x-circle"></i></button>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    {% else %}
+                    {% endfor %}
                 </div>
-              </div>
-    
-              <!-- Card 2 -->
-              <div class="col-md-4 mb-4">
-                <div class="card">
-                  <img src="https://picsum.photos/300/200" class="card-img-top" alt="...">
-                  <div class="card-body">
-                    <h5 class="card-title">Card Title 2</h5>
-                    <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
-                    <a href="#" class="btn btn-primary">Go somewhere</a>
-                  </div>
-                </div>
-              </div>
-    
-              <!-- Card 3 -->
-              <div class="col-md-4 mb-4">
-                <div class="card">
-                  <img src="https://picsum.photos/300/200" class="card-img-top" alt="...">
-                  <div class="card-body">
-                    <h5 class="card-title">Card Title 3</h5>
-                    <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
-                    <a href="#" class="btn btn-primary">Go somewhere</a>
-                  </div>
-                </div>
-              </div>
-    
-              <!-- Card 4 -->
-              <div class="col-md-4 mb-4">
-                <div class="card">
-                  <img src="https://picsum.photos/300/200" class="card-img-top" alt="...">
-                  <div class="card-body">
-                    <h5 class="card-title">Card Title 4</h5>
-                    <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
-                    <a href="#" class="btn btn-primary">Go somewhere</a>
-                  </div>
-                </div>
-              </div>
+            </div>
+        </div>
     </div>
-    </div>
-    
 
     {% endblock %}

@@ -22,7 +22,7 @@ class MainController extends AbstractController
      */
     public function root(): Response
     {
-        return $this->redirectToRoute('app_backoffice_articles_list');
+        return $this->redirectToRoute('app_backoffice_home');
     }
 
     /**
