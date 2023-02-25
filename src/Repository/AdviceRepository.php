@@ -46,6 +46,7 @@ class AdviceRepository extends ServiceEntityRepository
     {
         return $this->createQueryBuilder('ad')
             ->orderBy('ad.created_at', 'DESC')
+            ->where('ad.status = 1')
             ->setMaxResults($limit)
             ->getQuery()
             ->getResult();
