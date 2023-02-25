@@ -19,25 +19,38 @@
 
     
     <header>
-        <nav class="navbar navbar-expand-lg bg-body-secondary px-2 py-0">
-            <a class="navbar-brand" href="#">
-                <img src="{{asset('assets/img/logos/logo-eco-friendly-V3-maxcropcenterv.png')}}" alt="Logo" width="58" height="64" class="d-inline-block align-text-center" />
-                <span class="font-monospace">Eco-Friendly</span>
-            </a>
-            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavAltMarkup" aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
-                <span class="navbar-toggler-icon"></span>
-            </button>
-            <div class="collapse navbar-collapse mx-auto" id="navbarNavAltMarkup">
-                <div class="navbar-nav ms-auto">
-                    <a class="d-flex justify-content-center align-items-center nav-link active" aria-current="page" href="{{ path('app_backoffice_users_list') }}">Accueil administrateur</a>
-                    <a class="d-flex justify-content-center align-items-center nav-link" href="{{ path('app_backoffice_users_list') }}">Membres</a>
-                    <a class="d-flex justify-content-center align-items-center nav-link" href="{{ path('app_backoffice_users_list') }}">Auteurs</a>
-                    <a class="d-flex justify-content-center align-items-center nav-link" href="{{ path('app_backoffice_articles_list') }}">Articles</a>
-                    <a class="d-flex justify-content-center align-items-center nav-link" href="{{ path('app_backoffice_advices_list') }}">Conseils</a>
-                    <a class="btn btn-outline-primary my-2" href="{{ path('app_backoffice_security_logout') }}">Déconnexion</a>
+        <div class="sticky-top">
+            <nav class="navbar navbar-expand-lg bg-cstm-gradient px-4 py-0" style="border-radius: 0% 0% 10% 10%; box-shadow: 0px 10px 5px 3px #efefea;">
+                <a class="navbar-brand d-flex justify-content-center align-items-center" href="#">
+                    <img src="{{asset('assets/img/logos/logo-eco-friendly-V3-maxcropcenterv.png')}}" alt="Logo" width="58" height="64" class="d-inline-block align-text-center" />
+                    <span class="font-monospace fw-semibold fs-4">Eco-Friendly</span>
+                </a>
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavAltMarkup" aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+                <div class="collapse navbar-collapse mx-auto" id="navbarNavAltMarkup">
+                    <div class="navbar-nav ms-auto">
+                        {% if "ROLE_ADMIN" in app.user.roles %}
+                        <a class="d-flex justify-content-center align-items-center nav-link active" aria-current="page" href="{{ path('app_backoffice_users_list') }}">Accueil administrateur</a>
+                        <a class="d-flex justify-content-center align-items-center nav-link" href="{{ path('app_backoffice_users_list') }}">Membres</a>
+                        <a class="d-flex justify-content-center align-items-center nav-link" href="{{ path('app_backoffice_users_list') }}">Auteurs</a>
+                        <a class="d-flex justify-content-center align-items-center nav-link" href="{{ path('app_backoffice_articles_list') }}">Articles</a>
+                        <a class="d-flex justify-content-center align-items-center nav-link mr-5" href="{{ path('app_backoffice_advices_list') }}">Conseils</a>
+                        <a class="d-flex justify-content-center align-items-center nav-link mr-5" href="{{ path('app_backoffice_advices_list') }}">Cat&eacute;gories</a>
+                        {% else %}
+                        <a class="d-flex justify-content-center align-items-center nav-link active" aria-current="page" href="{{ path('app_backoffice_users_list') }}">Accueil auteur</a>
+                        <a class="d-flex justify-content-center align-items-center nav-link" href="{{ path('app_backoffice_articles_list') }}">Mes articles</a>
+                        <a class="d-flex justify-content-center align-items-center nav-link" href="{{ path('app_backoffice_articles_list') }}">&Eacute;crire un article</a>
+                        {% endif %}
+                        <a class="d-flex justify-content-center align-items-center nav-link" href="{{ path('app_backoffice_users_show',{id:app.user.id}) }}" style="margin: 0 25px;">
+                            <img  class="d-flex align-self-center" src="{{ app.user.avatar }}" style="height: 32px; width: 32px; border-radius: 50%; margin-right: 10px;" />
+                            <span class="d-flex justify-content-center align-items-center fw-semibold text-primary text-center">{{ app.user.firstname }} {{app.user.lastname}}</span>
+                        </a>
+                        <a class="btn btn-primary my-2" href="{{ path('app_backoffice_security_logout') }}">Déconnexion</a>
+                    </div>
                 </div>
-            </div>
-        </nav>
+            </nav>
+        </div>
     </header>
                                     
     <main class="container-fluid p-4">
