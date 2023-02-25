@@ -23,7 +23,7 @@
                 {% include "_fragments/_user_verified_tag.html.twig" with {status:user.isActive} %}
                 {% include "_fragments/_user_active_tag.html.twig" with {status:user.isActive} %}
             </p>
-            <p class="card-text">Inscription {{ user.createdAt|date('d/m/Y') }}</p>
+            <p class="card-text">Inscription : {{ user.createdAt|date('d-m-Y H:i:s') }}</p>
             {% if "ROLE_AUTHOR" in user.roles %}
             <p class="card-text">Nombre d'articles : {{ user.articles|length }}</p>
             {% elseif "ROLE_ADMIN" in user.roles %}
@@ -43,7 +43,7 @@
             {% endif %}
         </div>
         <div class="card-footer bg-transparent">
-            <div class="float-right text-muted small">Mis à jour : {{ user.updatedAt ? user.updatedAt|date('d/m/Y') : 'jamais' }}</div>
+            <div class="float-right text-muted small">Mis à jour : {{ user.updatedAt ? user.updatedAt|date('d-m-Y H:i:s') : 'jamais' }}</div>
         </div>
     </div>
 </div>

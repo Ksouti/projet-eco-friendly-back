@@ -46,8 +46,8 @@
                     <td class="text-center">
                         {% include "_fragments/_content_status_tag.html.twig" with {status:article.status} %}
                     </td>
-                    <td>{{ article.createdAt|date('d/m/Y') }}</td>
-                    <td>{{ article.updatedAt ? article.updatedAt|date('d/m/Y') : '' }}</td>
+                    <td>{{ article.createdAt|date('d-m-Y H:i:s') }}</td>
+                    <td>{{ article.updatedAt ? article.updatedAt|date('d-m-Y H:i:s') : '' }}</td>
                     <td class="d-flex flex-nowrap text-center">
                         <a class="m-1 btn-sm btn btn-success" data-bs-toggle="tooltip" data-bs-placement="top" title="Voir" href="{{ path('app_backoffice_articles_show', {'id': article.id}) }}"><i class="bi bi-eye"></i></a>
                         <a class="m-1 btn-sm btn btn-warning" data-bs-toggle="tooltip" data-bs-placement="top" title="&Eacute;diter" href="{{ path('app_backoffice_articles_edit', {'id': article.id}) }}"><i class="bi bi-pencil"></i></a>
