@@ -1,14 +1,10 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Accueil | Eco Friendly{% endblock %}
+{% block title %}{{ user.nickname }} | Eco Friendly{% endblock %}
 
 {% block body %}
     
-    <div class="d-flex justify-content-between align-items-center mb-4">
-        <h1>Accueil auteur</h1>
-    </div>
-    
-    <div class="container-fluid">
+   <div class="container-fluid">
         <div class="row">
 
             <!-- Left Sidebar -->
@@ -21,8 +17,9 @@
                     {% for article in user.articles %}
                     <div class="col-md-4 mb-4">
                         <div class="card">
-                            <img src="{{ article.image }}" class="card-img-top" alt="..." />
+                            <img src="{{ article.picture }}" class="card-img-top" alt="{{ article.title }}" />
                             <div class="card-body">
+                                <span class="badge bg-info mb-2">{{ article.category.name }}</span>
                                 <h5 class="card-title">{{ article.title }}</h5>
                                 <div class="d-flex justify-content-between align-items-center">
                                     <h6 class="card-subtitle mb-2 text-muted">Crée le {{ article.createdAt|date('d-m-Y H:i:s') }}</h6>
@@ -49,6 +46,7 @@
                         <div class="col-md-4 mb-4">
                             <div class="card">
                                 <div class="card-body">
+                                    <span class="badge bg-info mb-2">{{ advice.category.name }}</span>
                                     <h5 class="card-title">{{ advice.title }}</h5>
                                     <div class="d-flex justify-content-between align-items-center">
                                         <h6 class="card-subtitle mb-2 text-muted">Crée le {{ advice.createdAt|date('d-m-Y H:i:s') }}</h6>

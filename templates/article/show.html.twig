@@ -1,53 +1,69 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Article{% endblock %}
+{% block title %}{{ article.title }} | Eco Friendly{% endblock %}
 
 {% block body %}
-    <h1>Article</h1>
+    
+    <div class="container-fluid">
+        <div class="row">
+            
+            <!-- Main Content -->
+            <div class="col-md-9">
+                <div class="row">
+                    <div class="col-12 mb-4">
+                        <div class="card">
+                            <div class="row g-0">
+                                <div class="col-md-4">
+                                    <img src="{{ article.picture }}" class="img-fluid rounded-start" alt="{{ article.title }}" />
+                                </div>
+                                <div class="col-md-8">
+                                    <div class="card-body">
+                                        <h1 class="card-title">{{ article.title }}</h1>
+                                        <p class="card-text">{{ article.content }}</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
 
-    <table class="table table-hover">
-        <tbody>
-            <tr>
-                <th>Id</th>
-                <td>{{ article.id }}</td>
-            </tr>
-            <tr>
-                <th>Title</th>
-                <td>{{ article.title }}</td>
-            </tr>
-            <tr>
-                <th>Content</th>
-                <td>{{ article.content }}</td>
-            </tr>
-            <tr>
-                <th>Slug</th>
-                <td>{{ article.slug }}</td>
-            </tr>
-            <tr>
-                <th>Picture</th>
-                <td>{{ article.picture }}</td>
-            </tr>
-            <tr>
-                <th>Status</th>
-                <td>{{ article.status }}</td>
-            </tr>
-            <tr>
-                <th>Created_at</th>
-                <td>{{ article.createdAt ? article.createdAt|date('Y-m-d H:i:s') : '' }}</td>
-            </tr>
-            <tr>
-                <th>Updated_at</th>
-                <td>{{ article.updatedAt ? article.updatedAt|date('Y-m-d H:i:s') : '' }}</td>
-            </tr>
-        </tbody>
-    </table>
+            <!-- Left Sidebar -->
+            <div class="col-md-3">
+                <div class="card bg-light mb-3">
+                    <div class="card-header d-flex flex-column justify-content-center align-items-center">
+                        <p>Auteur :</p>
+                        <img class="d-flex align-self-left" src="{{ article.author.avatar }}" style="height: 48px; width: 48px; border-radius: 50%;" />
+                        <div class="d-flex justify-content-center align-items-center mt-2">
+                            <h6 class="card-title m-0">{{ article.author.nickname }}</h6>
+                            <h7 class="card-subtitle m-0 text-muted">#{{ article.author.id }}</h7>
+                        </div>
+                    </div>
+                    <div class="card-body text-center">
+                        <h6 class="card-subtitle mb-2 text-muted">Ecrit le {{ article.createdAt|date('d-m-Y H:i:s') }}</h6>
+                        <p class="card-text">
+                            Status : 
+                            {% include "_fragments/_content_status_tag.html.twig" with {status:article.status} %}
+                        </p>
+                        <p class="card-text">
+                            Categorie : <span class="badge bg-info mb-2">{{ article.category.name }}</span>
+                        </p>         
+                        <div class="d-flex flex-nowrap justify-content-end align-items-center">
+                            <a class="m-1 btn-sm btn btn-warning" data-bs-toggle="tooltip" data-bs-placement="top" title="&Eacute;diter" href="{{ path('app_backoffice_articles_edit', {'id': article.id}) }}"><i class="bi bi-pencil"></i></a>
+                            {% if "ROLE_ADMIN" in app.user.roles %}
+                            <form method="post" action="{{ path('app_backoffice_articles_deactivate', {'id': article.id}) }}" onsubmit="return confirm('Êtes-vous sûr de vouloir désactiver cet article ?');">
+                                <input type="hidden" name="_token" value="{{ csrf_token('deactivate' ~ article.id) }}" />
+                                <button class="m-1 btn-sm btn btn-danger" data-bs-toggle="tooltip" data-bs-placement="top" title="D&eacute;sactiver"><i class="bi bi-x-circle"></i></button>
+                            </form>
+                            {% endif %}
+                        </div>                    
+                    </div>
+                    <div class="card-footer bg-transparent text-center">
+                        <div class="float-right text-muted small">Mis à jour : {{ article.author.updatedAt ? article.author.updatedAt|date('d-m-Y H:i:s') : 'jamais' }}</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 
-  <div class="d-flex justify-content-between">
-  <a href="{{ path('app_backoffice_articles_list') }}" class="btn btn-outline-secondary">Retour à la liste</a>
-  <a href="{{ path('app_backoffice_articles_edit', {'id': article.id}) }}" class="btn btn-success mx-auto">Valider</a>
-  </div>
-
-
-
-    {{ include('article/_delete_form.html.twig') }}
-{% endblock %}
+    {% endblock %}
