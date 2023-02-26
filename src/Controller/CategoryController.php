@@ -49,7 +49,7 @@ class CategoryController extends AbstractController
     }
 
     /**
-     * @Route("/back_office/categories/{id}", name="app_backoffice_categories_show", methods={"GET"})
+     * @Route("/back_office/categories/{id}", name="app_backoffice_categories_show", requirements={"id":"\d+"}, methods={"GET"})
      */
     public function show(Category $category): Response
     {
@@ -59,7 +59,7 @@ class CategoryController extends AbstractController
     }
 
     /**
-     * @Route("/back_office/categories/{id}/editer", name="app_backoffice_categories_edit", methods={"GET", "POST"})
+     * @Route("/back_office/categories/{id}/editer", name="app_backoffice_categories_edit", requirements={"id":"\d+"}, methods={"GET", "POST"})
      */
     public function edit(Request $request, SluggerService $slugger, Category $category, CategoryRepository $categoryRepository): Response
     {
@@ -81,7 +81,7 @@ class CategoryController extends AbstractController
     }
 
     /**
-     * @Route("/back_office/categories/{id}", name="app_backoffice_categories_deactivate", methods={"POST"})
+     * @Route("/back_office/categories/{id}", name="app_backoffice_categories_deactivate", requirements={"id":"\d+"}, methods={"POST"})
      */
     public function deactivate(Request $request, Category $category, CategoryRepository $categoryRepository): Response
     {

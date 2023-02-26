@@ -27,7 +27,12 @@ PHP 7.4.3 (minimum)
 `php bin/console make:migration`
 `php bin/console doctrine:make:migrations`
 
-6. (optionnal) Load fixtures
+6. Install CKEditor
+
+`php bin/console ckeditor:install`
+`php bin/console assets:install`
+
+7. (optionnal) Load fixtures
 
 `php bin/console doctrine:fixtures:load`
 

@@ -30,6 +30,9 @@ class AdviceType extends AbstractType
                     "uiColor" => "#ffffff",
                     "toolbar" => "basic",
                 ],
+                "attr" => [
+                    "placeholder" => "Contenu du conseil"
+                ]
             ])
 
             ->add('category', EntityType::class, [

@@ -4,7 +4,6 @@ namespace App\Form;
 
 use App\Entity\Article;
 use App\Entity\Category;
-use App\Entity\User;
 use FOS\CKEditorBundle\Form\Type\CKEditorType;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
@@ -20,16 +19,16 @@ class ArticleType extends AbstractType
     {
         $builder
             ->add('title', TextType::class, [
-                "label" => "Titre du conseil",
+                "label" => "Titre",
                 "attr" => [
-                    "placeholder" => "Titre du conseil"
+                    "placeholder" => "Titre de l'article"
                 ]
             ])
 
             ->add('content', CKEditorType::class, [
-                "label" => "Conseil",
+                "label" => "Article",
                 "attr" => [
-                    "placeholder" => "Votre conseil"
+                    "placeholder" => "Contenu de l'article"
                 ],
                 "config" => [
                     "uiColor" => "#eeeeee",
@@ -38,7 +37,7 @@ class ArticleType extends AbstractType
             ])
 
             ->add('picture', UrlType::class, [
-                "label" => "Votre image *",
+                "label" => "Image d'illustration*",
                 "attr" => [
                     "placeholder" => "Votre image"
                 ],
@@ -47,9 +46,8 @@ class ArticleType extends AbstractType
 
             ->add('status', ChoiceType::class, [
                 "choices" => [
-                    "brouillon" => 0,
-                    "publié" => 1,
-                    "désactivé" => 2,
+                    "Brouillon" => 0,
+                    "Publié" => 1,
                 ],
                 "label" => "Statut"
             ])

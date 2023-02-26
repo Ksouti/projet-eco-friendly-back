@@ -42,12 +42,12 @@ class ArticleController extends AbstractController
     {
         $article = new Article();
         $article->setAuthor($this->getUser());
-        $article->setSlug($slugger->slugify($article->getTitle()));
         $article->setCreatedAt(new DateTimeImmutable());
         $form = $this->createForm(ArticleType::class, $article);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
+            $article->setSlug($slugger->slugify($article->getTitle()));
             $articleRepository->add($article, true);
 
             return $this->redirectToRoute('app_backoffice_articles_show', ['id' => $article->getId()], Response::HTTP_SEE_OTHER);

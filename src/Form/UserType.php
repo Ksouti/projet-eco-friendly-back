@@ -51,7 +51,11 @@ class UserType extends AbstractType
                     "Utilisateur" => "ROLE_USER"
                 ],
                 "expanded" => true,
-                "multiple" => true
+                "multiple" => true,
+                "choice_attr" => [
+                    // Set the "disabled" attribute only for the ROLE_USER checkbox
+                    "Utilisateur" => ["disabled" => true],
+                ],
             ])
 
             ->add('avatar', UrlType::class, [
