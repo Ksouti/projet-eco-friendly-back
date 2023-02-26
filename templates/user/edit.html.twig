@@ -1,14 +1,29 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Edit User
-{% endblock %}
+{% block title %}Modifier un profil d'auteur | Eco-Friendly{% endblock %}
 
 {% block body %}
-	<h1>Edit User</h1>
 
-	{{ include('user/_form.html.twig', {'button_label': 'Update'}) }}
-
-	<a href="{{ path('app_backoffice_users_list') }}">Retour à la liste</a>
-
-	{{ include('user/_delete_form.html.twig') }}
+	<div class="container-fluid col-12 col-lg-8 mx-auto">
+		<h1>
+			Modifier un profil d'auteur<br />
+			"{{ user.nickname }}"
+		</h1>
+		<div>
+			<div class="row mb-3">
+				<div class="col-6">
+					<span>Profil créé le {{ user.createdAt|date('d/m/Y') }}</span>
+				</div>
+				<div class="col-6 d-flex justify-content-end">
+					Vérifié :&nbsp;&nbsp;
+					{% include "_fragments/_user_verified_tag.html.twig" with {status:user.isActive} %}
+					&nbsp;&nbsp;&nbsp;&nbsp;Actif :&nbsp;&nbsp;
+					{% include "_fragments/_user_active_tag.html.twig" with {status:user.isActive} %}
+				</div>
+			</div>
+			{{ include('user/_form.html.twig', {'button_label': 'Valider'}) }}
+			{{ include('user/_delete_form.html.twig') }}
+		</div>
+		<a href="{{ path('app_backoffice_authors_list') }}">Retour à la liste</a>
+    </div>
 {% endblock %}

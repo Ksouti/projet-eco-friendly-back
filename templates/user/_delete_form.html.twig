@@ -1,4 +1,18 @@
-<form method="post" action="{{ path('app_backoffice_users_deactivate', {'id': user.id}) }}" onsubmit="return confirm('Etes-vous sûr de vouloir désactiver cet utilisateur?');">
-    <input type="hidden" name="_token" value="{{ csrf_token('delete' ~ user.id) }}">
-    <button class="btn btn-danger">Désactiver</button>
+<form 
+    method="post" 
+    action="{{ path('app_backoffice_users_deactivate', {'id': user.id}) }}" 
+    onsubmit="return confirm('Êtes-vous sûr de vouloir désactiver cet utilisateur ?');"
+    class="d-flex justify-content-start align-items-center"
+>
+    <input 
+        type="hidden" 
+        name="_token" 
+        value="{{ csrf_token('désactiver' ~ user.id) }}"
+    >
+    <button 
+        type="submit"
+        class="btn btn-danger my-2"
+    >
+            Désactiver
+    </button>
 </form>

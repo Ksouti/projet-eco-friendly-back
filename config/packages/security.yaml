@@ -21,6 +21,7 @@ security:
                 # "app_login" is the name of the route created previously
                 login_path: app_backoffice_security_login
                 check_path: app_backoffice_security_login
+                default_target_path: app_backoffice_home
                 enable_csrf: true
             logout:
                 path: app_backoffice_security_logout
@@ -35,52 +36,18 @@ security:
     # Note: Only the *first* access control that matches will be used
     access_control:
         # ! BACK-OFFICE
-        # - { path: ^/author, roles: ROLE_AUTHOR }
+        - { path: '^/back_office/connexion|deconnexion', roles: [] }
+        - { path: '^/back_office/utilisateurs|conseils', roles: ROLE_ADMIN }
         - {
-              # path: '^back_office/auteurs/(\d+)/(editer|modifier|desactiver)$',
-              path: '^/back_office/connexion|deconnexion',
-              roles: [],
-
-
-            #    { path: ^/api/articles, roles: [] }
-            #    { path: ^/api/advices, roles: [] }
-            #    { path: ^/api/users/\d+$, roles: ROLE_USER }
-            #  { path: ^/api/users/d+$, roles: ROLE_USER }
-            #    { path: ^/api/login_check, roles: ROLE_USER }
-            
-          }
-        - {
-              # path: '^/back_office/auteurs/(\d+)/(editer|modifier|desactiver)$',
-              path: '^/back_office/auteurs|utilisateurs|conseils',
-              roles: ROLE_ADMIN,
-          }
-        - {
-              # path: '^back_office/auteur/(\d+)/(editer|modifier|desactiver)$',
-              path: '^/back_office/auteur/(\d+)/(editer|modifier|desactiver)',
+              path: '^/back_office/auteurs/(\d+)/(editer|modifier|desactiver)',
               roles: ROLE_AUTHOR,
           }
-        - {
-              # path: '^/back_office/auteur/(\d+)/(editer|modifier|desactiver)$',
-              path: '^/back_office/articles',
-              roles: ROLE_AUTHOR,
-          }
-        - {
-              # path: '^back_office/auteur/(\d+)/(editer|modifier|desactiver)$',
-              path: '^/back_office/',
-              roles: ROLE_AUTHOR,
-          }
-        #- {
-        #      path: '^/back_office/utilisateurs/(\d+)/(desactiver)$',
-        #      roles: ROLE_ADMIN,
-        #  }
-        #- {
-        #      path: '^back_office/conseils/(\d+)/(editer|modifier|desactiver)$',
-        #      roles: ROLE_ADMIN,
-        #  }
+        - { path: '^/back_office/articles', roles: ROLE_AUTHOR }
+        - { path: '^/back_office/', roles: ROLE_AUTHOR }
 
         # ! API
-        # - { path: ^/api/login, roles: PUBLIC_ACCESS }
-        # - { path: ^/api,       roles: IS_AUTHENTICATED_FULLY }
+        - { path: ^/api/, roles: PUBLIC_ACCESS }
+
     role_hierarchy:
         ROLE_ADMIN: ['ROLE_AUTHOR']
 

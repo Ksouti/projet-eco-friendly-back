@@ -1,46 +1,63 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Les conseils{% endblock %}
+{% block title %}{{ advice.title }} | Eco Friendly{% endblock %}
 
 {% block body %}
-    <h1>Les conseils</h1>
+    
+    <div class="container-fluid">
+        <div class="row">
+            
+            <!-- Main Content -->
+            <div class="col-md-9">
+                <div class="row">
+                    <div class="col-12 mb-4">
+                        <div class="card">
+                            <div class="row g-0">
+                                <div class="col-md-12">
+                                    <div class="card-body">
+                                        <h1 class="card-title">{{ advice.title }}</h1>
+                                        <p class="card-text">{{ advice.content }}</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
 
-    <table class="table table-hover">
-        <tbody>
-            <tr>
-                <th>Id</th>
-                <td>{{ advice.id }}</td>
-            </tr>
-            <tr>
-                <th>Title</th>
-                <td>{{ advice.title }}</td>
-            </tr>
-            <tr>
-                <th>Content</th>
-                <td>{{ advice.Content }}</td>
-            </tr>
-            <tr>
-                <th>Slug</th>
-                <td>{{ advice.Slug }}</td>
-            </tr>
-            <tr>
-                <th>Status</th>
-                <td>{{ advice.status }}</td>
-            </tr>
-            <tr>
-                <th>Created_at</th>
-                <td>{{ advice.createdAt ? advice.createdAt|date('Y-m-d H:i:s') : '' }}</td>
-            </tr>
-            <tr>
-                <th>Updated_at</th>
-                <td>{{ advice.updatedAt ? advice.updatedAt|date('Y-m-d H:i:s') : '' }}</td>
-            </tr>
-        </tbody>
-    </table>
-
-    <a href="{{ path('app_backoffice_advices_list') }}">Retour à la liste</a>
-
-    <a href="{{ path('app_backoffice_advices_edit', {'id': advice.id}) }}">Ajouter ce conseil</a>
-
-    {{ include('advice/_delete_form.html.twig') }}
+            <!-- Left Sidebar -->
+            <div class="col-md-3">
+                <div class="card bg-light mb-3">
+                    <div class="card-header d-flex flex-column justify-content-center align-items-center">
+                        <p>Membre :</p>
+                        <img class="d-flex align-self-left" src="{{ advice.contributor.avatar }}" style="height: 48px; width: 48px; border-radius: 50%;" />
+                        <div class="d-flex justify-content-center align-items-center mt-2">
+                            <h6 class="card-title m-0">{{ advice.contributor.nickname }}</h6>
+                            <h7 class="card-subtitle m-0 text-muted">#{{ advice.contributor.id }}</h7>
+                        </div>
+                    </div>
+                    <div class="card-body text-center">
+                        <h6 class="card-subtitle mb-2 text-muted">&Eacute;crit le {{ advice.createdAt|date('d-m-Y H:i:s') }}</h6>
+                        <p class="card-text">
+                            Status : 
+                            {% include "_fragments/_content_status_tag.html.twig" with {status:advice.status} %}
+                        </p>
+                        <p class="card-text">
+                            Categorie : <span class="badge bg-info mb-2">{{ advice.category.name }}</span>
+                        </p>         
+                        <div class="d-flex flex-nowrap justify-content-end align-items-center">
+                            <a class="m-1 btn-sm btn btn-warning" data-bs-toggle="tooltip" data-bs-placement="top" title="&Eacute;diter" href="{{ path('app_backoffice_advices_edit', {'id': advice.id}) }}"><i class="bi bi-pencil"></i></a>
+                            <form method="post" action="{{ path('app_backoffice_advices_deactivate', {'id': advice.id}) }}" onsubmit="return confirm('Êtes-vous sûr de vouloir désactiver cet advice ?');">
+                                <input type="hidden" name="_token" value="{{ csrf_token('deactivate' ~ advice.id) }}" />
+                                <button class="m-1 btn-sm btn btn-danger" data-bs-toggle="tooltip" data-bs-placement="top" title="D&eacute;sactiver"><i class="bi bi-x-circle"></i></button>
+                            </form>
+                        </div>                    
+                    </div>
+                    <div class="card-footer bg-transparent text-center">
+                        <div class="float-right text-muted small">Mis à jour : {{ advice.contributor.updatedAt ? advice.contributor.updatedAt|date('d-m-Y H:i:s') : 'jamais' }}</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 {% endblock %}
