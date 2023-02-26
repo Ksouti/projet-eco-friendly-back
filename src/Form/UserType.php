@@ -16,10 +16,31 @@ class UserType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
-            ->add('email', EmailType::class, [
-                "label" => "L'email",
+            ->add("firstname", TextType::class, [
+                "label" => "Prénom",
                 "attr" => [
-                    "placeholder" => "L'email"
+                    "placeholder" => "Entrez votre prénom"
+                ]
+            ])
+
+            ->add("lastname", TextType::class, [
+                "label" => "Nom",
+                "attr" => [
+                    "placeholder" => "Entrez votre nom de famille"
+                ]
+            ])
+
+            ->add("nickname", TextType::class, [
+                "label" => 'Pseudo',
+                "attr" => [
+                    "placeholder" => "Entrez votre pseudo"
+                ]
+            ])
+
+            ->add('email', EmailType::class, [
+                "label" => "Email",
+                "attr" => [
+                    "placeholder" => "Email"
                 ]
             ])
 
@@ -33,41 +54,12 @@ class UserType extends AbstractType
                 "multiple" => true
             ])
 
-            ->add("firstname", TextType::class, [
-                "label" => "Prénom",
-                "attr" => [
-                    "placeholder" => "Entrez votre prénom"
-                ]
-            ])
-
-            ->add("lastname", TextType::class, [
-                "label" => "Nom de famille",
-                "attr" => [
-                    "placeholder" => "Entrez votre nom de famille"
-                ]
-            ])
-
-            ->add("nickname", TextType::class, [
-                "label" => 'Pseudo',
-                "attr" => [
-                    "placeholder" => "Entrez votre pseudo"
-                ]
-            ])
-
             ->add('avatar', UrlType::class, [
                 "label" => "Votre avatar *",
                 "attr" => [
                     "placeholder" => "Votre avatar"
                 ],
                 "help" => "* L'url d'un avatar"
-            ])
-
-            ->add('is_active', ChoiceType::class, [
-                "choices" => [
-                    "Activé" => "1",
-                    "Désactivé" => "0"
-                ],
-                "label" => "Activé ou désactivé"
             ]);
     }
 
