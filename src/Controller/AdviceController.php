@@ -5,6 +5,8 @@ namespace App\Controller;
 use App\Entity\Advice;
 use App\Form\AdviceType;
 use App\Repository\AdviceRepository;
+use App\Service\SluggerService;
+use DateTimeImmutable;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -36,12 +38,14 @@ class AdviceController extends AbstractController
     /**
      * @Route("/back_office/conseils/{id}/editer", name="app_backoffice_advices_edit", requirements={"id":"\d+"}, methods={"GET", "POST"})
      */
-    public function edit(Request $request, Advice $advice, AdviceRepository $adviceRepository): Response
+    public function edit(Request $request, SluggerService $slugger, Advice $advice, AdviceRepository $adviceRepository): Response
     {
         $form = $this->createForm(AdviceType::class, $advice);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
+            $advice->setSlug($slugger->slugify($advice->getTitle()));
+            $advice->setUpdatedAt(new DateTimeImmutable());
             $adviceRepository->add($advice, true);
 
             return $this->redirectToRoute('app_backoffice_advices_list', [], Response::HTTP_SEE_OTHER);

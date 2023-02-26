@@ -54,14 +54,6 @@ class ArticleType extends AbstractType
                 "label" => "Statut"
             ])
 
-            ->add('author', EntityType::class, [
-                "class" => User::class,
-                "label" => "Auteur",
-                "attr" => [
-                    "placeholder" => "Auteur",
-                ]
-            ])
-
             ->add('category', EntityType::class, [
                 "class" => Category::class,
                 "label" => "Catégorie",

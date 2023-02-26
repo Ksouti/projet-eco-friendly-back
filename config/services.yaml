@@ -13,7 +13,7 @@ services:
         autoconfigure: true # Automatically registers your services as commands, event subscribers, etc.
 
     # makes classes in src/ available to be used as services
-    # this creates a service per class whose id is the fully-qualified class name
+# this creates a service per class whose id is the fully-qualified class name
     App\:
         resource: '../src/'
         exclude:
@@ -28,42 +28,16 @@ services:
         autowire: true
         autoconfigure: true
         tags: [serializer.normalizer]
-
-    App\EventListener\TitleListener:
+# prettier-ignore
+    App\EventListener\AdviceListener:
         tags:
-            - {
-                  name: 'doctrine.orm.event_listener',
-                  event: 'preUpdate',
-                  entity: 'App\Entity\Article',
-                  method: 'updateArticleSlug',
-              }
-            - {
-                  name: 'doctrine.orm.event_listener',
-                  event: 'prePersist',
-                  entity: 'App\Entity\Article',
-                  method: 'updateArticleSlug',
-              }
-            - {
-                  name: 'doctrine.orm.event_listener',
-                  event: 'preUpdate',
-                  entity: 'App\Entity\Advice',
-                  method: 'updateAdviceSlug',
-              }
-            - {
-                  name: 'doctrine.orm.event_listener',
-                  event: 'prePersist',
-                  entity: 'App\Entity\Advice',
-                  method: 'updateAdviceSlug',
-              }
-            - {
-                  name: 'doctrine.orm.event_listener',
-                  event: 'preUpdate',
-                  entity: 'App\Entity\Category',
-                  method: 'updateCategorySlug',
-              }
-            - {
-                  name: 'doctrine.orm.event_listener',
-                  event: 'prePersist',
-                  entity: 'App\Entity\Category',
-                  method: 'updateCategorySlug',
-              }
+            - # these are the options required to define the entity listener
+                name: doctrine.orm.event_listener
+                event: PostPersist
+                entity: App\Entity\Advice
+                method: SetSlug
+            - # these are the options required to define the entity listener
+                name: doctrine.orm.event_listener
+                event: PostUpdate
+                entity: App\Entity\Advice
+                method: SetSlug

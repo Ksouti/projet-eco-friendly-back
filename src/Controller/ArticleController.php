@@ -6,6 +6,8 @@ use App\Entity\Article;
 use App\Entity\User;
 use App\Form\ArticleType;
 use App\Repository\ArticleRepository;
+use App\Service\SluggerService;
+use DateTimeImmutable;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -36,16 +38,19 @@ class ArticleController extends AbstractController
     /**
      * @Route("/back_office/articles/ajouter", name="app_backoffice_articles_new", methods={"GET", "POST"})
      */
-    public function new(Request $request, ArticleRepository $articleRepository): Response
+    public function new(Request $request, SluggerService $slugger, ArticleRepository $articleRepository): Response
     {
         $article = new Article();
+        $article->setAuthor($this->getUser());
+        $article->setSlug($slugger->slugify($article->getTitle()));
+        $article->setCreatedAt(new DateTimeImmutable());
         $form = $this->createForm(ArticleType::class, $article);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
             $articleRepository->add($article, true);
 
-            return $this->redirectToRoute('app_backoffice_articles_show', [], Response::HTTP_SEE_OTHER);
+            return $this->redirectToRoute('app_backoffice_articles_show', ['id' => $article->getId()], Response::HTTP_SEE_OTHER);
         }
 
         return $this->renderForm('article/new.html.twig', [
@@ -67,12 +72,14 @@ class ArticleController extends AbstractController
     /**
      * @Route("/back_office/articles/{id}/editer", name="app_backoffice_articles_edit", requirements={"id":"\d+"}, methods={"GET", "POST"})
      */
-    public function edit(Request $request, Article $article, ArticleRepository $articleRepository): Response
+    public function edit(Request $request, SluggerService $slugger, Article $article, ArticleRepository $articleRepository): Response
     {
         $form = $this->createForm(ArticleType::class, $article);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
+            $article->setSlug($slugger->slugify($article->getTitle()));
+            $article->setUpdatedAt(new DateTimeImmutable());
             $articleRepository->add($article, true);
 
             return $this->redirectToRoute('app_backoffice_articles_list', [], Response::HTTP_SEE_OTHER);

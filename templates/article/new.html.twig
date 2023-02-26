@@ -3,9 +3,14 @@
 {% block title %}Créer un article | Eco-Friendly{% endblock %}
 
 {% block body %}
-    <h1>Créer un nouvel Article</h1>
+    <div class="container-fluid col-12 col-lg-8 mx-auto">
+        <h1>
+            Créer un article
+        </h1>
+        <div class="row mb-3">
+            {{ include('article/_form.html.twig', {'button_label': 'Valider'}) }}
+        </div>
+        <a href="{{ path('app_backoffice_articles_list') }}">Retour à la liste</a>
+    </div>
 
-    {{ include('article/_form.html.twig') }}
-
-    <a href="{{ path('app_backoffice_articles_list') }}">Retour à la liste</a>
 {% endblock %}

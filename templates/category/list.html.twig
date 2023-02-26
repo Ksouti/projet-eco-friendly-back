@@ -1,0 +1,52 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Liste des cat&eacute;gories | Eco Friendly{% endblock %}
+
+{% block body %}
+
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h1>Liste des cat&eacute;gories</h1>
+        <a class="btn btn-primary" href="{{ path('app_backoffice_articles_new') }}">Créer une catégorie</a>
+    </div>
+    <div class="table-responsive-lg">
+        <table class="table table-striped table-hover table-sm">
+            <thead>
+                <tr>
+                    <th>#</th>
+                    <th>Nom</th>
+                    <th>Phrase d'accorche</th>
+                    <th class="text-center">Statut</th>
+                    <th>Cr&eacute;&eacute;e le</th>
+                    <th>&Eacute;dit&Eacute;e le</th>
+                    <th class="text-center">Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+            {% for category in categories %}
+                <tr>
+                    <td>{{ category.id }}</td>
+                    <td>{{ category.name }}</td>
+                    <td>{{ category.tagline }}</td>
+                    <td class="text-center">
+                        {% include "_fragments/_category_active_tag.html.twig" with {status:category.isActive} %}
+                    </td>
+                    <td>{{ category.createdAt|date('d-m-Y H:i:s') }}</td>
+                    <td>{{ category.updatedAt ? category.updatedAt|date('d-m-Y H:i:s') : '' }}</td>
+                    <td class="d-flex flex-nowrap text-center">
+                        <a class="m-1 btn-sm btn btn-success" data-bs-toggle="tooltip" data-bs-placement="top" title="Voir" href="{{ path('app_backoffice_categories_show', {'id': category.id}) }}"><i class="bi bi-eye"></i></a>
+                        <a class="m-1 btn-sm btn btn-warning" data-bs-toggle="tooltip" data-bs-placement="top" title="&Eacute;diter" href="{{ path('app_backoffice_categories_edit', {'id': category.id}) }}"><i class="bi bi-pencil"></i></a>
+                        <form method="post" action="{{ path('app_backoffice_categories_deactivate', {'id': category.id}) }}" onsubmit="return confirm('Êtes-vous sûr de vouloir désactiver ce conseil ?');">
+                            <input type="hidden" name="_token" value="{{ csrf_token('deactivate' ~ category.id) }}" />
+                            <button class="m-1 btn-sm btn btn-danger" data-bs-toggle="tooltip" data-bs-placement="top" title="D&eacute;sactiver"><i class="bi bi-x-circle"></i></button>
+                        </form>
+                    </td>
+                </tr>
+            {% else %}
+                <tr>
+                    <td colspan="8">Aucune catégorie trouvée</td>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+    </div>
+{% endblock %}

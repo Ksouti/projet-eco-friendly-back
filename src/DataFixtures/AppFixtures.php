@@ -43,6 +43,8 @@ class AppFixtures extends Fixture
             $category->setName($categoryName);
             $category->setTagline($faker->sentence(6, true));
             $category->setSlug($this->slugger->slugify($categoryName));
+            $category->setCreatedAt(new DateTimeImmutable());
+            $category->setIsActive(true);
             $manager->persist($category);
         }
 
