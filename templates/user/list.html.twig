@@ -16,7 +16,7 @@
         {% else %}
         <h1>Liste des membres</h1>
         {% endif %}
-        <a href="{{ path('app_backoffice_users_new') }}" class="btn btn-primary">Créer un 
+        <a href="{{ path('app_backoffice_authors_new') }}" class="btn btn-primary">Créer un 
             {% if app.request.pathinfo is same as (path('app_backoffice_authors_list'))%}
             auteur
             {% else %}
@@ -54,7 +54,7 @@
                     {% include "_fragments/_user_verified_tag.html.twig" with {status:user.isActive} %}
                 </td>
                 <td class="text-center">
-                    {% include "_fragments/_user_active_tag.html.twig" with {status:user.isActive} %}
+                    {% include "_fragments/_user_active_tag.html.twig" with {status:user.isVerified} %}
                 </td>
                 <td>{{ user.createdAt|date('d-m-Y H:i:s') }}</td>
                 <td>{{ user.updatedAt ? user.updatedAt|date('d-m-Y H:i:s') : '' }}</td>

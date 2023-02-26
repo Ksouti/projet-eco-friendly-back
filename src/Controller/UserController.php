@@ -37,27 +37,28 @@ class UserController extends AbstractController
         ]);
     }
 
-    /**
-     * @Route("/back_office/utilisateurs/ajouter", name="app_backoffice_users_new", methods={"GET" , "POST"})
-     */
-    public function new(Request $request, UserRepository $userRepository): Response
-    {
-        $user = new User();
-        $form = $this->createForm(UserType::class, $user);
-        $form->handleRequest($request);
-        $user->setCreatedAt(new DateTimeImmutable());
+    // /* *
+    //  * @Route("/back_office/utilisateurs/ajouter", name="app_backoffice_authors_new", methods={"GET" , "POST"})
+    //  */
+    // public function new(Request $request, UserRepository $userRepository): Response
+    // {
+    //     $user = new User();
+    //     $form = $this->createForm(UserType::class, $user);
+    //     $form->handleRequest($request);
+    //     $user->setCreatedAt(new DateTimeImmutable());
+    // 
+    //     if ($form->isSubmitted() && $form->isValid()) {
+    //         $userRepository->add($user, true);
+    // 
+    //         return $this->redirectToRoute('app_backoffice_members_list', [], Response::HTTP_SEE_OTHER);
+    //     }
+    // 
+    //     return $this->renderForm('user/new.html.twig', [
+    //         'user' => $user,
+    //         'form' => $form,
+    //     ]);
+    // }
 
-        if ($form->isSubmitted() && $form->isValid()) {
-            $userRepository->add($user, true);
-
-            return $this->redirectToRoute('app_backoffice_members_list', [], Response::HTTP_SEE_OTHER);
-        }
-
-        return $this->renderForm('user/new.html.twig', [
-            'user' => $user,
-            'form' => $form,
-        ]);
-    }
     /**
      * @Route("/back_office/utilisateurs/{id}", name="app_backoffice_users_show", requirements={"id":"\d+"}, methods={"GET"})
      */

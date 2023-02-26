@@ -19,7 +19,7 @@
             </p>
             <p class="card-text">
                 Status : 
-                {% include "_fragments/_user_verified_tag.html.twig" with {status:user.isActive} %}
+                {% include "_fragments/_user_verified_tag.html.twig" with {status:user.isVerified} %}
                 {% include "_fragments/_user_active_tag.html.twig" with {status:user.isActive} %}
             </p>
             <p class="card-text">Inscription : {{ user.createdAt|date('d-m-Y H:i:s') }}</p>

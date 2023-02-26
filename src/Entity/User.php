@@ -6,6 +6,7 @@ use App\Repository\UserRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\Validator\Constraints as Assert;
@@ -14,6 +15,7 @@ use Symfony\Component\Serializer\Annotation\Groups;
 /**
  * @ORM\Entity(repositoryClass=UserRepository::class)
  * @ORM\Table(name="`user`")
+ * @UniqueEntity(fields={"email"}, message="There is already an account with this email")
  */
 class User implements UserInterface, PasswordAuthenticatedUserInterface
 {
@@ -40,7 +42,6 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     /**
      * @var string The hashed password
      * @ORM\Column(type="string")
-     * @Assert\NotBlank
      * @Groups({"users"})
      */
     private $password;
@@ -99,7 +100,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
      * @Groups({"advices"})
      * @Groups({"users"})
      */
-    private $is_active;
+    private $is_active = true;
 
     /**
      * @ORM\Column(type="datetime_immutable")
@@ -130,6 +131,15 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
      * @Groups({"users"})
      */
     private $advices;
+
+    /**
+     * @ORM\Column(type="boolean")
+     * @Assert\Type("bool")
+     * @Groups({"articles"})
+     * @Groups({"advices"})
+     * @Groups({"users"})
+     */
+    private $is_verified = false;
 
     public function __construct()
     {
@@ -338,7 +348,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         return $this;
     }
 
-    public function isIsActive(): ?bool
+    public function isActive(): ?bool
     {
         return $this->is_active;
     }
@@ -370,6 +380,18 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     public function setUpdatedAt(?\DateTimeImmutable $updated_at): self
     {
         $this->updated_at = $updated_at;
+
+        return $this;
+    }
+
+    public function isVerified(): bool
+    {
+        return $this->is_verified;
+    }
+
+    public function setIsVerified(bool $is_verified): self
+    {
+        $this->is_verified = $is_verified;
 
         return $this;
     }

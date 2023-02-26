@@ -18,7 +18,7 @@
 					Vérifié :&nbsp;&nbsp;
 					{% include "_fragments/_user_verified_tag.html.twig" with {status:user.isActive} %}
 					&nbsp;&nbsp;&nbsp;&nbsp;Actif :&nbsp;&nbsp;
-					{% include "_fragments/_user_active_tag.html.twig" with {status:user.isActive} %}
+					{% include "_fragments/_user_active_tag.html.twig" with {status:user.isVerified} %}
 				</div>
 			</div>
 			{{ include('user/_form.html.twig', {'button_label': 'Valider'}) }}
