@@ -8,8 +8,9 @@
         <div class="row">
 
             <!-- Left Sidebar -->
+            <div class="col-md-3">
             {% include "_fragments/_user_sidebar.html.twig" with {user:user} %}
-    
+            </div>
             <!-- Main Content -->
             <div class="col-md-9">
                 {% if (user.articles is defined) and (user.articles is not empty) %}

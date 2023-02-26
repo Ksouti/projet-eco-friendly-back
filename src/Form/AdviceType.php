@@ -19,45 +19,24 @@ class AdviceType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
-            ->add('title',TextType::class,[
-                "label" => "Titre du conseil",
+            ->add('title', TextType::class, [
+                "label" => "Titre",
                 "attr" => [
                     "placeholder" => "Titre du conseil"
                 ]
             ])
-            ->add('content',TextareaType::class,[
-                "label" => "Votre conseil",
-                "attr"=>[
-                    "placeholder" => "Votre conseil"
+            ->add('content', TextareaType::class, [
+                "label" => "Conseil",
+                "attr" => [
+                    "placeholder" => "Contenu du conseil"
                 ]
             ])
-                
-            ->add('status',ChoiceType::class,[
-                "choices" => [
-                    "Brouillon" => 0,
-                    "Publié" => 1,
-                    "Désactivé" => 2,
-            ],
-                "label" => "Statut"
-            ])
-            
-            ->add('contributor',EntityType::class,[
-                "class" => User ::class,
-                "label" => "Ecrit par",
-                "attr"=>[
-                    "placeholder" => "Ecrit par",
-            ]
-            ])
-            
-            ->add('category',EntityType::class,[
-                "class" => Category::class,
-                "label" => "Catégorie" ,
-                "multiple" => false,     
-                //"expended" => true,           
 
-            ])     
-        ;       
-        
+            ->add('category', EntityType::class, [
+                "class" => Category::class,
+                "label" => "Catégorie",
+                "multiple" => false,
+            ]);
     }
 
     public function configureOptions(OptionsResolver $resolver): void

@@ -46,6 +46,7 @@
                             Categorie : <span class="badge bg-info mb-2">{{ advice.category.name }}</span>
                         </p>         
                         <div class="d-flex flex-nowrap justify-content-end align-items-center">
+                            <a class="m-1 btn-sm btn btn-warning" data-bs-toggle="tooltip" data-bs-placement="top" title="&Eacute;diter" href="{{ path('app_backoffice_advices_edit', {'id': advice.id}) }}"><i class="bi bi-pencil"></i></a>
                             <form method="post" action="{{ path('app_backoffice_advices_deactivate', {'id': advice.id}) }}" onsubmit="return confirm('Êtes-vous sûr de vouloir désactiver cet advice ?');">
                                 <input type="hidden" name="_token" value="{{ csrf_token('deactivate' ~ advice.id) }}" />
                                 <button class="m-1 btn-sm btn btn-danger" data-bs-toggle="tooltip" data-bs-placement="top" title="D&eacute;sactiver"><i class="bi bi-x-circle"></i></button>
