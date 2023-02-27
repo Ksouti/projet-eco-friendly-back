@@ -31,12 +31,12 @@ class EmailVerifier
             $user->getEmail()
         );
 
+        // dd($verifyEmailRouteName, $user->getId(), $user->getEmail(), $signatureComponents);
+
         $context = $email->getContext();
         $context['signedUrl'] = $signatureComponents->getSignedUrl();
         $context['expiresAtMessageKey'] = $signatureComponents->getExpirationMessageKey();
         $context['expiresAtMessageData'] = $signatureComponents->getExpirationMessageData();
-
-        dd($signatureComponents, $context);
 
         $email->context($context);
 

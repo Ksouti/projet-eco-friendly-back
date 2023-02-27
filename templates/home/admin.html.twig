@@ -96,8 +96,8 @@
                                 <td>{{ member.nickname }}</td>
                                 <td>{{ member.firstname }} {{ member.lastname }}</td>
                                 <td>
-                                    {% include "_fragments/_user_verified_tag.html.twig" with {status:member.isActive} %}
-                                    {% include "_fragments/_user_active_tag.html.twig" with {status:member.isVerified} %}
+                                    {% include "_fragments/_user_verified_tag.html.twig" with {status:member.isVerified} %}
+                                    {% include "_fragments/_user_active_tag.html.twig" with {status:member.isActive} %}
                                 </td>
                                 <td>
                                     <a class="m-1 btn-sm btn btn-success" data-bs-toggle="tooltip" data-bs-placement="top" title="Voir" href="{{ path('app_backoffice_users_show', {'id': user.id}) }}"><i class="bi bi-eye"></i></a>

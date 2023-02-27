@@ -53,7 +53,7 @@ class RegistrationController extends AbstractController
             $entityManager->flush();
 
             $email = (new TemplatedEmail())
-                ->from('laure.riglet@gmail.com')
+                ->from('no-reply@eco-friendly.fr')
                 ->to('laure.riglet@gmail.com')
                 ->subject('test')
                 ->htmlTemplate('email/test.html.twig')
@@ -66,7 +66,7 @@ class RegistrationController extends AbstractController
                 'app_verify_email',
                 $user,
                 (new TemplatedEmail())
-                    ->from(new Address('laure.riglet@gmail.com', 'Eco-Friendly MailBot'))
+                    ->from(new Address('no-reply@eco-friendly.fr', 'Eco-Friendly MailBot'))
                     ->to($user->getEmail())
                     ->subject('Please Confirm your Email')
                     ->htmlTemplate('email/confirmation_email.html.twig')
