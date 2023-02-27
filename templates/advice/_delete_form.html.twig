@@ -1,3 +1,23 @@
+{% if advice.status is same as 2 %}
+<form 
+    method="post" 
+    action="{{ path('app_backoffice_advices_reactivate', {'id': advice.id}) }}" 
+    onsubmit="return confirm('Êtes-vous sûr de vouloir réactiver ce conseil ?');"
+    class="d-flex justify-content-start align-items-center"
+>
+    <input 
+        type="hidden" 
+        name="_token" 
+        value="{{ csrf_token('reactivate' ~ advice.id) }}"
+    >
+    <button 
+        type="submit"
+        class="btn btn-info my-2"
+    >
+            Réactiver
+    </button>
+</form>
+{% else %}
 <form 
     method="post" 
     action="{{ path('app_backoffice_advices_deactivate', {'id': advice.id}) }}" 
@@ -7,7 +27,7 @@
     <input 
         type="hidden" 
         name="_token" 
-        value="{{ csrf_token('désactiver' ~ advice.id) }}"
+        value="{{ csrf_token('deactivate' ~ advice.id) }}"
     >
     <button 
         type="submit"
@@ -16,3 +36,4 @@
             Désactiver
     </button>
 </form>
+{% endif %}
