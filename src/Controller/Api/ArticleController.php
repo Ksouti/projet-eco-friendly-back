@@ -8,7 +8,9 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
-use Symfony\Component\Security\Core\Exception\AccessDeniedException;
+
+
+
 
 class ArticleController extends AbstractController
 {
@@ -45,13 +47,6 @@ class ArticleController extends AbstractController
         }
         return $this->json($articleRepository->find($article->getId()), Response::HTTP_OK, [], ['groups' => 'articles']);
     }
-
-   //  /**
-   // * @Route("/api/authors/{id}", name="app_api_articles_findAllByUser", requirements={"id":"\d+"}, methods={"GET", "PUT", "DELETE"})
-   // */
-   // public function findAllByUser(User $author, ArticleRepository $articleRepository): Response
-   // {
-   //     return $this->json($articleRepository->findAllOrderByUserId($author), Response::HTTP_OK, [], ['groups' => 'articles']);
-   // }
+ 
 
 }
