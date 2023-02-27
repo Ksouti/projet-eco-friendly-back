@@ -3,23 +3,16 @@
 namespace App\Controller\Api;
 
 use App\Entity\Article;
-use App\Entity\User;
 use App\Repository\ArticleRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
-use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 
 class ArticleController extends AbstractController
 {
-    private $authChecker;
-
-    public function __construct(AuthorizationCheckerInterface $authChecker)
-    {
-        $this->authChecker = $authChecker;
-    }
+   
     /**
      * @Route("/api/articles", name="app_api_articles_list")
      */
