@@ -7,9 +7,15 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
     <title>{% block title %}Back-office | Eco Friendly{% endblock %}</title>
-        
-    <link rel="icon" type="image/x-icon" href="{{asset('favicon.ico')}}">
-    <link rel="stylesheet" href="{{asset('/assets/css/bootstrap.min.css')}}">
+
+    {% block stylesheets %}
+        {{ encore_entry_link_tags('app') }}
+    {% endblock %}
+
+    {% block javascripts %}
+        {{ encore_entry_script_tags('app') }}
+    {% endblock %}
+
     <script href="{{asset('/assets/js/bootstrap.bundle.min.js')}}" defer></script>
 </head>
 

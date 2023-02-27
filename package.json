@@ -18,5 +18,11 @@
         "dev": "encore dev",
         "watch": "encore dev --watch",
         "build": "encore production --progress"
-    }
+    },
+    "name": "eco-friendly",
+    "version": "1.0.0",
+    "description": "apotheosis project",
+    "main": "public/index.php",
+    "repository": "git@github.com:O-clock-Lara/projet-11-eco-friendly-back.git",
+    "author": "Laure-Riglet <laure.riglet@gmail.com>"
 }
