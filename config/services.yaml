@@ -4,7 +4,12 @@
 # Put parameters here that don't need to change on each machine where the app is deployed
 # https://symfony.com/doc/current/best_practices.html#use-parameters-for-application-configuration
 parameters:
-    app.imgfolderurl: '%env(string:BASE_URL_IMG)%'
+    # app.assets: '%env(bool:ON_MAINTENANCE)%'
+    uploads_article_url: '%env(string:BASE_URL_UPLOADS)%/articles/'
+    # app.uploads_user: '%kernel.project_dir%/public/uploads/users'
+    assets_directory: '%kernel.project_dir%/public/assets/'
+    uploads_article_directory: '%kernel.project_dir%/public/uploads/articles/'
+    uploads_user_directory: '%kernel.project_dir%/public/uploads/users/'
 
 services:
     # default configuration for services in *this* file
