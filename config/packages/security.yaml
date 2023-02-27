@@ -90,18 +90,14 @@ security:
         #      roles: ROLE_ADMIN,
         #  }
 
-       
         # ! API
         - { path: ^/api/login, roles: PUBLIC_ACCESS }
-        - { path: ^/api/categories, roles: ROLE_ADMIN }
-        - { path: ^/api/articles, roles: [ROLE_AUTHOR, ROLE_USER], methods: [GET] }
-        - { path: ^/api/articles/\d+, roles: ROLE_AUTHOR, methods: [PUT, DELETE] }
-        - { path: ^/api/advices, roles: ROLE_USER }
-
-
+        - { path: ^/api/articles, roles: ROLE_AUTHOR, methods: [POST,PUT, DELETE] }
+        - { path: ^/api/articles/\d+, roles: ROLE_AUTHOR, methods: [POST,PUT, DELETE]  }
+        - { path: ^/api/advices/\d+, roles: ROLE_USER, methods: [POST,PUT, DELETE] }
 
     role_hierarchy:
-        ROLE_ADMIN: ['ROLE_AUTHOR']
+        ROLE_ADMIN: ['ROLE_AUTHOR','ROLE_USER']
         ROLE_AUTHOR: ['ROLE_USER']
 
 when@test:
