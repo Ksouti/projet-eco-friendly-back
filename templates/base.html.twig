@@ -41,8 +41,10 @@
                             href="{{ path('app_backoffice_articles_list') }}">Articles</a>
                         <a class="d-flex justify-content-center align-items-center nav-link{% if app.request.pathinfo is same as (path('app_backoffice_advices_list'))%} active{% endif %}" 
                             href="{{ path('app_backoffice_advices_list') }}">Conseils</a>
-                        <a class="d-flex justify-content-center align-items-center nav-link{% if app.request.pathinfo is same as (path('app_backoffice_advices_list'))%} active{% endif %}" 
+                        <a class="d-flex justify-content-center align-items-center nav-link{% if app.request.pathinfo is same as (path('app_backoffice_categories_list'))%} active{% endif %}" 
                             href="{{ path('app_backoffice_categories_list') }}">Cat&eacute;gories</a>
+                        <a class="d-flex justify-content-center align-items-center nav-link{% if app.request.pathinfo is same as (path('app_backoffice_avatars_list'))%} active{% endif %}" 
+                            href="{{ path('app_backoffice_avatars_list') }}">Avatars</a>
                         {% else %}
                         <a class="d-flex justify-content-center align-items-center nav-link{% if app.request.pathinfo is same as (path('app_backoffice_articles_user', {id:app.user.id}))%} active{% endif %}" 
                             href="{{path("app_backoffice_articles_user",{id:app.user.id}) }}">Mes articles</a>

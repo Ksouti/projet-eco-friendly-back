@@ -2,13 +2,13 @@
 
 namespace App\Entity;
 
-use App\Repository\AssetRepository;
+use App\Repository\AvatarRepository;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
- * @ORM\Entity(repositoryClass=AssetRepository::class)
+ * @ORM\Entity(repositoryClass=AvatarRepository::class)
  */
-class Asset
+class Avatar
 {
     /**
      * @ORM\Id
@@ -20,17 +20,17 @@ class Asset
     /**
      * @ORM\Column(type="string", length=255)
      */
-    private $filename;
+    private $name;
 
     /**
-     * @ORM\Column(type="string", length=10)
+     * @ORM\Column(type="string", length=255)
      */
-    private $type;
+    private $picture;
 
     /**
-     * @ORM\Column(type="string", length=30)
+     * @ORM\Column(type="boolean")
      */
-    private $utilization;
+    private $is_active = true;
 
     /**
      * @ORM\Column(type="datetime_immutable")
@@ -47,38 +47,26 @@ class Asset
         return $this->id;
     }
 
-    public function getFilename(): ?string
+    public function getName(): ?string
     {
-        return $this->filename;
+        return $this->name;
     }
 
-    public function setFilename(string $filename): self
+    public function setName(string $name): self
     {
-        $this->filename = $filename;
+        $this->name = $name;
 
         return $this;
     }
 
-    public function getType(): ?string
+    public function getPicture(): ?string
     {
-        return $this->type;
+        return $this->picture;
     }
 
-    public function setType(string $type): self
+    public function setPicture(string $picture): self
     {
-        $this->type = $type;
-
-        return $this;
-    }
-
-    public function getUtilization(): ?string
-    {
-        return $this->utilization;
-    }
-
-    public function setUtilization(string $utilization): self
-    {
-        $this->utilization = $utilization;
+        $this->picture = $picture;
 
         return $this;
     }
@@ -103,6 +91,18 @@ class Asset
     public function setUpdatedAt(?\DateTimeImmutable $updated_at): self
     {
         $this->updated_at = $updated_at;
+
+        return $this;
+    }
+
+    public function isActive(): ?bool
+    {
+        return $this->is_active;
+    }
+
+    public function setIsActive(bool $is_active): self
+    {
+        $this->is_active = $is_active;
 
         return $this;
     }
