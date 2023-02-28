@@ -18,21 +18,31 @@ PHP 7.4.3 (minimum)
 
 `composer install`
 
-4. Configure a database and fill in the `.env` file
+4. Install Webpack Encore
+
+`yarn init`
+
+`yarn install` or `yarn --ignore-engines` if you get an error regarding jest-worker
+
+`yarn dev`
+
+5. Configure a database and fill in the `.env` file
 
 `DATABASE_URL="<db_type>://<username>:<password>@127.0.0.1:3306/<db_name>?serverVersion=<server_version>"`
 
-5. Run migration
+6. Run migration
 
 `php bin/console make:migration`
+
 `php bin/console doctrine:make:migrations`
 
-6. Install CKEditor
+7. Install CKEditor
 
 `php bin/console ckeditor:install`
+
 `php bin/console assets:install`
 
-7. (optionnal) Load fixtures
+8. (optionnal) Load fixtures
 
 `php bin/console doctrine:fixtures:load`
 
