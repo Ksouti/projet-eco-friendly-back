@@ -28,9 +28,10 @@ PHP 7.4.3 (minimum)
 
 `yarn dev`
 
-1. Configure a database and fill in the `.env` file
+5. Setup a database and fill in the `.env` file
 
 `DATABASE_URL="<db_type>://<username>:<password>@127.0.0.1:3306/<db_name>?serverVersion=<server_version>"`
+`BASE_URL="http://www.your-app-root.com"`
 
 6. Run migration
 
