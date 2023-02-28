@@ -14,6 +14,18 @@ security:
         dev:
             pattern: ^/(_(profiler|wdt)|css|images|js)/
             security: false
+        login:
+            pattern: ^/api/login
+            stateless: true
+            json_login:
+                check_path: /api/login_check
+                success_handler: lexik_jwt_authentication.handler.authentication_success
+                failure_handler: lexik_jwt_authentication.handler.authentication_failure
+
+        api:
+            pattern:   ^/api
+            stateless: true
+            jwt: ~
         main:
             lazy: true
             provider: app_user_provider
@@ -39,17 +51,41 @@ security:
         - { path: '^/back_office/connexion|deconnexion', roles: [] }
         - { path: '^/back_office/utilisateurs|conseils', roles: ROLE_ADMIN }
         - {
-              path: '^/back_office/auteurs/(\d+)/(editer|modifier|desactiver)',
+              # path: '^back_office/auteurs/(\d+)/(editer|modifier|desactiver)$',
+              path: '^/back_office/connexion|deconnexion',
+              roles: [],
+
+
+            #    { path: ^/api/articles, roles: [] }
+            #    { path: ^/api/advices, roles: [] }
+            #    { path: ^/api/users/\d+$, roles: ROLE_USER }
+            #    { path: ^/api/users/d+$, roles: ROLE_USER }
+            #    { path: ^/api/login_check, roles: ROLE_USER }
+            
+          }
+        - {
+              # path: '^/back_office/auteurs/(\d+)/(editer|modifier|desactiver)$',
+              path: '^/back_office/auteurs|utilisateurs|conseils',
+              roles: ROLE_ADMIN,
+          }
+        - {
+              # path: '^back_office/auteur/(\d+)/(editer|modifier|desactiver)$',
+              path: '^/back_office/auteur/(\d+)/(editer|modifier|desactiver)',
               roles: ROLE_AUTHOR,
           }
         - { path: '^/back_office/articles', roles: ROLE_AUTHOR }
         - { path: '^/back_office/', roles: ROLE_AUTHOR }
 
         # ! API
-        - { path: ^/api/, roles: PUBLIC_ACCESS }
+        - { path: ^/api/login, roles: PUBLIC_ACCESS }
+        - { path: ^/api/advices, roles: ROLE_USER, methods: [POST] }
+        - { path: ^/api/advices/\d+, roles: ROLE_USER, methods: [PUT, DELETE] }
+        - { path: ^/api/users, roles: ROLE_USER, methods: [GET, POST, PUT, DELETE] }
+
 
     role_hierarchy:
-        ROLE_ADMIN: ['ROLE_AUTHOR']
+        ROLE_ADMIN: ['ROLE_AUTHOR','ROLE_USER']
+        ROLE_AUTHOR: ['ROLE_USER']
 
 when@test:
     security:

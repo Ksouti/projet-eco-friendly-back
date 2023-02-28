@@ -9,8 +9,12 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
+
+
+
 class ArticleController extends AbstractController
 {
+   
     /**
      * @Route("/api/articles", name="app_api_articles_list")
      */
@@ -43,4 +47,6 @@ class ArticleController extends AbstractController
         }
         return $this->json($articleRepository->find($article->getId()), Response::HTTP_OK, [], ['groups' => 'articles']);
     }
+ 
+
 }
