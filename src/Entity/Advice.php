@@ -49,7 +49,7 @@ class Advice
 
     /**
      * @ORM\Column(type="integer")
-     * @Assert\Length(min = 1, max = 128)
+     * @Assert\Range(min = 0, max = 2)
      * @Assert\NotBlank
      * @Groups({"advices"})
      * @Groups({"users"})

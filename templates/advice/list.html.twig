@@ -1,47 +1,55 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Les conseils{% endblock %}
+{% block title %}Liste des conseils | Eco Friendly{% endblock %}
 
 {% block body %}
-    <h1>Les conseils</h1>
-    <a href="{{ path('app_backoffice_advices_new') }}">Ajouter un conseil</a>
 
-    <table class="table table-hover">
-        <thead>
-            <tr>
-                <th>Id</th>
-                <th>Titre</th>
-                <th>Contenu</th>
-                <th>Slug</th>
-                <th>Statut</th>
-                <th>Créé le</th>
-                <th>Modifié le</th>
-                <th>actions</th>
-            </tr>
-        </thead>
-        <tbody>
-        {% for advice in advices %}
-            <tr>
-                <td>{{ advice.id }}</td>
-                <td>{{ advice.title }}</td>
-                <td>{{ advice.Content }}</td>
-                <td>{{ advice.Slug }}</td>
-                <td>{{ advice.status }}</td>
-                <td>{{ advice.createdAt ? advice.createdAt|date('Y-m-d H:i:s') : '' }}</td>
-                <td>{{ advice.updatedAt ? advice.updatedAt|date('Y-m-d H:i:s') : '' }}</td>
-
-                <td>
-                    <a class="btn btn-success" href="{{ path('app_backoffice_advices_show', {'id': advice.id}) }}"><i class="bi bi-eye"></i></a>
-                    <a class="btn btn-warning" href="{{ path('app_backoffice_advices_edit', {'id': advice.id}) }}"><i class="bi bi-pencil"></i></a>
-                </td>
-            </tr>
-        {% else %}
-            <tr>
-                <td colspan="8">Aucun enregistrement trouvé</td>
-            </tr>
-        {% endfor %}
-        </tbody>
-    </table>
-
-    <a href="{{ path('app_backoffice_advices_new') }}">Créer un conseil</a>
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h1>Liste des conseils</h1>
+    </div>
+    <div class="table-responsive-lg">
+        <table class="table table-striped table-hover table-sm">
+            <thead>
+                <tr>
+                    <th>#</th>
+                    <th>Titre</th>
+                    <th>Contenu</th>
+                    <th>Contributeur</th>
+                    <th class="text-center">Catégorie</th>
+                    <th class="text-center">Statut</th>
+                    <th>Créé le</th>
+                    <th>Edité le</th>
+                    <th class="text-center">Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+            {% for advice in advices %}
+                <tr>
+                    <td>{{ advice.id }}</td>
+                    <td>{{ advice.title }}</td>
+                    <td>{{ advice.content|slice(0, 50) }} [...]</td>
+                    <td>{{ advice.contributor.nickname }}</td>
+                    <td class="text-center">{{ advice.category.name }}</td>
+                    <td class="text-center">
+                        {% include "_fragments/_content_status_tag.html.twig" with {status:advice.status} %}
+                    </td>
+                    <td>{{ advice.createdAt|date('d-m-Y H:i:s') }}</td>
+                    <td>{{ advice.updatedAt ? advice.updatedAt|date('d-m-Y H:i:s') : '' }}</td>
+                    <td class="d-flex flex-nowrap text-center">
+                        <a class="m-1 btn-sm btn btn-success" data-bs-toggle="tooltip" data-bs-placement="top" title="Voir" href="{{ path('app_backoffice_advices_show', {'id': advice.id}) }}"><i class="bi bi-eye"></i></a>
+                        <a class="m-1 btn-sm btn btn-warning" data-bs-toggle="tooltip" data-bs-placement="top" title="&Eacute;diter" href="{{ path('app_backoffice_advices_edit', {'id': advice.id}) }}"><i class="bi bi-pencil"></i></a>
+                        <form method="post" action="{{ path('app_backoffice_advices_deactivate', {'id': advice.id}) }}" onsubmit="return confirm('Êtes-vous sûr de vouloir désactiver ce conseil ?');">
+                            <input type="hidden" name="_token" value="{{ csrf_token('deactivate' ~ advice.id) }}" />
+                            <button class="m-1 btn-sm btn btn-danger" data-bs-toggle="tooltip" data-bs-placement="top" title="D&eacute;sactiver"><i class="bi bi-x-circle"></i></button>
+                        </form>
+                    </td>
+                </tr>
+            {% else %}
+                <tr>
+                    <td colspan="8">Aucun conseil trouvé</td>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+    </div>
 {% endblock %}

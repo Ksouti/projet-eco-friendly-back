@@ -1,4 +1,39 @@
-<form method="post" action="{{ path('app_backoffice_articles_deactivate', {'id': article.id}) }}" onsubmit="return confirm('Etes-vous sûr de vouloir désactiver cet article?');" class="d-flex justify-content-end align-items-center">
-    <input type="hidden" name="_token" value="{{ csrf_token('désactiver' ~ article.id) }}">
-    <button type="submit" class="btn btn-danger" style="margin-right: 10px;">Désactiver</button>
+{% if article.status is same as 2 %}
+<form 
+    method="post" 
+    action="{{ path('app_backoffice_articles_reactivate', {'id': article.id}) }}" 
+    onsubmit="return confirm('Etes-vous sûr de vouloir réactiver cet article?');" 
+    class="d-flex justify-content-start align-items-center"
+>
+    <input 
+        type="hidden" 
+        name="_token" 
+        value="{{ csrf_token('reactivate' ~ article.id) }}"
+    >
+    <button 
+        type="submit" 
+        class="btn btn-info my-2"
+    >
+        Réactiver
+    </button>
 </form>
+{% else %}
+<form 
+    method="post" 
+    action="{{ path('app_backoffice_articles_deactivate', {'id': article.id}) }}" 
+    onsubmit="return confirm('Etes-vous sûr de vouloir désactiver cet article?');" 
+    class="d-flex justify-content-start align-items-center"
+>
+    <input 
+        type="hidden" 
+        name="_token" 
+        value="{{ csrf_token('deactivate' ~ article.id) }}"
+    >
+    <button 
+        type="submit" 
+        class="btn btn-danger my-2"
+    >
+        Désactiver
+    </button>
+</form>
+{% endif %}

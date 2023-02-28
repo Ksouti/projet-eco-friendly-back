@@ -4,11 +4,10 @@ namespace App\Form;
 
 use App\Entity\Article;
 use App\Entity\Category;
-use App\Entity\User;
+use FOS\CKEditorBundle\Form\Type\CKEditorType;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
-use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\Extension\Core\Type\UrlType;
 use Symfony\Component\Form\FormBuilderInterface;
@@ -20,20 +19,25 @@ class ArticleType extends AbstractType
     {
         $builder
             ->add('title', TextType::class, [
-                "label" => "Titre du conseil",
+                "label" => "Titre",
                 "attr" => [
-                    "placeholder" => "Titre du conseil"
-                ]
-            ])
-            ->add('content', TextareaType::class, [
-                "label" => "Votre conseil",
-                "attr" => [
-                    "placeholder" => "Votre conseil"
+                    "placeholder" => "Titre de l'article"
                 ]
             ])
 
+            ->add('content', CKEditorType::class, [
+                "label" => "Article",
+                "attr" => [
+                    "placeholder" => "Contenu de l'article"
+                ],
+                "config" => [
+                    "uiColor" => "#eeeeee",
+                    "toolbar" => "basic",
+                ],
+            ])
+
             ->add('picture', UrlType::class, [
-                "label" => "Votre image *",
+                "label" => "Image d'illustration*",
                 "attr" => [
                     "placeholder" => "Votre image"
                 ],
@@ -42,19 +46,10 @@ class ArticleType extends AbstractType
 
             ->add('status', ChoiceType::class, [
                 "choices" => [
-                    "brouillon" => 0,
-                    "publié" => 1,
-                    "désactivé" => 2,
+                    "Brouillon" => 0,
+                    "Publié" => 1,
                 ],
                 "label" => "Statut"
-            ])
-
-            ->add('author', EntityType::class, [
-                "class" => User::class,
-                "label" => "Auteur",
-                "attr" => [
-                    "placeholder" => "Auteur",
-                ]
             ])
 
             ->add('category', EntityType::class, [

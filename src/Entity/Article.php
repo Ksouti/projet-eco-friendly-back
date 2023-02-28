@@ -38,7 +38,6 @@ class Article
     /**
      * @ORM\Column(type="string", length=128)
      * @Assert\Length(min = 1, max = 128)
-     * @Assert\NotBlank
      * @Groups({"articles"})
      */
     private $slug;
@@ -60,14 +59,14 @@ class Article
     private $status;
 
     /**
-     * @ORM\Column(type="datetime")
+     * @ORM\Column(type="datetime_immutable")
      * @Assert\NotBlank
      * @Groups({"articles"})
      */
     private $created_at;
 
     /**
-     * @ORM\Column(type="datetime")
+     * @ORM\Column(type="datetime_immutable", nullable=true)
      * @Groups({"articles"})
      */
     private $updated_at;
@@ -170,7 +169,7 @@ class Article
         return $this->updated_at;
     }
 
-    public function setUpdatedAt(\DateTimeInterface $updated_at): self
+    public function setUpdatedAt(?\DateTimeInterface $updated_at): self
     {
         $this->updated_at = $updated_at;
 

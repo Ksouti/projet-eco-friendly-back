@@ -39,19 +39,45 @@ class ArticleRepository extends ServiceEntityRepository
             $this->getEntityManager()->flush();
         }
     }
-    
+
     /**
-     * @return Article[] Returns an array of articles objects ordered by userId
+     * @return Article[] Returns an array of articles objects ordered by descending date with a limit of 5 by default
      */
-    public function findAllOrderByUserId($author){
-        
+    public function findForHome(int $limit = 5)
+    {
         return $this->createQueryBuilder('ar')
-            ->where("ar.author = :author")
-            ->setParameter("author",$author)
+            ->orderBy('ar.created_at', 'DESC')
+            ->where('ar.status = 1')
+            ->setMaxResults($limit)
             ->getQuery()
             ->getResult();
     }
-    
+
+    /**
+     * @return Article[] Returns an array of articles objects ordered by descending date
+     */
+    public function findAllOrderByDate()
+    {
+        return $this->createQueryBuilder('ar')
+            ->orderBy('ar.created_at', 'DESC')
+            ->getQuery()
+            ->getResult();
+    }
+
+    /**
+     * @return Article[] Returns an array of articles objects filtered by user
+     */
+    public function findAllByUser($author)
+    {
+
+        return $this->createQueryBuilder('ar')
+            ->where("ar.author = :author")
+            ->setParameter("author", $author)
+            ->orderBy('ar.created_at', 'DESC')
+            ->getQuery()
+            ->getResult();
+    }
+
     // Available parameters: category, page, limit, offset, sorttype, order, search
     public function findAllWithParameters(
         ?int $category,
