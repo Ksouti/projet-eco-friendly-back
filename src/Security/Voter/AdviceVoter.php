@@ -36,10 +36,7 @@ class AdviceVoter extends Voter
         if (!$user instanceof UserInterface) {
             return false;
         }
-        if ($this->security->isGranted('ROLE_USER')) {
-            return true;
-        }
-
+        
          // you know $subject is a Advice object, thanks to `supports()`
         /** @var Advice $advice */
         $advice = $subject;
