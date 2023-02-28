@@ -6,7 +6,7 @@
 parameters:
     assets_avatar_url: '%env(string:BASE_URL)%/assets/img/avatars/'
     uploads_article_url: '%env(string:BASE_URL)%/uploads/articles/'
-    # app.uploads_user: '%kernel.project_dir%/public/uploads/users'
+    uploads_user_url: '%env(string:BASE_URL)%/uploads/users/'
     assets_avatar_directory: '%kernel.project_dir%/public/assets/img/avatars/'
     uploads_article_directory: '%kernel.project_dir%/public/uploads/articles/'
     uploads_user_directory: '%kernel.project_dir%/public/uploads/users/'
