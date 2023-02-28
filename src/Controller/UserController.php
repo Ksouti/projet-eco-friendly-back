@@ -124,7 +124,7 @@ class UserController extends AbstractController
     }
 
     /**
-     * @Route("/back_office/utilisateurs/{id}", name="app_backoffice_users_deactivate", requirements={"id":"\d+"}, methods={"POST"})
+     * @Route("/back_office/utilisateurs/{id}/desactiver", name="app_backoffice_users_deactivate", requirements={"id":"\d+"}, methods={"POST"})
      */
     public function deactivate(Request $request, User $user, UserRepository $userRepository): Response
     {
@@ -135,4 +135,19 @@ class UserController extends AbstractController
 
         return $this->redirectToRoute('app_backoffice_members_list', [], Response::HTTP_SEE_OTHER);
     }
+
+    /**
+     * @Route("/back_office/utilisateurs/{id}/reactiver", name="app_backoffice_users_reactivate", requirements={"id":"\d+"}, methods={"POST"})
+     */
+    public function reactivate(Request $request, User $user, UserRepository $userRepository): Response
+    {
+        if ($this->isCsrfTokenValid('reactivate' . $user->getId(), $request->request->get('_token'))) {
+            $user->setIsActive(true);
+            $userRepository->add($user, true);
+        }
+
+        return $this->redirectToRoute('app_backoffice_members_list', [], Response::HTTP_SEE_OTHER);
+    }
+
+    
 }

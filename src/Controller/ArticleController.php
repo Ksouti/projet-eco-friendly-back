@@ -135,4 +135,16 @@ class ArticleController extends AbstractController
         }
         return $this->redirectToRoute('app_backoffice_articles_list', [], Response::HTTP_SEE_OTHER);
     }
+
+     /**
+     * @Route("/back_office/articles/{id}/reactiver", name="app_backoffice_articles_reactivate", requirements={"id":"\d+"}, methods={"POST"})
+     */
+    public function reactivate(Request $request, Article $article, ArticleRepository $articleRepository): Response
+    {
+        if ($this->isCsrfTokenValid('reactivate' . $article->getId(), $request->request->get('_token'))) {
+            $article->setStatus(1);
+            $articleRepository->add($article, true);
+        }
+        return $this->redirectToRoute('app_backoffice_articles_list', [], Response::HTTP_SEE_OTHER);
+    }
 }
