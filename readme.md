@@ -20,13 +20,15 @@ PHP 7.4.3 (minimum)
 
 4. Install Webpack Encore
 
+`composer require symfony/webpack-encore-bundle`
+
 `yarn init`
 
 `yarn install` or `yarn --ignore-engines` if you get an error regarding jest-worker
 
 `yarn dev`
 
-5. Configure a database and fill in the `.env` file
+1. Configure a database and fill in the `.env` file
 
 `DATABASE_URL="<db_type>://<username>:<password>@127.0.0.1:3306/<db_name>?serverVersion=<server_version>"`
 
