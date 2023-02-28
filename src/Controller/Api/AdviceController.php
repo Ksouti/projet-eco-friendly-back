@@ -100,6 +100,8 @@ class AdviceController extends AbstractController
      */
     public function update(Request $request, ?Advice $advice, SluggerService $slugger, SerializerInterface $serializer, ValidatorInterface $validator, AdviceRepository $adviceRepository, CategoryRepository $categoryRepository): Response
     {
+        $this->denyAccessUnlessGranted('advice_edit', $advice);
+
         if (!$advice) {
             return $this->json(['errors' => ['Conseil' => 'Ce conseil n\'existe pas']], Response::HTTP_NOT_FOUND);
         }
@@ -152,6 +154,8 @@ class AdviceController extends AbstractController
      */
     public function delete(?Advice $advice, AdviceRepository $adviceRepository): Response
     {
+        $this->denyAccessUnlessGranted('advice_deactivate', $advice);
+
         if (!$advice) {
             return $this->json(['errors' => 'Ce conseil n\'existe pas'], Response::HTTP_NOT_FOUND);
         }
