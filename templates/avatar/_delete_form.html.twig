@@ -1,0 +1,43 @@
+{% if avatar.isActive %}
+
+<form 
+    method="post" 
+    action="{{ path('app_backoffice_avatars_deactivate', {'id': avatar.id}) }}" 
+    onsubmit="return confirm('Êtes-vous sûr de vouloir désactiver ce conseil ?');"
+    class="d-flex justify-content-start align-items-center"
+>
+    <input 
+        type="hidden" 
+        name="_token" 
+        value="{{ csrf_token('deactivate' ~ avatar.id) }}"
+    >
+    <button 
+        type="submit"
+        class="btn btn-danger my-2"
+    >
+            Désactiver
+    </button>
+</form>
+    
+    {% else %}
+
+<form 
+    method="post" 
+    action="{{ path('app_backoffice_avatars_reactivate', {'id': avatar.id}) }}" 
+    onsubmit="return confirm('Êtes-vous sûr de vouloir réactiver ce conseil ?');"
+    class="d-flex justify-content-start align-items-center"
+>
+    <input 
+        type="hidden" 
+        name="_token" 
+        value="{{ csrf_token('reactivate' ~ avatar.id) }}"
+    >
+    <button 
+        type="submit"
+        class="btn btn-info my-2"
+    >
+            Réactiver
+    </button>
+</form>
+
+    {% endif %}

@@ -39,7 +39,7 @@
                                     {% include "_fragments/_user_active_tag.html.twig" with {status:author.isActive} %}
                                 </td>
                                 <td>
-                                    <a class="m-1 btn-sm btn btn-success" data-bs-toggle="tooltip" data-bs-placement="top" title="Voir" href="{{ path('app_backoffice_users_show', {'id': user.id}) }}"><i class="bi bi-eye"></i></a>
+                                    <a class="m-1 btn-sm btn btn-success" data-bs-toggle="tooltip" data-bs-placement="top" title="Voir" href="{{ path('app_backoffice_users_show', {'id': author.id}) }}"><i class="bi bi-eye"></i></a>
                                 </td>
                             </tr>
                             {% endfor %}                        
@@ -100,7 +100,7 @@
                                     {% include "_fragments/_user_active_tag.html.twig" with {status:member.isActive} %}
                                 </td>
                                 <td>
-                                    <a class="m-1 btn-sm btn btn-success" data-bs-toggle="tooltip" data-bs-placement="top" title="Voir" href="{{ path('app_backoffice_users_show', {'id': user.id}) }}"><i class="bi bi-eye"></i></a>
+                                    <a class="m-1 btn-sm btn btn-success" data-bs-toggle="tooltip" data-bs-placement="top" title="Voir" href="{{ path('app_backoffice_users_show', {'id': member.id}) }}"><i class="bi bi-eye"></i></a>
                                 </td>
                             </tr>
                             {% endfor %}                        

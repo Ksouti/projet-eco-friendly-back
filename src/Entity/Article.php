@@ -44,7 +44,6 @@ class Article
 
     /**
      * @ORM\Column(type="string", length=255)
-     * @Assert\Url
      * @Assert\Length(min = 10, max = 255)
      * @Groups({"articles"})
      */

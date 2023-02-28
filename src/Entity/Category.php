@@ -50,7 +50,6 @@ class Category
     /**
      * @ORM\Column(type="string", length=32)
      * @Assert\Length(min = 1, max = 32)
-     * @Assert\NotBlank
      * @Groups({"articles"})
      * @Groups({"advices"})
      * @Groups({"users"})

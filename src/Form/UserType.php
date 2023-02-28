@@ -6,10 +6,11 @@ use App\Entity\User;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\EmailType;
+use Symfony\Component\Form\Extension\Core\Type\FileType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
-use Symfony\Component\Form\Extension\Core\Type\UrlType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
+use Symfony\Component\Validator\Constraints\File;
 
 class UserType extends AbstractType
 {
@@ -46,24 +47,29 @@ class UserType extends AbstractType
 
             ->add('roles', ChoiceType::class, [
                 "choices" => [
-                    "Auteur" => "ROLE_AUTHOR",
                     "Admin" =>  "ROLE_ADMIN",
-                    "Utilisateur" => "ROLE_USER"
+                    "Auteur" => "ROLE_AUTHOR",
+                    "Membre" => "ROLE_USER"
                 ],
                 "expanded" => true,
                 "multiple" => true,
-                "choice_attr" => [
-                    // Set the "disabled" attribute only for the ROLE_USER checkbox
-                    "Utilisateur" => ["disabled" => true],
-                ],
             ])
 
-            ->add('avatar', UrlType::class, [
-                "label" => "Votre avatar *",
-                "attr" => [
-                    "placeholder" => "Votre avatar"
+            ->add('avatar', FileType::class, [
+                "label" => "Image d'illustration",
+                "mapped" => false,
+                "required" => false,
+                "constraints" => [
+                    new File([
+                        "maxSize" => "2048k",
+                        "mimeTypes" => [
+                            "image/jpeg",
+                            "image/png",
+                            "image/gif",
+                        ],
+                        "mimeTypesMessage" => "Veuillez uploader une image valide",
+                    ])
                 ],
-                "help" => "* L'url d'un avatar"
             ]);
     }
 
