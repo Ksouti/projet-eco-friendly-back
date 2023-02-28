@@ -47,16 +47,12 @@ class UserType extends AbstractType
 
             ->add('roles', ChoiceType::class, [
                 "choices" => [
-                    "Auteur" => "ROLE_AUTHOR",
                     "Admin" =>  "ROLE_ADMIN",
-                    "Utilisateur" => "ROLE_USER"
+                    "Auteur" => "ROLE_AUTHOR",
+                    "Membre" => "ROLE_USER"
                 ],
                 "expanded" => true,
                 "multiple" => true,
-                "choice_attr" => [
-                    // Set the "disabled" attribute only for the ROLE_USER checkbox
-                    "Utilisateur" => ["disabled" => true],
-                ],
             ])
 
             ->add('avatar', FileType::class, [

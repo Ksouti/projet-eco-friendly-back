@@ -45,10 +45,12 @@ class UserController extends AbstractController
     {
         $user = new User();
         $user->setCreatedAt(new DateTimeImmutable());
-        $form = $this->createForm(UserType::class, $user);
-        $form->handleRequest($request);
+        $user->setIsActive(true);
         // ! TO REMOVE !
         $user->setPassword('testtest');
+
+        $form = $this->createForm(UserType::class, $user);
+        $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
             $picture = $form->get('avatar')->getData();
@@ -89,12 +91,27 @@ class UserController extends AbstractController
     /**
      * @Route("/back_office/utilisateurs/{id}/modifier", name="app_backoffice_users_edit", requirements={"id":"\d+"}, methods={"GET", "POST"})
      */
-    public function edit(Request $request, User $user, UserRepository $userRepository): Response
+    public function edit(Request $request, SluggerService $slugger, User $user, UserRepository $userRepository): Response
     {
         $form = $this->createForm(UserType::class, $user);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
+            $picture = $form->get('avatar')->getData();
+            if ($picture) {
+                $pictureName = substr($slugger->slugify($user->getNickname()), 0, 10) . uniqid() . '.' . $picture->guessExtension();
+
+                try {
+                    $picture->move(
+                        $this->getParameter('uploads_user_directory'),
+                        $pictureName
+                    );
+                    $user->setAvatar($this->getParameter('uploads_user_url') . $pictureName);
+                } catch (FileException $e) {
+                    $this->addFlash('danger', 'Une erreur est survenue lors de l\'upload de l\'image');
+                }
+            }
+
             $userRepository->add($user, true);
 
             return $this->redirectToRoute('app_backoffice_members_list', [], Response::HTTP_SEE_OTHER);
