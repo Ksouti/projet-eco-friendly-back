@@ -28,8 +28,10 @@ class ArticleController extends AbstractController
     /**
      * @Route("/back_office/auteurs/{id}", name="app_backoffice_articles_user", requirements={"id":"\d+"}, methods={"GET"})
      */
-    public function findAllByUser(User $author, ArticleRepository $articleRepository): Response
+    public function findAllByUser(User $author, ArticleRepository $articleRepository, Article $article): Response
     {
+        $this->denyAccessUnlessGranted('article_backoffice_show', $article);
+
         return $this->render('article/list.html.twig', [
             'articles' => $articleRepository->findAllByUser($author),
         ]);

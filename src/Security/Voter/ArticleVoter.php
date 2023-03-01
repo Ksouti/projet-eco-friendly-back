@@ -16,6 +16,8 @@ class ArticleVoter extends Voter
     const ARTICLE_DEACTIVATE = 'article_deactivate';
     const ARTICLE_REACTIVATE = 'article_reactivate';
 
+    const ARTICLE_BACKOFFICE_SHOW   = 'article_backoffice_show';
+
     private $security;
 
     public function __construct(Security $security)
@@ -64,8 +66,14 @@ class ArticleVoter extends Voter
                 // return true or false
                 // J'appelle ma méthode canEdit pour vérifier si l'utilisateur a le droit
                 return $this->hasRight($article, $user);
-                break;                
-        }
+                break;   
+            case self::ARTICLE_BACKOFFICE_SHOW:
+                // logic to determine if the user can EDIT
+                // return true or false
+                return $this->canShow($article, $user);
+                break;
+        }             
+        
 
         return false;
     }
@@ -79,5 +87,16 @@ class ArticleVoter extends Voter
         // renvoi true ou false
         return $user === $article->getAuthor();
 
+    }
+
+    /**
+     * @param Article $article the subject of the voter
+     * @param User $user the current user 
+     * @return bool true if current user match advice user
+     */
+    private function canShow(Article $article, User $user){ 
+
+        // renvoi true ou false
+        return $user === $article->getAuthor();
     }
 }

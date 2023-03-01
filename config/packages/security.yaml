@@ -65,12 +65,12 @@ security:
           }
         - {
               # path: '^/back_office/auteurs/(\d+)/(editer|modifier|desactiver)$',
-              path: '^/back_office/auteurs|utilisateurs|conseils',
+              path: '^/back_office/utilisateurs|conseils',
               roles: ROLE_ADMIN,
           }
         - {
               # path: '^back_office/auteur/(\d+)/(editer|modifier|desactiver)$',
-              path: '^/back_office/auteur/(\d+)/(editer|modifier|desactiver)',
+              path: '^/back_office/auteurs/(\d+)/(editer|modifier|desactiver)',
               roles: ROLE_AUTHOR,
           }
         - { path: '^/back_office/articles', roles: ROLE_AUTHOR }
