@@ -12,6 +12,8 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Security\Core\Exception\AccessDeniedException;
+use Symfony\Component\Security\Core\Role\Role;
 
 class ArticleController extends AbstractController
 {
@@ -28,10 +30,13 @@ class ArticleController extends AbstractController
     /**
      * @Route("/back_office/auteurs/{id}", name="app_backoffice_articles_user", requirements={"id":"\d+"}, methods={"GET"})
      */
-    public function findAllByUser(User $author, ArticleRepository $articleRepository, Article $article): Response
+    public function findAllByUser(User $author, ArticleRepository $articleRepository): Response
     {
-        $this->denyAccessUnlessGranted('article_show', $article);
-
+        // Vérifier si l'utilisateur connecté est bien l'auteur des articles
+        if ($this->getUser() !== $author && !$this->isGranted('ROLE_ADMIN')) {
+            throw new AccessDeniedException('Accès refusé.');
+        }
+    
         return $this->render('article/list.html.twig', [
             'articles' => $articleRepository->findAllByUser($author),
         ]);

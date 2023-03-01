@@ -11,7 +11,7 @@ use Symfony\Component\Security\Core\User\UserInterface;
 
 class UserVoter extends Voter
 {
-    const ARTICLE_SHOW = 'article_show';
+    const ARTICLE_BACKOFFICE_SHOW = 'article_backoffice_show';
 
     private $security;
 
@@ -24,7 +24,7 @@ class UserVoter extends Voter
     {
         // replace with your own logic
         // https://symfony.com/doc/current/security/voters.html
-        return in_array($attribute, [self::ARTICLE_SHOW])
+        return in_array($attribute, [self::ARTICLE_BACKOFFICE_SHOW])
             && $subject instanceof \App\Entity\Article;
     }
 
@@ -35,15 +35,15 @@ class UserVoter extends Voter
         if (!$user instanceof UserInterface) {
             return false;
         }
-    
-        // you know $subject is a Post object, thanks to `supports()`
+        
+        // you know $subject is a Article object, thanks to `supports()`
         /** @var Article $article */
         $article = $subject;
 
 
         // ... (check conditions and return true to grant permission) ...
         switch ($attribute) {
-            case self::ARTICLE_SHOW:
+            case self::ARTICLE_BACKOFFICE_SHOW:
                 // logic to determine if the user can EDIT
                 // return true or false
                 return $this->canShow($article, $user);
@@ -59,7 +59,7 @@ class UserVoter extends Voter
      * @return bool true if current user match advice user
      */
     private function canShow(Article $article, User $user){ 
-
+        
         // renvoi true ou false
         return $user === $article->getAuthor();
     }
