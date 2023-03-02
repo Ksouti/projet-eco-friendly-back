@@ -23,6 +23,8 @@ class UserController extends AbstractController
      */
     public function read(?User $user, UserRepository $userRepository): Response
     {
+        $this->denyAccessUnlessGranted('user_read', $user);
+
         if (!$user) {
             return $this->json(['errors' => 'Cet utilisateur n\'existe pas'], Response::HTTP_NOT_FOUND);
         }
