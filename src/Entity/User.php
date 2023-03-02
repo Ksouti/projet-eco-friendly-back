@@ -102,6 +102,15 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     private $is_active;
 
     /**
+     * @ORM\Column(type="boolean")
+     * @Assert\Type("bool")
+     * @Groups({"articles"})
+     * @Groups({"advices"})
+     * @Groups({"users"})
+     */
+    private $is_verified;
+
+    /**
      * @ORM\Column(type="datetime_immutable")
      * @Assert\NotBlank
      * @Assert\Type("DateTimeImmutable")
@@ -338,7 +347,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         return $this;
     }
 
-    public function isIsActive(): ?bool
+    public function isActive(): ?bool
     {
         return $this->is_active;
     }
@@ -370,6 +379,18 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     public function setUpdatedAt(?\DateTimeImmutable $updated_at): self
     {
         $this->updated_at = $updated_at;
+
+        return $this;
+    }
+
+    public function isVerified(): ?bool
+    {
+        return $this->is_verified;
+    }
+
+    public function setIsVerified(bool $is_verified): self
+    {
+        $this->is_verified = $is_verified;
 
         return $this;
     }

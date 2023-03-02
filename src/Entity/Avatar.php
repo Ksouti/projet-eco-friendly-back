@@ -106,4 +106,9 @@ class Avatar
 
         return $this;
     }
+
+    public function isIsActive(): ?bool
+    {
+        return $this->is_active;
+    }
 }
