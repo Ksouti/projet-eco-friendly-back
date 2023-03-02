@@ -43,11 +43,14 @@ class ArticleRepository extends ServiceEntityRepository
     /**
      * @return Article[] Returns an array of articles objects ordered by descending date with a limit of 5 by default
      */
-    public function findForHome(int $limit = 5)
+    public function findForHome(int $limit = 5, int $status = 1, int $category = null)
     {
         return $this->createQueryBuilder('ar')
             ->orderBy('ar.created_at', 'DESC')
-            ->where('ar.status = 1')
+            ->where('ar.status = :status')
+            ->setParameter('status', $status)
+            ->andWhere('ar.category = :category')
+            ->setParameter('category', $category)
             ->setMaxResults($limit)
             ->getQuery()
             ->getResult();

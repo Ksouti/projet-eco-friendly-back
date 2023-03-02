@@ -52,7 +52,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
      * @Groups({"advices"})
      * @Groups({"users"})
      */
-    private $roles = [];
+    private $roles;
 
     /**
      * @ORM\Column(type="string", length=64, nullable=true)

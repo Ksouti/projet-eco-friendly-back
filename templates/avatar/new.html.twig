@@ -1,0 +1,15 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Modifier un avatar | Eco-Friendly{% endblock %}
+
+{% block body %}
+
+    <div class="container-fluid col-12 col-lg-8 mx-auto">
+    <h1>Créer un avatar</h1>
+    <div class="row mb-3">
+        {{ include('avatar/_form.html.twig', {'button_label': 'Valider'}) }}
+    </div>
+    <a href="{{ path('app_backoffice_avatars_list') }}">Retour à la liste</a>
+    </div>
+
+{% endblock %}

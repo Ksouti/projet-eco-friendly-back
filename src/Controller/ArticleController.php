@@ -9,6 +9,7 @@ use App\Repository\ArticleRepository;
 use App\Service\SluggerService;
 use DateTimeImmutable;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\File\Exception\FileException;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -48,6 +49,22 @@ class ArticleController extends AbstractController
 
         if ($form->isSubmitted() && $form->isValid()) {
             $article->setSlug($slugger->slugify($article->getTitle()));
+
+            $picture = $form->get('picture')->getData();
+            if ($picture) {
+                $pictureName = substr($slugger->slugify($article->getTitle()), 0, 10) . uniqid() . '.' . $picture->guessExtension();
+
+                try {
+                    $picture->move(
+                        $this->getParameter('uploads_article_directory'),
+                        $pictureName
+                    );
+                    $article->setPicture($this->getParameter('uploads_article_url') . $pictureName);
+                } catch (FileException $e) {
+                    $this->addFlash('danger', 'Une erreur est survenue lors de l\'upload de l\'image');
+                }
+            }
+
             $articleRepository->add($article, true);
 
             return $this->redirectToRoute('app_backoffice_articles_show', ['id' => $article->getId()], Response::HTTP_SEE_OTHER);
@@ -84,6 +101,22 @@ class ArticleController extends AbstractController
         if ($form->isSubmitted() && $form->isValid()) {
             $article->setSlug($slugger->slugify($article->getTitle()));
             $article->setUpdatedAt(new DateTimeImmutable());
+
+            $picture = $form->get('picture')->getData();
+            if ($picture) {
+                $pictureName = substr($slugger->slugify($article->getTitle()), 0, 10) . uniqid() . '.' . $picture->guessExtension();
+
+                try {
+                    $picture->move(
+                        $this->getParameter('uploads_article_directory'),
+                        $pictureName
+                    );
+                    $article->setPicture($this->getParameter('uploads_article_url') . $pictureName);
+                } catch (FileException $e) {
+                    $this->addFlash('danger', 'Une erreur est survenue lors de l\'upload de l\'image');
+                }
+            }
+
             $articleRepository->add($article, true);
 
             return $this->redirectToRoute('app_backoffice_articles_list', [], Response::HTTP_SEE_OTHER);

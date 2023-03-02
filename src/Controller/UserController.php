@@ -5,13 +5,14 @@ namespace App\Controller;
 use App\Entity\User;
 use App\Form\UserType;
 use App\Repository\UserRepository;
+use App\Service\SluggerService;
 use DateTimeImmutable;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
-
+use Symfony\Component\HttpFoundation\File\Exception\FileException;
 
 class UserController extends AbstractController
 {
@@ -40,14 +41,33 @@ class UserController extends AbstractController
     /**
      * @Route("/back_office/utilisateurs/ajouter", name="app_backoffice_users_new", methods={"GET" , "POST"})
      */
-    public function new(Request $request, UserRepository $userRepository): Response
+    public function new(Request $request, SluggerService $slugger, UserRepository $userRepository): Response
     {
         $user = new User();
+        $user->setCreatedAt(new DateTimeImmutable());
+        $user->setIsActive(true);
+        // ! TO REMOVE !
+        $user->setPassword('testtest');
+
         $form = $this->createForm(UserType::class, $user);
         $form->handleRequest($request);
-        $user->setCreatedAt(new DateTimeImmutable());
 
         if ($form->isSubmitted() && $form->isValid()) {
+            $picture = $form->get('avatar')->getData();
+            if ($picture) {
+                $pictureName = substr($slugger->slugify($user->getNickname()), 0, 10) . uniqid() . '.' . $picture->guessExtension();
+
+                try {
+                    $picture->move(
+                        $this->getParameter('uploads_user_directory'),
+                        $pictureName
+                    );
+                    $user->setAvatar($this->getParameter('uploads_user_url') . $pictureName);
+                } catch (FileException $e) {
+                    $this->addFlash('danger', 'Une erreur est survenue lors de l\'upload de l\'image');
+                }
+            }
+
             $userRepository->add($user, true);
 
             return $this->redirectToRoute('app_backoffice_members_list', [], Response::HTTP_SEE_OTHER);
@@ -73,12 +93,27 @@ class UserController extends AbstractController
     /**
      * @Route("/back_office/utilisateurs/{id}/modifier", name="app_backoffice_users_edit", requirements={"id":"\d+"}, methods={"GET", "POST"})
      */
-    public function edit(Request $request, User $user, UserRepository $userRepository): Response
+    public function edit(Request $request, SluggerService $slugger, User $user, UserRepository $userRepository): Response
     {
         $form = $this->createForm(UserType::class, $user);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
+            $picture = $form->get('avatar')->getData();
+            if ($picture) {
+                $pictureName = substr($slugger->slugify($user->getNickname()), 0, 10) . uniqid() . '.' . $picture->guessExtension();
+
+                try {
+                    $picture->move(
+                        $this->getParameter('uploads_user_directory'),
+                        $pictureName
+                    );
+                    $user->setAvatar($this->getParameter('uploads_user_url') . $pictureName);
+                } catch (FileException $e) {
+                    $this->addFlash('danger', 'Une erreur est survenue lors de l\'upload de l\'image');
+                }
+            }
+
             $userRepository->add($user, true);
 
             return $this->redirectToRoute('app_backoffice_members_list', [], Response::HTTP_SEE_OTHER);

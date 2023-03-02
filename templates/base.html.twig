@@ -7,27 +7,22 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
     <title>{% block title %}Back-office | Eco Friendly{% endblock %}</title>
-        
-    <link rel="icon" type="image/x-icon" href="{{asset('favicon.ico')}}" />
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.3/font/bootstrap-icons.css" />
     
-    {% block stylesheets %}
-        {{ encore_entry_link_tags('app') }}
-    {% endblock %}
-
-    {% block javascripts %}
-        {{ encore_entry_script_tags('app') }}
-    {% endblock %}
+    <link rel="icon" type="image/x-icon" href="{{ asset('favicon.ico') }}" />
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.3/font/bootstrap-icons.css" />
+    <link rel="stylesheet" href="{{ asset('assets/css/bootstrap.min.css') }}" />
+    <script src="{{ asset('assets/js/popper.min.js') }}" defer /></script>
+    <script src="{{ asset('assets/js/bootstrap.bundle.min.js') }}" defer /></script>
+    <script src="{{ asset('assets/js/app.js') }}" defer /></script>
 
 </head>
 
 <body>
-
     
     <header>
         <div class="sticky-top">
             <nav class="navbar navbar-expand-lg bg-cstm-gradient px-4 py-0" style="border-radius: 0% 0% 10% 10%; box-shadow: 0px 10px 5px 3px #efefea;">
-                <a class="navbar-brand d-flex justify-content-center align-items-center" href="#">
+                <a class="navbar-brand d-flex justify-content-center align-items-center" href="{{ path('app_backoffice_home') }}">
                     <img src="{{asset('assets/img/logos/logo-eco-friendly-V3-maxcropcenterv.png')}}" alt="Logo" width="58" height="64" class="d-inline-block align-text-center" />
                     <span class="font-monospace fw-semibold fs-4">Eco-Friendly</span>
                 </a>
@@ -47,8 +42,10 @@
                             href="{{ path('app_backoffice_articles_list') }}">Articles</a>
                         <a class="d-flex justify-content-center align-items-center nav-link{% if app.request.pathinfo is same as (path('app_backoffice_advices_list'))%} active{% endif %}" 
                             href="{{ path('app_backoffice_advices_list') }}">Conseils</a>
-                        <a class="d-flex justify-content-center align-items-center nav-link{% if app.request.pathinfo is same as (path('app_backoffice_advices_list'))%} active{% endif %}" 
+                        <a class="d-flex justify-content-center align-items-center nav-link{% if app.request.pathinfo is same as (path('app_backoffice_categories_list'))%} active{% endif %}" 
                             href="{{ path('app_backoffice_categories_list') }}">Cat&eacute;gories</a>
+                        <a class="d-flex justify-content-center align-items-center nav-link{% if app.request.pathinfo is same as (path('app_backoffice_avatars_list'))%} active{% endif %}" 
+                            href="{{ path('app_backoffice_avatars_list') }}">Avatars</a>
                         {% else %}
                         <a class="d-flex justify-content-center align-items-center nav-link{% if app.request.pathinfo is same as (path('app_backoffice_articles_user', {id:app.user.id}))%} active{% endif %}" 
                             href="{{path("app_backoffice_articles_user",{id:app.user.id}) }}">Mes articles</a>

@@ -8,10 +8,11 @@ use FOS\CKEditorBundle\Form\Type\CKEditorType;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
+use Symfony\Component\Form\Extension\Core\Type\FileType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
-use Symfony\Component\Form\Extension\Core\Type\UrlType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
+use Symfony\Component\Validator\Constraints\File;
 
 class ArticleType extends AbstractType
 {
@@ -36,12 +37,21 @@ class ArticleType extends AbstractType
                 ],
             ])
 
-            ->add('picture', UrlType::class, [
-                "label" => "Image d'illustration*",
-                "attr" => [
-                    "placeholder" => "Votre image"
+            ->add('picture', FileType::class, [
+                "label" => "Image d'illustration",
+                "mapped" => false,
+                "required" => false,
+                "constraints" => [
+                    new File([
+                        "maxSize" => "2048k",
+                        "mimeTypes" => [
+                            "image/jpeg",
+                            "image/png",
+                            "image/gif",
+                        ],
+                        "mimeTypesMessage" => "Veuillez uploader une image valide",
+                    ])
                 ],
-                "help" => "* L'url d'une image"
             ])
 
             ->add('status', ChoiceType::class, [
