@@ -18,23 +18,23 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 class UserController extends AbstractController
 {
-   /**
- * @Route("/api/users/{id}", name="app_api_users_read", requirements={"id":"\d+"}, methods={"GET"})
- */
-public function read(?User $user, UserRepository $userRepository): Response
-{
-    // Vérifier si l'utilisateur existe
-    if (!$user) {
-        return $this->json(['errors' => 'Cet utilisateur n\'existe pas'], Response::HTTP_NOT_FOUND);
-    }
-    
-    // Vérifier si l'utilisateur connecté est le propriétaire des données
-    if ($this->getUser() !== $user) {
-        throw new AccessDeniedException('Access Denied.');
-    }
+    /**
+     * @Route("/api/users/{id}", name="app_api_users_read", requirements={"id":"\d+"}, methods={"GET"})
+     */
+    public function read(?User $user, UserRepository $userRepository): Response
+    {
+        // Vérifier si l'utilisateur existe
+        if (!$user) {
+            return $this->json(['errors' => 'Cet utilisateur n\'existe pas'], Response::HTTP_NOT_FOUND);
+        }
 
-    return $this->json($userRepository->find($user->getId()), Response::HTTP_OK, [], ['groups' => 'users']);
-}
+        // Vérifier si l'utilisateur connecté est le propriétaire des données
+        if ($this->getUser() !== $user) {
+            throw new AccessDeniedException('Access Denied.');
+        }
+
+        return $this->json($userRepository->find($user->getId()), Response::HTTP_OK, [], ['groups' => 'users']);
+    }
 
 
     /**
@@ -46,10 +46,10 @@ public function read(?User $user, UserRepository $userRepository): Response
             return $this->json(['errors' => ['Utilisateur' => 'Cet utilisateur n\'existe pas']], Response::HTTP_NOT_FOUND);
         }
 
-     // Vérifier si l'utilisateur connecté est le propriétaire des données
+        // Vérifier si l'utilisateur connecté est le propriétaire des données
         if ($this->getUser() !== $user) {
-        throw new AccessDeniedException('Access Denied.');
-    }
+            throw new AccessDeniedException('Access Denied.');
+        }
         try {
             $user = $serializer->deserialize($request->getContent(), User::class, 'json');
             $data = json_decode($request->getContent(), true);
@@ -140,14 +140,15 @@ public function read(?User $user, UserRepository $userRepository): Response
         if ($this->getUser() !== $user) {
             throw new AccessDeniedException('Access Denied.');
 
-        // reatribute articles and advices to admin
-        // TODO : create a service to do this and an anonyminous user to dump articles and advices
-        $advices = $user->getAdvices();
-        foreach ($advices as $advice) {
-            $advice->setContributor($userRepository->find(1));
-            $adviceRepository->add($advice, true);
+            // reatribute articles and advices to admin
+            // TODO : create a service to do this and an anonyminous user to dump articles and advices
+            $advices = $user->getAdvices();
+            foreach ($advices as $advice) {
+                $advice->setContributor($userRepository->find(1));
+                $adviceRepository->add($advice, true);
+            }
+            $userRepository->remove($user, true);
+            return $this->json([], Response::HTTP_NO_CONTENT, [], ['groups' => 'users']);
         }
-        $userRepository->remove($user, true);
-        return $this->json([], Response::HTTP_NO_CONTENT, [], ['groups' => 'users']);
     }
 }
