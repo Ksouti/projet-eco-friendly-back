@@ -75,16 +75,25 @@ class RegistrationController extends AbstractController
     /**
      * @Route("/verify/email", name="app_verify_email")
      */
-    public function verifyUserEmail(Request $request, TranslatorInterface $translator, UserInterface $user, UserRepository $userRepository): Response
+    public function verifyUserEmail(Request $request, UserRepository $userRepository): Response
     {
-        // $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
-        // validate email confirmation link, sets User::isVerified=true and persists
-        try {
-            $this->emailVerifier->handleEmailConfirmation($request, $this->getUser());
-        } catch (VerifyEmailExceptionInterface $exception) {
-            return $this->json(['errors' => $translator->trans($exception->getReason())], Response::HTTP_BAD_REQUEST);
+        $id = $request->get('id');
+
+        if (!$id) {
+            return $this->redirectToRoute('app_root');
         }
 
+        $user = $userRepository->find($id);
+
+        if (!$user) {
+            return $this->redirectToRoute('app_root');
+        }
+
+        try {
+            $this->emailVerifier->handleEmailConfirmation($request->getUri(), $user->getId(), $user->getEmail());
+        } catch (VerifyEmailExceptionInterface $exception) {
+            return $this->json(['errors' => $exception->getReason()], Response::HTTP_BAD_REQUEST);
+        }
         return $this->json($userRepository->find($request->getUser()), Response::HTTP_OK, [], ['groups' => 'users']);
     }
 }
