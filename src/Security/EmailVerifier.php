@@ -49,7 +49,7 @@ class EmailVerifier
     {
         $this->verifyEmailHelper->validateEmailConfirmation($request->getUri(), $user->getId(), $user->getEmail());
 
-        $this->entityManager->getRepository(User::class)->findBy(['email' => $user->getEmail()])->setIsVerified(true);
+        $this->entityManager->getRepository(User::class)->findOneBy(['email' => $user->getEmail()])->setIsVerified(true);
 
         $this->entityManager->persist($user);
         $this->entityManager->flush();

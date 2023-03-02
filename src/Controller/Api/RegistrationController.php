@@ -67,7 +67,7 @@ class RegistrationController extends AbstractController
                 ->from(new Address('no-reply@eco-friendly.fr', 'Eco-Friendly'))
                 ->to($user->getEmail())
                 ->subject('Confirmez votre adresse email et rejoignez-nous !')
-                ->htmlTemplate('email/email_verification.html.twig')
+                ->htmlTemplate('email/confirmation_email.html.twig')
         );
         // do anything else you need here, like send an email
         return $this->json($userRepository->find($user->getId()), Response::HTTP_OK, [], ['groups' => 'users']);
@@ -88,12 +88,11 @@ class RegistrationController extends AbstractController
         if (!$user) {
             return $this->redirectToRoute('app_root');
         }
-
         try {
-            $this->emailVerifier->handleEmailConfirmation($request->getUri(), $user->getId(), $user->getEmail());
+            $this->emailVerifier->handleEmailConfirmation($request, $user);
         } catch (VerifyEmailExceptionInterface $exception) {
             return $this->json(['errors' => $exception->getReason()], Response::HTTP_BAD_REQUEST);
         }
-        return $this->json($userRepository->find($request->getUser()), Response::HTTP_OK, [], ['groups' => 'users']);
+        return $this->redirect('https://oclock.io/');
     }
 }
