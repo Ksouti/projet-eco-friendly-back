@@ -2,6 +2,7 @@
 
 namespace App\EventListener;
 
+use App\Entity\Advice;
 use Doctrine\ORM\EntityManagerInterface;
 use Lexik\Bundle\JWTAuthenticationBundle\Event\AuthenticationSuccessEvent;
 use Symfony\Component\Security\Core\User\UserInterface;
@@ -26,6 +27,8 @@ class AuthenticationSuccessListener
         if (!$user instanceof UserInterface) {
             return;
         }
+
+        // TODO: try to serialize the user object instead of doing this
 
         $data['user'] = [
             'id' => $user->getId(),
