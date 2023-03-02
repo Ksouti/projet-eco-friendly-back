@@ -16,6 +16,7 @@ use Symfony\Component\Mailer\MailerInterface;
 use Symfony\Component\Mime\Address;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\Serializer\Exception\NotEncodableValueException;
 use Symfony\Component\Serializer\SerializerInterface;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
@@ -42,7 +43,6 @@ class RegistrationController extends AbstractController
             $user->setIsActive(true);
             $user->setIsVerified(false);
             $user->setCreatedAt(new DateTimeImmutable());
-            $user->setPassword($userPasswordHasher->hashPassword($user, $user->getPassword()));
         } catch (NotEncodableValueException $e) {
             return $this->json(['errors' => 'Json non valide'], Response::HTTP_BAD_REQUEST);
         }
@@ -56,7 +56,7 @@ class RegistrationController extends AbstractController
             }
             return $this->json(['errors' => $errorsArray], Response::HTTP_BAD_REQUEST);
         }
-
+        $user->setPassword($userPasswordHasher->hashPassword($user, $user->getPassword()));
         $userRepository->add($user, true);
 
         // generate a signed url and email it to the user
@@ -72,18 +72,15 @@ class RegistrationController extends AbstractController
         // do anything else you need here, like send an email
         return $this->json($userRepository->find($user->getId()), Response::HTTP_OK, [], ['groups' => 'users']);
     }
-
-
     /**
      * @Route("/verify/email", name="app_verify_email")
      */
-    public function verifyUserEmail(Request $request, TranslatorInterface $translator, UserRepository $userRepository): Response
+    public function verifyUserEmail(Request $request, TranslatorInterface $translator, UserInterface $user, UserRepository $userRepository): Response
     {
         // $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
-
         // validate email confirmation link, sets User::isVerified=true and persists
         try {
-            $this->emailVerifier->handleEmailConfirmation($request, $request->getUser());
+            $this->emailVerifier->handleEmailConfirmation($request, $this->getUser());
         } catch (VerifyEmailExceptionInterface $exception) {
             return $this->json(['errors' => $translator->trans($exception->getReason())], Response::HTTP_BAD_REQUEST);
         }

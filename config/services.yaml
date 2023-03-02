@@ -46,4 +46,4 @@ services:
                 name: doctrine.orm.event_listener
                 event: PostUpdate
                 entity: App\Entity\Advice
-                method: SetSlug
+                method: SetSlug           
