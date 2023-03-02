@@ -76,7 +76,7 @@ class ArticleVoter extends Voter
      */
     private function hasRight(Article $article, User $user){ 
 
-        // renvoi true ou false
+        // return true or false
         return $user === $article->getAuthor();
 
     }

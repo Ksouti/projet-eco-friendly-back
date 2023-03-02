@@ -11,6 +11,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 use Symfony\Component\Serializer\Exception\NotEncodableValueException;
 use Symfony\Component\Serializer\Serializer;
 use Symfony\Component\Serializer\SerializerInterface;
@@ -18,18 +19,24 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 class UserController extends AbstractController
 {
-    /**
-     * @Route("/api/users/{id}", name="app_api_users_read", requirements={"id":"\d+"}, methods={"GET"})
-     */
-    public function read(?User $user, UserRepository $userRepository): Response
-    {
-        $this->denyAccessUnlessGranted('user_read', $user);
-
-        if (!$user) {
-            return $this->json(['errors' => 'Cet utilisateur n\'existe pas'], Response::HTTP_NOT_FOUND);
-        }
-        return $this->json($userRepository->find($user->getId()), Response::HTTP_OK, [], ['groups' => 'users']);
+   /**
+ * @Route("/api/users/{id}", name="app_api_users_read", requirements={"id":"\d+"}, methods={"GET"})
+ */
+public function read(?User $user, UserRepository $userRepository): Response
+{
+    // Vérifier si l'utilisateur existe
+    if (!$user) {
+        return $this->json(['errors' => 'Cet utilisateur n\'existe pas'], Response::HTTP_NOT_FOUND);
     }
+    
+    // Vérifier si l'utilisateur connecté est le propriétaire des données
+    if ($this->getUser() !== $user) {
+        throw new AccessDeniedException('Access Denied.');
+    }
+
+    return $this->json($userRepository->find($user->getId()), Response::HTTP_OK, [], ['groups' => 'users']);
+}
+
 
     /**
      * @Route("/api/users/{id}", name="app_api_users_update", requirements={"id":"\d+"}, methods={"PUT"})
@@ -40,6 +47,10 @@ class UserController extends AbstractController
             return $this->json(['errors' => ['Utilisateur' => 'Cet utilisateur n\'existe pas']], Response::HTTP_NOT_FOUND);
         }
 
+     // Vérifier si l'utilisateur connecté est le propriétaire des données
+        if ($this->getUser() !== $user) {
+        throw new AccessDeniedException('Access Denied.');
+    }
         try {
             $user = $serializer->deserialize($request->getContent(), User::class, 'json');
             $data = json_decode($request->getContent(), true);
@@ -126,6 +137,10 @@ class UserController extends AbstractController
         if (!$user) {
             return $this->json(['errors' => ['user' => 'Cet utilisateur n\'existe pas']], Response::HTTP_NOT_FOUND);
         }
+        // Vérifier si l'utilisateur connecté est le propriétaire des données
+        if ($this->getUser() !== $user) {
+            throw new AccessDeniedException('Access Denied.');
+
         // reatribute articles and advices to admin
         // TODO : create a service to do this and an anonyminous user to dump articles and advices
         $advices = $user->getAdvices();

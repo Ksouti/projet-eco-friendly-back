@@ -72,5 +72,6 @@ class UserVoter extends Voter
         
         // return true or false
         return $user === $user->getId();
+      
     }
 }
