@@ -4,6 +4,7 @@ namespace App\DataFixtures;
 
 use App\Entity\Advice;
 use App\Entity\Article;
+use App\Entity\Avatar;
 use App\Entity\Category;
 use App\Entity\User;
 use App\Service\SluggerService;
@@ -48,36 +49,41 @@ class AppFixtures extends Fixture
             $manager->persist($category);
         }
 
+        $manager->flush();
+
+        echo 'Categories added !' . PHP_EOL;
+
         // ! Adding Users
 
         $passwordHasher = $this->passwordHasher;
 
         $roles = [
             'ROLE_AUTHOR',
-            'ROLE_ADMIN',
+            '',
             '',
             '',
         ];
 
         $avatars = [
-            'avatar-bear.png',
-            'avatar-bluetit.png',
-            'avatar-deer.png',
-            'avatar-fox.png',
-            'avatar-frog.png',
-            'avatar-hare.png',
-            'avatar-tortoiseshell.png',
+            'Ours' => 'http://vps-79770841.vps.ovh.net//assets/img/avatars/ours.png',
+            'Mésange bleu' => 'http://vps-79770841.vps.ovh.net//assets/img/avatars/mesange-bleue.png',
+            'Biche' => 'http://vps-79770841.vps.ovh.net//assets/img/avatars/biche.png',
+            'Grenouille' => 'http://vps-79770841.vps.ovh.net//assets/img/avatars/grenouille.png',
+            'Renard' => 'http://vps-79770841.vps.ovh.net//assets/img/avatars/renard.png',
+            'Lièvre' => 'http://vps-79770841.vps.ovh.net//assets/img/avatars/lievre.png',
+            'Papillon' => 'http://vps-79770841.vps.ovh.net//assets/img/avatars/papillon.png',
         ];
 
         $user = new User();
         $user->setEmail('admin@admin.com');
         $user->setRoles(['ROLE_USER', 'ROLE_ADMIN']);
         $user->setPassword($passwordHasher->hashPassword($user, 'admin'));
-        $user->setFirstname('Adminfirstname');
-        $user->setLastname('Adminlastname');
-        $user->setNickname('Adminnickname');
-        $user->setAvatar('https://picsum.photos/id/' . $faker->numberBetween(1, 200) . '/100/100.jpg');
-        $user->setIsActive(rand(0, 1));
+        $user->setFirstname('Admin');
+        $user->setLastname('Istrateur');
+        $user->setNickname('NoSysAdmin');
+        $user->setAvatar('http://vps-79770841.vps.ovh.net//uploads/users/nosysadmin63ff3ea8de28a.png');
+        $user->setIsActive(1);
+        $user->setIsVerified(1);
         $user->setCreatedAt(DateTimeImmutable::createFromMutable($faker->dateTimeBetween('-1 years', 'now')));
         $user->setUpdatedAt(DateTimeImmutable::createFromMutable($faker->dateTimeBetween('-1 years', 'now')));
         $manager->persist($user);
@@ -86,11 +92,12 @@ class AppFixtures extends Fixture
         $user->setEmail('author@author.com');
         $user->setRoles(['ROLE_USER', 'ROLE_AUTHOR']);
         $user->setPassword($passwordHasher->hashPassword($user, 'author'));
-        $user->setFirstname('Authorfirstname');
-        $user->setLastname('Authorlastname');
-        $user->setNickname('Authornickname');
-        $user->setAvatar('https://picsum.photos/id/' . $faker->numberBetween(1, 200) . '/100/100.jpg');
-        $user->setIsActive(rand(0, 1));
+        $user->setFirstname('Milan');
+        $user->setLastname('Kundera');
+        $user->setNickname('MilKuKu');
+        $user->setAvatar('http://vps-79770841.vps.ovh.net//uploads/users/chanda-bec6400ed2e2a75b.jpg');
+        $user->setIsActive(1);
+        $user->setIsVerified(1);
         $user->setCreatedAt(DateTimeImmutable::createFromMutable($faker->dateTimeBetween('-1 years', 'now')));
         $user->setUpdatedAt(DateTimeImmutable::createFromMutable($faker->dateTimeBetween('-1 years', 'now')));
         $manager->persist($user);
@@ -99,32 +106,52 @@ class AppFixtures extends Fixture
         $user->setEmail('user@user.com');
         $user->setRoles(['ROLE_USER']);
         $user->setPassword($passwordHasher->hashPassword($user, 'user'));
-        $user->setFirstname('Userfirstname');
-        $user->setLastname('Userlastname');
-        $user->setNickname('Usernickname');
-        $user->setAvatar('https://picsum.photos/id/' . $faker->numberBetween(1, 200) . '/100/100.jpg');
-        $user->setIsActive(rand(0, 1));
+        $user->setFirstname('Jeff');
+        $user->setLastname('Lebowski');
+        $user->setNickname('The_Dude');
+        $user->setAvatar('http://vps-79770841.vps.ovh.net//uploads/users/martina-br6400ec427207b.png');
+        $user->setIsActive(1);
+        $user->setIsVerified(1);
         $user->setCreatedAt(DateTimeImmutable::createFromMutable($faker->dateTimeBetween('-1 years', 'now')));
         $user->setUpdatedAt(DateTimeImmutable::createFromMutable($faker->dateTimeBetween('-1 years', 'now')));
         $manager->persist($user);
 
-        for ($index = 0; $index < 25; $index++) {
+        for ($index = 0; $index < 35; $index++) {
             $user = new User();
             $user->setEmail($faker->email);
             $user->setPassword($faker->password);
             $user->setRoles(['ROLE_USER', $roles[$faker->numberBetween(0, count($roles) - 1)]]);
-            $user->setPassword($passwordHasher->hashPassword($user, $faker->password(8, 12)));
+            $user->setPassword($faker->password(8, 12));
             $user->setFirstname($faker->firstName());
             $user->setLastname($faker->lastName());
             $user->setNickname($faker->userName());
-            $user->setAvatar('https://picsum.photos/id/' . $faker->numberBetween(1, 200) . '/100/100.jpg');
-            $user->setIsActive(rand(0, 1));
+            $user->setAvatar($avatars[array_rand($avatars)]);
+            $user->setIsActive(1);
+            $user->setIsVerified(1);
             $user->setCreatedAt(DateTimeImmutable::createFromMutable($faker->dateTimeBetween('-1 years', 'now')));
             $user->setUpdatedAt(DateTimeImmutable::createFromMutable($faker->dateTimeBetween('-1 years', 'now')));
             $manager->persist($user);
         }
 
         $manager->flush();
+
+        echo 'Users added !' . PHP_EOL;
+
+        // ! Adding default avatars
+
+        foreach ($avatars as $name => $url) {
+            $avatar = new Avatar();
+            $avatar->setName($name);
+            $avatar->setPicture($url);
+            $avatar->setIsActive(1);
+            $avatar->setCreatedAt(DateTimeImmutable::createFromMutable($faker->dateTimeBetween('-1 years', 'now')));
+            $avatar->setUpdatedAt(DateTimeImmutable::createFromMutable($faker->dateTimeBetween('-1 years', 'now')));
+            $manager->persist($avatar);
+        }
+
+        $manager->flush();
+
+        echo 'Avatars added !' . PHP_EOL;
 
         // ! Catégories & Users list
 
@@ -138,7 +165,7 @@ class AppFixtures extends Fixture
             return in_array('ROLE_AUTHOR', $user->getRoles());
         });
 
-        for ($index = 0; $index < 30; $index++) {
+        for ($index = 0; $index < 20; $index++) {
             $article = new Article();
             $article->setTitle($faker->sentence(6, true));
             $article->setContent($faker->paragraph(6, true));
@@ -152,13 +179,33 @@ class AppFixtures extends Fixture
             $manager->persist($article);
         }
 
+        $manager->flush();
+
+        for ($index = 0; $index < 20; $index++) {
+            $article = new Article();
+            $article->setTitle($faker->sentence(6, true));
+            $article->setContent($faker->paragraph(6, true));
+            $article->setSlug($this->slugger->slugify($article->getTitle()));
+            $article->setPicture('https://picsum.photos/id/' . $faker->numberBetween(1, 200) . '/300/450.jpg');
+            $article->setStatus(1);
+            $article->setAuthor($authors[array_rand($authors)]);
+            $article->setCategory($categories[$faker->numberBetween(0, count($categories) - 1)]);
+            $article->setCreatedAt(DateTimeImmutable::createFromMutable($faker->dateTimeBetween('-1 years', 'now')));
+            $article->setUpdatedAt(DateTimeImmutable::createFromMutable($faker->dateTimeBetween('-1 years', 'now')));
+            $manager->persist($article);
+        }
+
+        $manager->flush();
+
+        echo 'Articles added !' . PHP_EOL;
+
         // ! Adding Advices
 
         $contributors = array_filter($users, function ($user) {
             return !in_array('ROLE_AUTHOR', $user->getRoles()) && !in_array('ROLE_ADMIN', $user->getRoles());
         });
 
-        for ($index = 0; $index < 60; $index++) {
+        for ($index = 0; $index < 30; $index++) {
             $advice = new Advice();
             $advice->setTitle($faker->sentence(6, true));
             $advice->setContent($faker->paragraph(6, true));
@@ -172,5 +219,24 @@ class AppFixtures extends Fixture
         }
 
         $manager->flush();
+
+        for ($index = 0; $index < 30; $index++) {
+            $advice = new Advice();
+            $advice->setTitle($faker->sentence(6, true));
+            $advice->setContent($faker->paragraph(6, true));
+            $advice->setSlug($this->slugger->slugify($advice->getTitle()));
+            $advice->setStatus(1);
+            $advice->setContributor($contributors[array_rand($contributors)]);
+            $advice->setCategory($categories[$faker->numberBetween(0, count($categories) - 1)]);
+            $advice->setCreatedAt(DateTimeImmutable::createFromMutable($faker->dateTimeBetween('-1 years', 'now')));
+            $advice->setUpdatedAt(DateTimeImmutable::createFromMutable($faker->dateTimeBetween('-1 years', 'now')));
+            $manager->persist($advice);
+        }
+
+        $manager->flush();
+
+        echo 'Advices added !' . PHP_EOL;
+
+        echo 'All done !' . PHP_EOL;
     }
 }
