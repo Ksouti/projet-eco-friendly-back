@@ -13,6 +13,7 @@ use Symfony\Component\HttpFoundation\File\Exception\FileException;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 
 class ArticleController extends AbstractController
 {
@@ -31,9 +32,14 @@ class ArticleController extends AbstractController
      */
     public function findAllByUser(User $author, ArticleRepository $articleRepository): Response
     {
-        return $this->render('article/list.html.twig', [
-            'articles' => $articleRepository->findAllByUser($author),
-        ]);
+        // Vérifier si l'utilisateur connecté est bien l'auteur des articles
+        if ($this->getUser() !== $author && !$this->isGranted('ROLE_ADMIN')) {
+        throw new AccessDeniedException('Access Denied.');
+    }
+
+    return $this->render('article/list.html.twig', [
+        'articles' => $articleRepository->findAllByUser($author),
+    ]);
     }
 
     /**
@@ -81,6 +87,8 @@ class ArticleController extends AbstractController
      */
     public function show(Article $article): Response
     {
+        $this->denyAccessUnlessGranted('article_show', $article);
+
         return $this->render('article/show.html.twig', [
             'article' => $article,
         ]);
@@ -91,6 +99,8 @@ class ArticleController extends AbstractController
      */
     public function edit(Request $request, SluggerService $slugger, Article $article, ArticleRepository $articleRepository): Response
     {
+        $this->denyAccessUnlessGranted('article_edit', $article);
+
         $form = $this->createForm(ArticleType::class, $article);
         $form->handleRequest($request);
 
@@ -129,6 +139,8 @@ class ArticleController extends AbstractController
      */
     public function deactivate(Request $request, Article $article, ArticleRepository $articleRepository): Response
     {
+        $this->denyAccessUnlessGranted('article_deactivate', $article);
+
         if ($this->isCsrfTokenValid('deactivate' . $article->getId(), $request->request->get('_token'))) {
             $article->setStatus(2);
             $articleRepository->add($article, true);
@@ -141,6 +153,8 @@ class ArticleController extends AbstractController
      */
     public function reactivate(Request $request, Article $article, ArticleRepository $articleRepository): Response
     {
+        $this->denyAccessUnlessGranted('article_reactivate', $article);
+
         if ($this->isCsrfTokenValid('reactivate' . $article->getId(), $request->request->get('_token'))) {
             $article->setStatus(1);
             $articleRepository->add($article, true);

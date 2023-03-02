@@ -50,6 +50,7 @@ security:
         # ! BACK-OFFICE
         - { path: '^/back_office/connexion|deconnexion', roles: [] }
         - { path: '^/back_office/utilisateurs|conseils', roles: ROLE_ADMIN }
+        - { path: '^/back_office/categories/(\d+)/(editer|modifier|desactiver)',roles: ROLE_ADMIN}
         - {
               # path: '^back_office/auteurs/(\d+)/(editer|modifier|desactiver)$',
               path: '^/back_office/connexion|deconnexion',
@@ -63,14 +64,10 @@ security:
             #    { path: ^/api/login_check, roles: ROLE_USER }
             
           }
+        
         - {
-              # path: '^/back_office/auteurs/(\d+)/(editer|modifier|desactiver)$',
-              path: '^/back_office/auteurs|utilisateurs|conseils',
-              roles: ROLE_ADMIN,
-          }
-        - {
-              # path: '^back_office/auteur/(\d+)/(editer|modifier|desactiver)$',
-              path: '^/back_office/auteur/(\d+)/(editer|modifier|desactiver)',
+              # path: '^back_office/auteurs/(\d+)/(editer|modifier|desactiver)$',
+              path: '^/back_office/auteurs/(\d+)/(editer|modifier|desactiver)',
               roles: ROLE_AUTHOR,
           }
         - { path: '^/back_office/articles', roles: ROLE_AUTHOR }
@@ -80,7 +77,9 @@ security:
         - { path: ^/api/login, roles: PUBLIC_ACCESS }
         - { path: ^/api/advices, roles: ROLE_USER, methods: [POST] }
         - { path: ^/api/advices/\d+, roles: ROLE_USER, methods: [PUT, DELETE] }
-        - { path: ^/api/users, roles: ROLE_USER, methods: [GET, POST, PUT, DELETE] }
+        - { path: ^/api/users/\d+$, roles: ROLE_USER, methods: [GET, POST, PUT, DELETE] }
+       
+
 
 
     role_hierarchy:
