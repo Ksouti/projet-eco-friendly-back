@@ -97,12 +97,10 @@ class UserController extends AbstractController
     public function edit(Request $request, SluggerService $slugger, User $user, UserRepository $userRepository): Response
     {
         // Vérifiez si l'utilisateur à modifier a le rôle approprié
-    if (in_array('ROLE_ADMIN', $user->getRoles()) || in_array('ROLE_AUTHOR', $user->getRoles())) {
-        // Reste de votre code ici...
-    } else {
+    if (!in_array('ROLE_ADMIN', $user->getRoles()) || !in_array('ROLE_AUTHOR', $user->getRoles())) {
         throw new AccessDeniedException("Vous n'avez pas le droit de modifier cet utilisateur.");
     }
-    
+        
         $form = $this->createForm(UserType::class, $user);
         $form->handleRequest($request);
 
