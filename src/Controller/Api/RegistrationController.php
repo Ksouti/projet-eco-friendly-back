@@ -49,7 +49,7 @@ class RegistrationController extends AbstractController
             $user->setIsVerified(false);
             $user->setCreatedAt(new DateTimeImmutable());
         } catch (NotEncodableValueException $e) {
-            return $this->json(['errors' => 'Json non valide'], Response::HTTP_BAD_REQUEST);
+            return $this->json(['errors' => ['json' => ['Json non valide']]], Response::HTTP_BAD_REQUEST);
         }
 
         $errors = $validator->validate($user);
@@ -74,8 +74,9 @@ class RegistrationController extends AbstractController
                 ->subject('Confirmez votre adresse email et rejoignez-nous !')
                 ->htmlTemplate('email/confirmation_email.html.twig')
         );
-        // do anything else you need here, like send an email
-        return $this->json($userRepository->find($user->getId()), Response::HTTP_OK, [], ['groups' => 'users']);
+
+        // Return a response with a 201 status code only as the user is not yet verified
+        return $this->json([], Response::HTTP_CREATED);
     }
     /**
      * @Route("/verify/email", name="app_verify_email")

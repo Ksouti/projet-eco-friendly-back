@@ -40,7 +40,7 @@ class UserController extends AbstractController
     }
 
     /**
-     * @Route("/back_office/utilisateurs/ajouter", name="app_backoffice_users_new", methods={"GET" , "POST"})
+     * @Route("/back_office/utilisateurs/ajouter", name="app_backoffice_users_new", methods={"GET", "POST"})
      */
     public function new(Request $request, CodeGeneratorService $codeGeneratorService, SluggerService $slugger, UserRepository $userRepository): Response
     {
@@ -85,8 +85,6 @@ class UserController extends AbstractController
      */
     public function show(User $user): Response
     {
-
-
         return $this->render('user/show.html.twig', [
             'user' => $user,
         ]);

@@ -40,6 +40,9 @@ class AdviceRepository extends ServiceEntityRepository
     }
 
     /**
+     * @param int $limit The number of advices to return
+     * @param int $status The status of the advices to return
+     * @param int $category The category of the advices to return
      * @return Advice[] Returns an array of advices objects ordered by descending date with a limit of 5 by default
      */
     public function findForHome(int $limit = 5, int $status = 1, int $category = null)

@@ -14,7 +14,7 @@ use Symfony\Component\Routing\Annotation\Route;
 
 class ArticleController extends AbstractController
 {
-   
+
     /**
      * @Route("/api/articles", name="app_api_articles_list")
      */
@@ -43,10 +43,8 @@ class ArticleController extends AbstractController
     public function read(?Article $article, ArticleRepository $articleRepository): Response
     {
         if (!$article) {
-            return $this->json(['errors' => 'Cet article n\'existe pas'], Response::HTTP_NOT_FOUND);
+            return $this->json(['errors' => ['article' => ['Cet article n\'existe pas']]], Response::HTTP_NOT_FOUND);
         }
         return $this->json($articleRepository->find($article->getId()), Response::HTTP_OK, [], ['groups' => 'articles']);
     }
- 
-
 }

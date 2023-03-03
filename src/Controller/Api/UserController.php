@@ -25,7 +25,7 @@ class UserController extends AbstractController
     {
         // Vérifier si l'utilisateur existe
         if (!$user) {
-            return $this->json(['errors' => 'Cet utilisateur n\'existe pas'], Response::HTTP_NOT_FOUND);
+            return $this->json(['errors' => ['user' => ['Cet utilisateur n\'existe pas']]], Response::HTTP_NOT_FOUND);
         }
 
         // Vérifier si l'utilisateur connecté est le propriétaire des données
@@ -50,6 +50,7 @@ class UserController extends AbstractController
         if ($this->getUser() !== $user) {
             throw new AccessDeniedException('Access Denied.');
         }
+        // ! A refaire en tenant comptant du denormalizer
         try {
             $user = $serializer->deserialize($request->getContent(), User::class, 'json');
             $data = json_decode($request->getContent(), true);
@@ -61,7 +62,7 @@ class UserController extends AbstractController
             $user->setAvatar($data['avatar'] ?? $user->getAvatar());
             $user->setUpdatedAt(new \DateTimeImmutable());
         } catch (NotEncodableValueException $e) {
-            return $this->json(['errors' => 'Json non valide'], Response::HTTP_BAD_REQUEST);
+            return $this->json(['errors' => ['json' => ['Json non valide']]], Response::HTTP_BAD_REQUEST);
         }
 
         $errors = $validator->validate($user);
@@ -103,7 +104,7 @@ class UserController extends AbstractController
         $avatar = $request->files->get('avatar');
 
         if (!$avatar) {
-            return $this->json(['errors' => 'Image non valide'], Response::HTTP_BAD_REQUEST);
+            return $this->json(['picture' => ['avatar' => ['Image non valide']]], Response::HTTP_BAD_REQUEST);
         }
 
         $filename = $user->getId() . '-' . uniqid() . '.' . $avatar->guessExtension();
@@ -115,7 +116,7 @@ class UserController extends AbstractController
             );
             $user->setAvatar($this->getParameter('uploads_user_url') . $filename);
         } catch (FileException $e) {
-            return $this->json(['errors' => 'Une erreur est survenue lors de l\'upload de l\'image'], Response::HTTP_BAD_REQUEST);
+            return $this->json(['picture' => ['errors' => ['Une erreur est survenue lors de l\'upload de l\'image']]], Response::HTTP_BAD_REQUEST);
         }
 
         $userRepository->add($user, true);
@@ -134,7 +135,7 @@ class UserController extends AbstractController
     public function delete(?User $user, UserRepository $userRepository, AdviceRepository $adviceRepository): Response
     {
         if (!$user) {
-            return $this->json(['errors' => ['user' => 'Cet utilisateur n\'existe pas']], Response::HTTP_NOT_FOUND);
+            return $this->json(['errors' => ['user' => ['Cet utilisateur n\'existe pas']]], Response::HTTP_NOT_FOUND);
         }
         // Vérifier si l'utilisateur connecté est le propriétaire des données
         if ($this->getUser() !== $user) {

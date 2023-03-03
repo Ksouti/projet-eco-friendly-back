@@ -38,8 +38,8 @@ class AuthenticationSuccessListener
             'lastname' => $user->getLastname(),
             'nickname' => $user->getNickname(),
             'avatar' => $user->getAvatar(),
-            'is_active' => $user->isIsActive(), // TODO: change to isActive when merged !
-            'is_verified' => $user->isIsActive(), // TODO: change to isVerified when merged !
+            'is_active' => $user->isActive(),
+            'is_verified' => $user->isVerified(),
             'created_at' => $user->getCreatedAt(),
             'updated_at' => $user->getUpdatedAt(),
         ];
