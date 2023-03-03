@@ -41,7 +41,10 @@ class CategoryController extends AbstractController
 
             return $this->redirectToRoute('app_backoffice_categories_list', [], Response::HTTP_SEE_OTHER);
         }
-
+        $this->addFlash(
+            'success',
+            'La catégorie ' . $category->getName() . ' ' .  ' a bien été ajoutée à la liste des catégories '
+        );
         return $this->renderForm('category/new.html.twig', [
             'category' => $category,
             'form' => $form,
@@ -74,6 +77,11 @@ class CategoryController extends AbstractController
             return $this->redirectToRoute('app_backoffice_categories_list', [], Response::HTTP_SEE_OTHER);
         }
 
+        $this->addFlash(
+            'success',
+            'La catégorie ' . $category->getName() . ' ' .  ' a bien été modifiée'
+        );
+        
         return $this->renderForm('category/edit.html.twig', [
             'category' => $category,
             'form' => $form,

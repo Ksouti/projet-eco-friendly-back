@@ -46,6 +46,7 @@ class UserController extends AbstractController
         $user = new User();
         $user->setCreatedAt(new DateTimeImmutable());
         $user->setIsActive(true);
+        $user->setIsVerified(true);
         // ! TO REMOVE !
         $user->setPassword('testtest');
 
@@ -69,6 +70,12 @@ class UserController extends AbstractController
             }
 
             $userRepository->add($user, true);
+
+            $this->addFlash(
+                'success',
+                $user->getFirstname() . ' ' . $user->getLastname() . ' a bien été ajouté(e) à la liste des auteurs'
+            );
+            
 
             return $this->redirectToRoute('app_backoffice_members_list', [], Response::HTTP_SEE_OTHER);
         }
@@ -118,7 +125,11 @@ class UserController extends AbstractController
 
             return $this->redirectToRoute('app_backoffice_members_list', [], Response::HTTP_SEE_OTHER);
         }
-
+        $this->addFlash(
+            'success',
+            'Le compte de ' . $user->getFirstname() . ' ' . $user->getLastname() . ' a bien été modifié .'
+        );
+        
         return $this->renderForm('user/edit.html.twig', [
             'user' => $user,
             'form' => $form,
