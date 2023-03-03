@@ -5,14 +5,7 @@
 {% block body %}
 
     <div class="d-flex justify-content-between align-items-center mb-4">
-    {% for label, messages in app.flashes %}
-            {% for message in messages %}
-        <div class="alert alert-{{label}} alert-dismissible fade show" role="alert">
-               {{message}}
-        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-                </div>
-            {% endfor %}
-        {% endfor %}
+     {% include "_fragments/_flash_message.html.twig" %}
         <h1>Liste des conseils</h1>
     </div>
     <div class="table-responsive-lg">

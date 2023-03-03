@@ -70,7 +70,7 @@ class AdviceController extends AbstractController
             $adviceRepository->add($advice, true);
         }
         $this->addFlash(
-            'success',
+            'danger',
              $advice->getTitle() . ' ' .  ' a bien été désactivé. '
         );
         return $this->redirectToRoute('app_backoffice_advices_list', [], Response::HTTP_SEE_OTHER);
@@ -85,6 +85,10 @@ class AdviceController extends AbstractController
             $advice->setStatus(1);
             $adviceRepository->add($advice, true);
         }
+        $this->addFlash(
+            'sucess',
+             $advice->getTitle() . ' ' .  ' a bien été activé. '
+        );
         return $this->redirectToRoute('app_backoffice_advices_list', [], Response::HTTP_SEE_OTHER);
     }
 }

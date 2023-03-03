@@ -77,7 +77,7 @@ class UserController extends AbstractController
             );
             
 
-            return $this->redirectToRoute('app_backoffice_members_list', [], Response::HTTP_SEE_OTHER);
+            return $this->redirectToRoute('app_backoffice_authors_list', [], Response::HTTP_SEE_OTHER);
         }
 
         return $this->renderForm('user/new.html.twig', [
@@ -145,7 +145,10 @@ class UserController extends AbstractController
             $user->setIsActive(false);
             $userRepository->add($user, true);
         }
-
+        $this->addFlash(
+            'danger',
+            'Le compte de ' . $user->getFirstname() . ' ' . $user->getLastname() . ' a bien été désactivé .'
+        );
         return $this->redirectToRoute('app_backoffice_members_list', [], Response::HTTP_SEE_OTHER);
     }
 
@@ -158,7 +161,10 @@ class UserController extends AbstractController
             $user->setIsActive(true);
             $userRepository->add($user, true);
         }
-
+        $this->addFlash(
+            'success',
+            'Le compte de ' . $user->getFirstname() . ' ' . $user->getLastname() . ' a bien été activé .'
+        );
         return $this->redirectToRoute('app_backoffice_members_list', [], Response::HTTP_SEE_OTHER);
     }
 

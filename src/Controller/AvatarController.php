@@ -54,6 +54,10 @@ class AvatarController extends AbstractController
 
             $avatarRepository->add($avatar, true);
 
+            $this->addFlash(
+                'success',
+                $avatar->getName() . ' ' . ' a bien été ajouté à la liste'
+            );
             return $this->redirectToRoute('app_backoffice_avatars_list', [], Response::HTTP_SEE_OTHER);
         }
 
@@ -101,7 +105,10 @@ class AvatarController extends AbstractController
             }
 
             $avatarRepository->add($avatar, true);
-
+            $this->addFlash(
+                'success',
+                $avatar->getName() . ' ' . ' a bien été modifié'
+            );
             return $this->redirectToRoute('app_backoffice_avatars_list', [], Response::HTTP_SEE_OTHER);
         }
 
@@ -119,7 +126,10 @@ class AvatarController extends AbstractController
         if ($this->isCsrfTokenValid('deactivate' . $avatar->getId(), $request->request->get('_token'))) {
             $avatar->$avatarRepository->add($avatar, true);
         }
-
+        $this->addFlash(
+            'danger',
+            $avatar->getName() . ' ' . ' a été désacitvé'
+        );
         return $this->redirectToRoute('app_backoffice_avatars_list', [], Response::HTTP_SEE_OTHER);
     }
 
@@ -131,7 +141,10 @@ class AvatarController extends AbstractController
         if ($this->isCsrfTokenValid('reactivate' . $avatar->getId(), $request->request->get('_token'))) {
             $avatarRepository->add($avatar, true);
         }
-
+        $this->addFlash(
+            'success',
+            $avatar->getName() . ' ' . ' a été acitvé'
+        );
         return $this->redirectToRoute('app_backoffice_avatars_list', [], Response::HTTP_SEE_OTHER);
     }
 }
