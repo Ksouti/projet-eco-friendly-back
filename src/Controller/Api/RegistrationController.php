@@ -6,6 +6,7 @@ use App\Entity\User;
 use App\Form\RegistrationFormType;
 use App\Repository\UserRepository;
 use App\Security\EmailVerifier;
+use App\Service\CodeGeneratorService;
 use DateTimeImmutable;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bridge\Twig\Mime\TemplatedEmail;
@@ -35,10 +36,14 @@ class RegistrationController extends AbstractController
     /**
      * @Route("/api/register", name="app_api_users_register", methods={"POST"})
      */
-    public function register(Request $request, SerializerInterface $serializer, ValidatorInterface $validator, UserPasswordHasherInterface $userPasswordHasher, MailerInterface $mailer, UserRepository $userRepository): Response
+    public function register(Request $request, SerializerInterface $serializer, CodeGeneratorService $codeGenerator, ValidatorInterface $validator, UserPasswordHasherInterface $userPasswordHasher, MailerInterface $mailer, UserRepository $userRepository): Response
     {
         try {
             $user = $serializer->deserialize($request->getContent(), User::class, 'json');
+            // ensure that first name & last name are capitalized
+            $user->setFirstName(ucfirst($user->getFirstName()));
+            $user->setLastName(ucfirst($user->getLastName()));
+            $user->setCode($codeGenerator->codeGen());
             $user->setRoles(['ROLE_USER']);
             $user->setIsActive(true);
             $user->setIsVerified(false);
