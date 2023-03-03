@@ -16,12 +16,9 @@
         {% else %}
         <h1>Liste des membres</h1>
         {% endif %}
-        <a href="{{ path('app_backoffice_users_new') }}" class="btn btn-primary">Créer un 
-            {% if app.request.pathinfo is same as (path('app_backoffice_authors_list'))%}
-            auteur
-            {% else %}
-            membre
-            {% endif %}
+        {% if app.request.pathinfo is same as (path('app_backoffice_authors_list'))%}
+        <a href="{{ path('app_backoffice_users_new') }}" class="btn btn-primary">Créer un auteur
+        {% endif %}
         </a>
     </div>
 
@@ -60,11 +57,13 @@
                 <td>{{ user.updatedAt ? user.updatedAt|date('d-m-Y H:i:s') : '' }}</td>
                 <td class="d-flex flex-nowrap texte-center">
                     <a class="m-1 btn-sm btn btn-success" data-bs-toggle="tooltip" data-bs-placement="top" title="Voir" href="{{ path('app_backoffice_users_show', {'id': user.id}) }}"><i class="bi bi-eye"></i></a>
+                    {% if app.request.pathinfo is same as (path('app_backoffice_authors_list'))%}
                     <a class="m-1 btn-sm btn btn-warning" data-bs-toggle="tooltip" data-bs-placement="top" title="&Eacute;diter" href="{{ path('app_backoffice_users_edit', {'id': user.id}) }}"><i class="bi bi-pencil"></i></a>
                     <form method="post" action="{{ path('app_backoffice_users_deactivate', {'id': user.id}) }}" onsubmit="return confirm('Etes-vous sûr de vouloir désactiver cet utilisateur?');">
                         <input type="hidden" name="_token" value="{{ csrf_token('deactivate' ~ user.id) }}" />
                         <button class="m-1 btn-sm btn btn-danger" data-bs-toggle="tooltip" data-bs-placement="top" title="D&eacute;sactiver"><i class="bi bi-x-circle"></i></button>
                     </form>
+                    {% endif %}
                 </td>
             </tr>
         {% else %}

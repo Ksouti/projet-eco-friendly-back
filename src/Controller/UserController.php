@@ -13,6 +13,7 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Component\HttpFoundation\File\Exception\FileException;
+use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 
 class UserController extends AbstractController
 {
@@ -95,6 +96,13 @@ class UserController extends AbstractController
      */
     public function edit(Request $request, SluggerService $slugger, User $user, UserRepository $userRepository): Response
     {
+        // Vérifiez si l'utilisateur à modifier a le rôle approprié
+    if (in_array('ROLE_ADMIN', $user->getRoles()) || in_array('ROLE_AUTHOR', $user->getRoles())) {
+        // Reste de votre code ici...
+    } else {
+        throw new AccessDeniedException("Vous n'avez pas le droit de modifier cet utilisateur.");
+    }
+    
         $form = $this->createForm(UserType::class, $user);
         $form->handleRequest($request);
 
