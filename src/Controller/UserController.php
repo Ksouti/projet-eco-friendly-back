@@ -5,6 +5,7 @@ namespace App\Controller;
 use App\Entity\User;
 use App\Form\UserType;
 use App\Repository\UserRepository;
+use App\Service\CodeGeneratorService;
 use App\Service\SluggerService;
 use DateTimeImmutable;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -40,13 +41,14 @@ class UserController extends AbstractController
     }
 
     /**
-     * @Route("/back_office/utilisateurs/ajouter", name="app_backoffice_users_new", methods={"GET" , "POST"})
+     * @Route("/back_office/utilisateurs/ajouter", name="app_backoffice_users_new", methods={"GET", "POST"})
      */
-    public function new(Request $request, SluggerService $slugger, UserRepository $userRepository): Response
+    public function new(Request $request, CodeGeneratorService $codeGeneratorService, SluggerService $slugger, UserRepository $userRepository): Response
     {
         $user = new User();
         $user->setCreatedAt(new DateTimeImmutable());
         $user->setIsActive(true);
+        $user->setCode($codeGeneratorService->codeGen());
         // ! TO REMOVE !
         $user->setPassword('testtest');
 
@@ -84,8 +86,6 @@ class UserController extends AbstractController
      */
     public function show(User $user): Response
     {
-        
-
         return $this->render('user/show.html.twig', [
             'user' => $user,
         ]);
@@ -116,7 +116,7 @@ class UserController extends AbstractController
                     );
                     $user->setAvatar($this->getParameter('uploads_user_url') . $pictureName);
                 } catch (FileException $e) {
-                    $this->addFlash('danger', 'Une erreur est survenue lors de l\'upload de l\'image');
+                    $this->addFlash('danger', 'Une erreur s\"est produite lors de l\'upload de l\'image');
                 }
             }
 
@@ -156,6 +156,4 @@ class UserController extends AbstractController
 
         return $this->redirectToRoute('app_backoffice_members_list', [], Response::HTTP_SEE_OTHER);
     }
-
-    
 }
