@@ -110,7 +110,7 @@ class UserController extends AbstractController
                     );
                     $user->setAvatar($this->getParameter('uploads_user_url') . $pictureName);
                 } catch (FileException $e) {
-                    $this->addFlash('danger', 'Une erreur est survenue lors de l\'upload de l\'image');
+                    $this->addFlash('danger', 'Une erreur s\"est produite lors de l\'upload de l\'image');
                 }
             }
 

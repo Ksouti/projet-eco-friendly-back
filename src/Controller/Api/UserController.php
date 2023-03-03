@@ -104,7 +104,7 @@ class UserController extends AbstractController
         $avatar = $request->files->get('avatar');
 
         if (!$avatar) {
-            return $this->json(['picture' => ['avatar' => ['Image non valide']]], Response::HTTP_BAD_REQUEST);
+            return $this->json(['errors' => ['picture' => ['Image non valide']]], Response::HTTP_BAD_REQUEST);
         }
 
         $filename = $user->getId() . '-' . uniqid() . '.' . $avatar->guessExtension();
@@ -116,7 +116,7 @@ class UserController extends AbstractController
             );
             $user->setAvatar($this->getParameter('uploads_user_url') . $filename);
         } catch (FileException $e) {
-            return $this->json(['picture' => ['errors' => ['Une erreur est survenue lors de l\'upload de l\'image']]], Response::HTTP_BAD_REQUEST);
+            return $this->json(['errors' => ['picture' => ['Une erreur est survenue lors de l\'upload de l\'image']]], Response::HTTP_BAD_REQUEST);
         }
 
         $userRepository->add($user, true);
