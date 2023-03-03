@@ -23,8 +23,8 @@ class HomeController extends AbstractController
         $advices = [];
 
         foreach ($categories as $category) {
-            $articles[] = $entityManager->getRepository(Article::class)->findForHome(1, 1, $category->getId())[0];
-            $advices[] = $entityManager->getRepository(Advice::class)->findForHome(1, 1, $category->getId())[0];
+            $articles[] = $entityManager->getRepository(Article::class)->findLatestByCategory(1, $category->getId())[0];
+            $advices[] = $entityManager->getRepository(Advice::class)->findLatestByCategory(1, $category->getId())[0];
         }
         $homeContent = [
             'articles' => $articles,
