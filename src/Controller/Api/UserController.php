@@ -95,6 +95,7 @@ class UserController extends AbstractController
     /**
      * @Route("/api/users/{id}/avatar", name="app_api_users_avatar", requirements={"id":"\d+"}, methods={"POST"})
      */
+    // TODO: Create a service to handle file upload & reuse it in several controllers
     public function avatarUpload(Request $request, ?User $user, UserRepository $userRepository): Response
     {
         if (!$user) {
@@ -107,18 +108,50 @@ class UserController extends AbstractController
             return $this->json(['errors' => ['picture' => ['Image non valide']]], Response::HTTP_BAD_REQUEST);
         }
 
-        $filename = $user->getId() . '-' . uniqid() . '.' . $avatar->guessExtension();
+        $extension = $avatar->guessExtension();
+        if (!in_array($extension, ['jpg', 'jpeg', 'png'])) {
+            return $this->json(['errors' => ['picture' => ['Format d\'image non supporté']]], Response::HTTP_BAD_REQUEST);
+        }
+
+        $filename = $user->getId() . '-' . uniqid() . '.' . $extension;
+        $filepath = $this->getParameter('uploads_user_directory') . '/' . $filename;
 
         try {
             $avatar->move(
                 $this->getParameter('uploads_user_directory'),
                 $filename
             );
-            $user->setAvatar($this->getParameter('uploads_user_url') . $filename);
         } catch (FileException $e) {
             return $this->json(['errors' => ['picture' => ['Une erreur est survenue lors de l\'upload de l\'image']]], Response::HTTP_BAD_REQUEST);
         }
 
+        list($width, $height) = getimagesize($filepath);
+        $size = min($width, $height); // get the minimum dimension
+        $dst_x = ($width - $size) / 2;
+        $dst_y = ($height - $size) / 2;
+        $src_x = 0;
+        $src_y = 0;
+        $new_width = $new_height = 80;
+
+        if ($extension === 'png') {
+            $image = imagecreatefrompng($filepath);
+        } else {
+            $image = imagecreatefromjpeg($filepath);
+        }
+
+        $new_image = imagecreatetruecolor($new_width, $new_height);
+        imagecopyresampled($new_image, $image, 0, 0, $src_x + $dst_x, $src_y + $dst_y, $new_width, $new_height, $size, $size);
+
+        if ($extension === 'png') {
+            imagepng($new_image, $filepath);
+        } else {
+            imagejpeg($new_image, $filepath);
+        }
+
+        imagedestroy($image);
+        imagedestroy($new_image);
+
+        $user->setAvatar($this->getParameter('uploads_user_url') . $filename);
         $userRepository->add($user, true);
 
         return $this->json(
