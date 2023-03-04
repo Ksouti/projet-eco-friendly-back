@@ -6,6 +6,7 @@ use App\Entity\Advice;
 use App\Repository\AdviceRepository;
 use App\Repository\CategoryRepository;
 use App\Service\SluggerService;
+use DateTimeImmutable;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -48,7 +49,7 @@ class AdviceController extends AbstractController
         try {
             $advice = $serializer->deserialize($request->getContent(), Advice::class, 'json');
             $advice->setSlug($slugger->slugify($advice->getTitle()));
-            $advice->setCreatedAt(new \DateTimeImmutable());
+            $advice->setCreatedAt(new DateTimeImmutable());
         } catch (NotEncodableValueException $e) {
             return $this->json(['errors' => ['json' => ['Json non valide']]], Response::HTTP_BAD_REQUEST);
         }
@@ -108,7 +109,6 @@ class AdviceController extends AbstractController
         return $this->json($advice, Response::HTTP_OK, [], ['groups' => 'advices']);
     }
 
-    // TODO: refine this method taking into account that we now have a denormalizer
     /**
      * @Route("/api/advices/{id}", name="app_api_advices_update", requirements={"id":"\d+"}, methods={"PUT"})
      */
@@ -121,22 +121,30 @@ class AdviceController extends AbstractController
         }
 
         try {
-            $data = json_decode($request->getContent(), true);
-            $advice->setTitle($data['title'] ?? $advice->getTitle());
-            $advice->setContent($data['content'] ?? $advice->getContent());
-            $advice->setStatus($data['status'] ?? $advice->getStatus());
-            if (isset($data['category']) && !$categoryRepository->find($data['category'])) {
-                return $this->json(['errors' => ['category' => ['Cette catégorie n\'existe pas']]], Response::HTTP_NOT_FOUND);
-            }
-            $advice->setContributor($data['contributor'] ?? $advice->getContributor());
-            $advice->setCategory($categoryRepository->find($data['category']) ?? $advice->getCategory());
+            $advice = $serializer->deserialize($request->getContent(), Advice::class, 'json', ['object_to_populate' => $advice]);
             $advice->setSlug($slugger->slugify($advice->getTitle()));
-            $advice->setUpdatedAt(new \DateTimeImmutable());
+            $advice->setUpdatedAt(new DateTimeImmutable());
         } catch (NotEncodableValueException $e) {
             return $this->json(['errors' => ['json' => ['Json non valide']]], Response::HTTP_BAD_REQUEST);
         }
 
         $errors = $validator->validate($advice);
+
+        // If the advice is a draft, it must have at least a title or a content
+        if ($advice->getStatus() === 0 && ($advice->getTitle() === "" && $advice->getContent() === "")) {
+            return $this->json(
+                ['errors' => ['advice' => ['Un brouillon de conseil doit avoir au moins un titre ou un contenu']]],
+                Response::HTTP_UNPROCESSABLE_ENTITY
+            );
+        }
+
+        // If the advice is published, it must have a title, a content and a category
+        if ($advice->getStatus() === 1 && ($advice->getTitle() === "" || $advice->getContent() === "" || $advice->getCategory() === null)) {
+            return $this->json(
+                ['errors' => ['advice' => ['Un conseil publié doit avoir un titre, un contenu et une catégorie']]],
+                Response::HTTP_UNPROCESSABLE_ENTITY
+            );
+        }
 
         if (count($errors) > 0) {
             $errorsArray = [];
