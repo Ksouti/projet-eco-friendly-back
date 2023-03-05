@@ -33,24 +33,23 @@ class ApiAccessDeniedSubscriber implements EventSubscriberInterface
 
         // Si api n'est pas trouvé dans la string $route, on return pour stopper la fonction
         // If api is not found in the string $route, we "return" to stop the function
-        if(!strpos($route,"api")){
+        if (!strpos($route, "api")) {
             return;
         }
-        
+
         // Je crée ma réponse http en json
         // I create my http response in json
-        $response = new JsonResponse(["error" => "Vous n'avez pas les droits d'accès"],Response::HTTP_FORBIDDEN);
+        $response = new JsonResponse(["errors" => ["authorization" => ["Vous n'avez pas les droits d'accès"]]], Response::HTTP_FORBIDDEN);
         // Je modifie la réponse avec l'erreur symfo par ma réponse personnalisé c'est à dire un status forbidden et mon json
         // I modify the response with the symfo error by my personalized response, that's to say a forbidden status and my json
 
         $event->setResponse($response);
-
     }
 
     public static function getSubscribedEvents(): array
     {
 
-       
+
 
         return [
             'kernel.exception' => 'onKernelException',
