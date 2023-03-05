@@ -1,4 +1,4 @@
-# Eco-friendly back (A adapter au backend)
+# Eco-friendly backend
 
 ## What are the requirements?
 
@@ -35,7 +35,11 @@ PHP 7.4.3 (minimum)
 
 `php bin/console assets:install`
 
-7. (optionnal) Load fixtures
+7. Install GD
+
+`sudo apt-get install php7.4-gd`
+
+8. (optionnal) Load fixtures
 
 `php bin/console doctrine:fixtures:load`
 
