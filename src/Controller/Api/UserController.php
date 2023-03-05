@@ -29,9 +29,7 @@ class UserController extends AbstractController
         }
 
         // Vérifier si l'utilisateur connecté est le propriétaire des données
-        if ($this->getUser() !== $user) {
-            throw new AccessDeniedException('Access Denied.');
-        }
+        $this->denyAccessUnlessGranted('user_read', $user);
 
         return $this->json($userRepository->find($user->getId()), Response::HTTP_OK, [], ['groups' => 'users']);
     }
@@ -46,11 +44,11 @@ class UserController extends AbstractController
             return $this->json(['errors' => ['Utilisateur' => 'Cet utilisateur n\'existe pas']], Response::HTTP_NOT_FOUND);
         }
 
-        // Vérifier si l'utilisateur connecté est le propriétaire des données
-        if ($this->getUser() !== $user) {
-            throw new AccessDeniedException('Access Denied.');
-        }
-        // ! A refaire en tenant comptant du denormalizer
+        // Verify if the user is the owner of the data
+        $this->denyAccessUnlessGranted('user_update', $user);
+
+        // TODO: Recode this part taking into account the denormalizer and the password constraint
+        // TODO: Add a validation for the email / Ensure that is_active and is_verified are not changed
         try {
             $user = $serializer->deserialize($request->getContent(), User::class, 'json');
             $data = json_decode($request->getContent(), true);
@@ -101,6 +99,9 @@ class UserController extends AbstractController
         if (!$user) {
             return $this->json(['errors' => ['Utilisateur' => 'Cet utilisateur n\'existe pas']], Response::HTTP_NOT_FOUND);
         }
+
+        // Verify if the user is the owner of the data
+        $this->denyAccessUnlessGranted('user_update', $user);
 
         $avatar = $request->files->get('avatar');
 
@@ -170,19 +171,18 @@ class UserController extends AbstractController
         if (!$user) {
             return $this->json(['errors' => ['user' => ['Cet utilisateur n\'existe pas']]], Response::HTTP_NOT_FOUND);
         }
-        // Vérifier si l'utilisateur connecté est le propriétaire des données
-        if ($this->getUser() !== $user) {
-            throw new AccessDeniedException('Access Denied.');
 
-            // reatribute articles and advices to admin
-            // TODO : create a service to do this and an anonyminous user to dump articles and advices
-            $advices = $user->getAdvices();
-            foreach ($advices as $advice) {
-                $advice->setContributor($userRepository->find(1));
-                $adviceRepository->add($advice, true);
-            }
-            $userRepository->remove($user, true);
-            return $this->json([], Response::HTTP_NO_CONTENT, [], ['groups' => 'users']);
+        // Verify if the user is the owner of the data
+        $this->denyAccessUnlessGranted('user_delete', $user);
+
+        // reatribute articles and advices to admin or special user 'anonymous'
+        // TODO: create a service to do this and an anonymous user to dump articles and advices
+        $advices = $user->getAdvices();
+        foreach ($advices as $advice) {
+            $advice->setContributor($userRepository->find(1));
+            $adviceRepository->add($advice, true);
         }
+        $userRepository->remove($user, true);
+        return $this->json([], Response::HTTP_NO_CONTENT, [], ['groups' => 'users']);
     }
 }

@@ -11,7 +11,7 @@ use Symfony\Component\Security\Core\User\UserInterface;
 
 class ArticleVoter extends Voter
 {
-    const ARTICLE_SHOW       = 'article_show';
+    const ARTICLE_READ       = 'article_read';
     const ARTICLE_EDIT       = 'article_edit';
     const ARTICLE_DEACTIVATE = 'article_deactivate';
     const ARTICLE_REACTIVATE = 'article_reactivate';
@@ -25,9 +25,15 @@ class ArticleVoter extends Voter
 
     protected function supports(string $attribute, $subject): bool
     {
-        // replace with your own logic
-        // https://symfony.com/doc/current/security/voters.html
-        return in_array($attribute, [self::ARTICLE_SHOW, self::ARTICLE_EDIT, self::ARTICLE_DEACTIVATE, self::ARTICLE_REACTIVATE])
+        return in_array(
+            $attribute,
+            [
+                self::ARTICLE_READ,
+                self::ARTICLE_EDIT,
+                self::ARTICLE_DEACTIVATE,
+                self::ARTICLE_REACTIVATE
+            ]
+        )
             && $subject instanceof \App\Entity\Article;
     }
 
@@ -38,47 +44,59 @@ class ArticleVoter extends Voter
         if (!$user instanceof UserInterface) {
             return false;
         }
-         // you know $subject is a Article object, thanks to `supports()`
-        /** @var ARTICLE $article */
+        // you know $subject is a Article object, thanks to `supports()`
+        /** @var Article $article */
         $article = $subject;
 
         // ... (check conditions and return true to grant permission) ...
         switch ($attribute) {
-            case self::ARTICLE_SHOW:
+            case self::ARTICLE_READ:
                 // return true or false
                 // J'appelle ma méthode canEdit pour vérifier si l'utilisateur a le droit
-                return $this->hasRight($article, $user);
+                return $this->canRead($article, $user);
                 break;
             case self::ARTICLE_EDIT:
                 // return true or false
                 // J'appelle ma méthode canEdit pour vérifier si l'utilisateur a le droit
-                return $this->hasRight($article, $user);
+                return $this->canEdit($article, $user);
                 break;
             case self::ARTICLE_DEACTIVATE:
                 // return true or false
                 // J'appelle ma méthode canEdit pour vérifier si l'utilisateur a le droit
-                return $this->hasRight($article, $user);
+                return $this->canDeactivate($article, $user);
                 break;
             case self::ARTICLE_REACTIVATE:
                 // return true or false
                 // J'appelle ma méthode canEdit pour vérifier si l'utilisateur a le droit
-                return $this->hasRight($article, $user);
-                break;   
-            
-        }             
-        
+                return $this->canReactivate($article, $user);
+                break;
+        }
+
         return false;
     }
 
-     /**
+    /**
      * @param Article $article the subject of the voter
-     * @param User $user the current user 
+     * @param User $user the user requesting action on the subject
+     * @return bool
      */
-    private function hasRight(Article $article, User $user){ 
-
-        // return true or false
-        return $user === $article->getAuthor();
-
+    private function canRead(Article $article, User $user)
+    {
+        return ($article->getAuthor() === $user || $this->security->isGranted('ROLE_ADMIN'));
     }
 
+    private function canEdit(Article $article, User $user)
+    {
+        return (($article->getAuthor() === $user && $article->getStatus() !== 2) || $this->security->isGranted('ROLE_ADMIN'));
+    }
+
+    private function canDeactivate(Article $article, User $user)
+    {
+        return ($article->getAuthor() === $user || $this->security->isGranted('ROLE_ADMIN'));
+    }
+
+    private function canReactivate(Article $article, User $user)
+    {
+        return $this->security->isGranted('ROLE_ADMIN');
+    }
 }

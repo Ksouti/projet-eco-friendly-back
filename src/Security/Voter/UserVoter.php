@@ -36,42 +36,53 @@ class UserVoter extends Voter
         if (!$user instanceof UserInterface) {
             return false;
         }
-        
+
         // you know $subject is a User object, thanks to `supports()`
         /** @var User $user */
-        $user = $subject;
-
+        $userSubject = $subject;
 
         // ... (check conditions and return true to grant permission) ...
         switch ($attribute) {
             case self::USER_READ:
-                // logic to determine if the user can EDIT
+                // logic to determine if the user can read
                 // return true or false
-                return $this->hasRight($user);
+                return $this->canRead($userSubject, $user);
                 break;
             case self::USER_UPDATE:
-                // logic to determine if the user can EDIT
+                // logic to determine if the user can update
                 // return true or false
-                return $this->hasRight($user);
-                break;    
+                return $this->canUpdate($userSubject, $user);
+                break;
             case self::USER_DELETE:
-                // logic to determine if the user can EDIT
+                // logic to determine if the user can delete
                 // return true or false
-                return $this->hasRight($user);
-                break;  
+                return $this->canDelete($userSubject, $user);
+                break;
         }
 
         return false;
     }
 
-     /**
-     * @param User $user the current user 
-     * @return bool true if current user match advice user
+    /**
+     * @param User $userSubject the subject of the voter
+     * @param User $user the user requesting action on the subject
+     * @return bool 
      */
-    private function hasRight(User $user){ 
-        
+    private function canRead(User $userSubject, User $user)
+    {
         // return true or false
-        return $user === $user->getId();
-      
+        return $userSubject === $user;
+    }
+
+    private function canUpdate(User $userSubject, User $user)
+    {
+        // return true or false
+        return $userSubject === $user;
+    }
+
+    private function canDelete(User $userSubject, User $user)
+    {
+        // return true or false
+        return $userSubject === $user;
     }
 }
