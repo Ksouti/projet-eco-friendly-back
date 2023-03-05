@@ -6,6 +6,7 @@ use App\Entity\User;
 use App\Form\RegistrationFormType;
 use App\Repository\UserRepository;
 use App\Security\EmailVerifier;
+use App\Service\CodeGeneratorService;
 use DateTimeImmutable;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bridge\Twig\Mime\TemplatedEmail;
@@ -35,16 +36,20 @@ class RegistrationController extends AbstractController
     /**
      * @Route("/api/register", name="app_api_users_register", methods={"POST"})
      */
-    public function register(Request $request, SerializerInterface $serializer, ValidatorInterface $validator, UserPasswordHasherInterface $userPasswordHasher, MailerInterface $mailer, UserRepository $userRepository): Response
+    public function register(Request $request, SerializerInterface $serializer, CodeGeneratorService $codeGenerator, ValidatorInterface $validator, UserPasswordHasherInterface $userPasswordHasher, MailerInterface $mailer, UserRepository $userRepository): Response
     {
         try {
             $user = $serializer->deserialize($request->getContent(), User::class, 'json');
+            // ensure that first name & last name are capitalized
+            $user->setFirstName(ucfirst($user->getFirstName()));
+            $user->setLastName(ucfirst($user->getLastName()));
+            $user->setCode($codeGenerator->codeGen());
             $user->setRoles(['ROLE_USER']);
             $user->setIsActive(true);
             $user->setIsVerified(false);
             $user->setCreatedAt(new DateTimeImmutable());
         } catch (NotEncodableValueException $e) {
-            return $this->json(['errors' => 'Json non valide'], Response::HTTP_BAD_REQUEST);
+            return $this->json(['errors' => ['json' => ['Json non valide']]], Response::HTTP_BAD_REQUEST);
         }
 
         $errors = $validator->validate($user);
@@ -69,8 +74,9 @@ class RegistrationController extends AbstractController
                 ->subject('Confirmez votre adresse email et rejoignez-nous !')
                 ->htmlTemplate('email/confirmation_email.html.twig')
         );
-        // do anything else you need here, like send an email
-        return $this->json($userRepository->find($user->getId()), Response::HTTP_OK, [], ['groups' => 'users']);
+
+        // Return a response with a 201 status code only as the user is not yet verified
+        return $this->json([], Response::HTTP_CREATED);
     }
     /**
      * @Route("/verify/email", name="app_verify_email")

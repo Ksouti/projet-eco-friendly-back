@@ -52,10 +52,10 @@
                         <a class="d-flex justify-content-center align-items-center nav-link{% if app.request.pathinfo is same as (path('app_backoffice_articles_new'))%} active{% endif %}" 
                             href="{{ path('app_backoffice_articles_new') }}">&Eacute;crire un article</a>
                         {% endif %}
-                        <a class="d-flex justify-content-center align-items-center nav-link" href="{{ path('app_backoffice_users_show',{id:app.user.id}) }}" style="margin: 0 25px;">
+                        
                             <img  class="d-flex align-self-center" src="{{ app.user.avatar }}" style="height: 32px; width: 32px; border-radius: 50%; margin-right: 10px;" />
                             <span class="d-flex justify-content-center align-items-center fw-semibold text-primary text-center">{{ app.user.firstname }} {{app.user.lastname}}</span>
-                        </a>
+                        
                         <a class="btn btn-primary my-2" href="{{ path('app_backoffice_security_logout') }}">Déconnexion</a>
                     </div>
                 </div>

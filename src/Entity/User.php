@@ -29,7 +29,8 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 
     /**
      * @ORM\Column(type="string", length=180, unique=true)
-     * @Assert\Length(min = 1, max = 180)
+     * @Assert\Length(min = 6, max = 180)
+     * @Assert\Email(mode = "strict")
      * @Assert\NotBlank
      * @Groups({"articles"})
      * @Groups({"advices"})
@@ -40,6 +41,8 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     /**
      * @var string The hashed password
      * @ORM\Column(type="string")
+     * @Assert\Length(min = 8, max = 32)
+     * @Assert\Regex(pattern="/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*(_|[^\w])).+$/")
      * @Assert\NotBlank
      * @Groups({"users"})
      */
@@ -56,7 +59,9 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 
     /**
      * @ORM\Column(type="string", length=64, nullable=true)
-     * @Assert\Length(min = 1, max = 64)
+     * @Assert\Length(max = 64)
+     * starts with a capital letter & contains only letters, hyphens and apostrophes
+     * @Assert\Regex(pattern="/^[A-Z][A-Za-z\-\']+$/")
      * @Groups({"articles"})
      * @Groups({"advices"})
      * @Groups({"users"})
@@ -65,7 +70,9 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 
     /**
      * @ORM\Column(type="string", length=64, nullable=true)
-     * @Assert\Length(min = 1, max = 64)
+     * @Assert\Length(max = 64)
+     * starts with a capital letter & contains only letters, hyphens and apostrophes
+     * @Assert\Regex(pattern="/^[A-Z][A-Za-z\-\']+$/")
      * @Groups({"articles"})
      * @Groups({"advices"})
      * @Groups({"users"})
@@ -74,8 +81,9 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 
     /**
      * @ORM\Column(type="string", length=64)
+     * @Assert\Length(min = 3, max = 64)
+     * @Assert\Regex(pattern="/^[^\#]+$/")
      * @Assert\NotBlank
-     * @Assert\Length(min = 1, max = 64)
      * @Groups({"articles"})
      * @Groups({"advices"})
      * @Groups({"users"})
@@ -83,8 +91,18 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     private $nickname;
 
     /**
+     * @ORM\Column(type="string", length=5, unique=true)
+     * @Assert\Regex(pattern="/^[\#][\d]{4}$/")
+     * @Assert\NotBlank
+     * @Groups({"articles"})
+     * @Groups({"advices"})
+     * @Groups({"users"})
+     */
+    private $code;
+
+    /**
      * @ORM\Column(type="string", length=255, nullable=true)
-     * @Assert\Length(min = 1, max = 255)
+     * @Assert\Length(max = 255)
      * @Assert\Url
      * @Groups({"articles"})
      * @Groups({"advices"})
@@ -331,6 +349,18 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     public function setNickname(string $nickname): self
     {
         $this->nickname = $nickname;
+
+        return $this;
+    }
+
+    public function getCode(): ?string
+    {
+        return $this->code;
+    }
+
+    public function setCode(string $code): self
+    {
+        $this->code = $code;
 
         return $this;
     }

@@ -13,34 +13,24 @@ use Symfony\Component\Serializer\SerializerInterface;
 
 class HomeController extends AbstractController
 {
-
     /**
      * @Route("/api/home", name="app_api_home_list")
      */
     public function list(EntityManagerInterface $entityManager, SerializerInterface $serializer): Response
     {
-        // return a json with the last article and last advice for each category
         $categories = $entityManager->getRepository(Category::class)->findAll();
-        $homeContent = [];
+        $articles = [];
+        $advices = [];
+
         foreach ($categories as $category) {
-            $homeContent[$category->getName()]['Article'] = json_decode($serializer
-                ->serialize($entityManager->getRepository(Article::class)->findForHome(1, 1, $category->getId()), 'json', ['groups' => 'articles']), true, 512, JSON_UNESCAPED_SLASHES);
-            $homeContent[$category->getName()]['Conseil'] = json_decode($serializer
-                ->serialize($entityManager->getRepository(Advice::class)->findForHome(1, 1, $category->getId()), 'json', ['groups' => 'advices']), true, 512, JSON_UNESCAPED_SLASHES);
+            $articles[] = $entityManager->getRepository(Article::class)->findLatestByCategory(1, $category->getId())[0];
+            $advices[] = $entityManager->getRepository(Advice::class)->findLatestByCategory(1, $category->getId())[0];
         }
-
-        return $this->json($homeContent, Response::HTTP_OK);
-
-        /* // return a json with the last article and last advice for each category
-        $categories = $entityManager->getRepository(Category::class)->findAll();
-        $homeContent = [];
-        foreach ($categories as $category) {
-            $homeContent[$category->getName()]['Article'] = $serializer
-                ->serialize($entityManager->getRepository(Article::class)->findForHome(1, 1, $category->getId()), 'json', ['groups' => 'articles']);
-            $homeContent[$category->getName()]['Conseil'] = $serializer
-                ->serialize($entityManager->getRepository(Advice::class)->findForHome(1, 1, $category->getId()), 'json', ['groups' => 'advices']);
-        }
-
-        return $this->json($homeContent, Response::HTTP_OK); */
+        $homeContent = [
+            'articles' => $articles,
+            'advices' => $advices
+        ];
+        $jsonContent = $serializer->serialize($homeContent, 'json', ['groups' => ['articles', 'advices']]);
+        return new Response($jsonContent, Response::HTTP_OK, ['Content-Type' => 'application/json']);
     }
 }

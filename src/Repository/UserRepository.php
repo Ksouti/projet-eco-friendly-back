@@ -57,12 +57,10 @@ class UserRepository extends ServiceEntityRepository implements PasswordUpgrader
     }
 
     /**
-     * 
      * @return Users[] Returns an array of users objects filtered by users with ROLE_USER only ordered by descending date with a limit of 5 by default
      */
     public function findMembersForHome(int $limit = 5)
     {
-
         return $this->createQueryBuilder('u')
             ->where("u.roles NOT LIKE :roles")
             ->setParameter("roles", "%ROLE_AUTHOR%")
@@ -95,7 +93,6 @@ class UserRepository extends ServiceEntityRepository implements PasswordUpgrader
      */
     public function listAllAuthors()
     {
-
         return $this->createQueryBuilder('u')
             ->where("u.roles LIKE :roles")
             ->setParameter("roles", "%ROLE_AUTHOR%")
@@ -110,7 +107,6 @@ class UserRepository extends ServiceEntityRepository implements PasswordUpgrader
      */
     public function listAllMembers()
     {
-
         return $this->createQueryBuilder('u')
             ->where("u.roles NOT LIKE :roles")
             ->setParameter("roles", "%ROLE_AUTHOR%")

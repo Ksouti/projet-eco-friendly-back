@@ -5,15 +5,14 @@ namespace App\Controller\Api;
 use App\Entity\Advice;
 use App\Repository\AdviceRepository;
 use App\Repository\CategoryRepository;
-use App\Repository\UserRepository;
 use App\Service\SluggerService;
+use DateTimeImmutable;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Serializer\Exception\NotEncodableValueException;
 use Symfony\Component\Serializer\SerializerInterface;
-use Symfony\Component\String\Slugger\SluggerInterface;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 
@@ -50,12 +49,28 @@ class AdviceController extends AbstractController
         try {
             $advice = $serializer->deserialize($request->getContent(), Advice::class, 'json');
             $advice->setSlug($slugger->slugify($advice->getTitle()));
-            $advice->setCreatedAt(new \DateTimeImmutable());
+            $advice->setCreatedAt(new DateTimeImmutable());
         } catch (NotEncodableValueException $e) {
-            return $this->json(['errors' => 'Json non valide'], Response::HTTP_BAD_REQUEST);
+            return $this->json(['errors' => ['json' => ['Json non valide']]], Response::HTTP_BAD_REQUEST);
         }
 
         $errors = $validator->validate($advice);
+
+        // If the advice is a draft, it must have at least a title or a content
+        if ($advice->getStatus() === 0 && ($advice->getTitle() === "" && $advice->getContent() === "")) {
+            return $this->json(
+                ['errors' => ['advice' => ['Un brouillon de conseil doit avoir au moins un titre ou un contenu']]],
+                Response::HTTP_UNPROCESSABLE_ENTITY
+            );
+        }
+
+        // If the advice is published, it must have a title, a content and a category
+        if ($advice->getStatus() === 1 && ($advice->getTitle() === "" || $advice->getContent() === "" || $advice->getCategory() === null)) {
+            return $this->json(
+                ['errors' => ['advice' => ['Un conseil publié doit avoir un titre, un contenu et une catégorie']]],
+                Response::HTTP_UNPROCESSABLE_ENTITY
+            );
+        }
 
         if (count($errors) > 0) {
             $errorsArray = [];
@@ -88,13 +103,12 @@ class AdviceController extends AbstractController
     public function read(?Advice $advice, AdviceRepository $adviceRepository): Response
     {
         if (!$advice) {
-            return $this->json(['errors' => 'Ce conseil n\'existe pas'], Response::HTTP_NOT_FOUND);
+            return $this->json(['errors' => ['advice' => ['Ce conseil n\'existe pas']]], Response::HTTP_NOT_FOUND);
         }
 
         return $this->json($advice, Response::HTTP_OK, [], ['groups' => 'advices']);
     }
 
-    // TODO: refine this method taking into account that we now have a denormalizer
     /**
      * @Route("/api/advices/{id}", name="app_api_advices_update", requirements={"id":"\d+"}, methods={"PUT"})
      */
@@ -103,26 +117,34 @@ class AdviceController extends AbstractController
         $this->denyAccessUnlessGranted('advice_edit', $advice);
 
         if (!$advice) {
-            return $this->json(['errors' => ['Conseil' => 'Ce conseil n\'existe pas']], Response::HTTP_NOT_FOUND);
+            return $this->json(['errors' => ['Conseil' => ['Ce conseil n\'existe pas']]], Response::HTTP_NOT_FOUND);
         }
 
         try {
-            $data = json_decode($request->getContent(), true);
-            $advice->setTitle($data['title'] ?? $advice->getTitle());
-            $advice->setContent($data['content'] ?? $advice->getContent());
-            $advice->setStatus($data['status'] ?? $advice->getStatus());
-            if (isset($data['category']) && !$categoryRepository->find($data['category'])) {
-                return $this->json(['errors' => ['category' => 'Cette catégorie n\'existe pas']], Response::HTTP_NOT_FOUND);
-            }
-            $advice->setContributor($data['contributor'] ?? $advice->getContributor());
-            $advice->setCategory($categoryRepository->find($data['category']) ?? $advice->getCategory());
+            $advice = $serializer->deserialize($request->getContent(), Advice::class, 'json', ['object_to_populate' => $advice]);
             $advice->setSlug($slugger->slugify($advice->getTitle()));
-            $advice->setUpdatedAt(new \DateTimeImmutable());
+            $advice->setUpdatedAt(new DateTimeImmutable());
         } catch (NotEncodableValueException $e) {
-            return $this->json(['errors' => ['json' => 'Json non valide']], Response::HTTP_BAD_REQUEST);
+            return $this->json(['errors' => ['json' => ['Json non valide']]], Response::HTTP_BAD_REQUEST);
         }
 
         $errors = $validator->validate($advice);
+
+        // If the advice is a draft, it must have at least a title or a content
+        if ($advice->getStatus() === 0 && ($advice->getTitle() === "" && $advice->getContent() === "")) {
+            return $this->json(
+                ['errors' => ['advice' => ['Un brouillon de conseil doit avoir au moins un titre ou un contenu']]],
+                Response::HTTP_UNPROCESSABLE_ENTITY
+            );
+        }
+
+        // If the advice is published, it must have a title, a content and a category
+        if ($advice->getStatus() === 1 && ($advice->getTitle() === "" || $advice->getContent() === "" || $advice->getCategory() === null)) {
+            return $this->json(
+                ['errors' => ['advice' => ['Un conseil publié doit avoir un titre, un contenu et une catégorie']]],
+                Response::HTTP_UNPROCESSABLE_ENTITY
+            );
+        }
 
         if (count($errors) > 0) {
             $errorsArray = [];
@@ -157,7 +179,7 @@ class AdviceController extends AbstractController
         $this->denyAccessUnlessGranted('advice_deactivate', $advice);
 
         if (!$advice) {
-            return $this->json(['errors' => 'Ce conseil n\'existe pas'], Response::HTTP_NOT_FOUND);
+            return $this->json(['errors' => ['advice' => ['Ce conseil n\'existe pas']]], Response::HTTP_NOT_FOUND);
         }
         $adviceRepository->remove($advice, true);
         return $this->json([], Response::HTTP_NO_CONTENT, [], ['groups' => 'advices']);

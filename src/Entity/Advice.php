@@ -5,10 +5,12 @@ namespace App\Entity;
 use App\Repository\AdviceRepository;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Serializer\Annotation\Groups;
 
 /**
  * @ORM\Entity(repositoryClass=AdviceRepository::class)
+ * @UniqueEntity("title", ignoreNull=true, message="Ce titre existe déjà")
  */
 class Advice
 {
@@ -22,9 +24,8 @@ class Advice
     private $id;
 
     /**
-     * @ORM\Column(type="string", length=128)
-     * @Assert\Length(min = 1, max = 128)
-     * @Assert\NotBlank
+     * @ORM\Column(type="string", length=128, unique=true)
+     * @Assert\Length(max = 128)
      * @Groups({"advices"})
      * @Groups({"users"})
      */
@@ -32,16 +33,15 @@ class Advice
 
     /**
      * @ORM\Column(type="text")
-     * @Assert\NotBlank
+     * @Assert\Length(max = 1023)
      * @Groups({"advices"})
      * @Groups({"users"})
      */
     private $content;
 
     /**
-     * @ORM\Column(type="string", length=128)
-     * @Assert\Length(min = 1, max = 128)
-     * @Assert\NotBlank
+     * @ORM\Column(type="string", length=148, unique=true)
+     * @Assert\Length(max = 148)
      * @Groups({"advices"})
      * @Groups({"users"})
      */
@@ -82,7 +82,7 @@ class Advice
 
     /**
      * @ORM\ManyToOne(targetEntity=Category::class, inversedBy="advices")
-     * @ORM\JoinColumn(nullable=false)
+     * @ORM\JoinColumn(nullable=true, name="category_id", referencedColumnName="id")
      * @Assert\NotBlank
      * @Groups({"advices"})
      * @Groups({"users"})

@@ -40,9 +40,12 @@ class AdviceRepository extends ServiceEntityRepository
     }
 
     /**
+     * @param int $status The status of the advices to return
+     * @param int $category The category of the advices to return
+     * 
      * @return Advice[] Returns an array of advices objects ordered by descending date with a limit of 5 by default
      */
-    public function findForHome(int $limit = 5, int $status = 1, int $category = null)
+    public function findLatestByCategory(int $status = 1, int $category = null)
     {
         return $this->createQueryBuilder('ad')
             ->orderBy('ad.created_at', 'DESC')
@@ -50,6 +53,22 @@ class AdviceRepository extends ServiceEntityRepository
             ->setParameter('status', $status)
             ->andWhere('ad.category = :category')
             ->setParameter('category', $category)
+            ->setMaxResults(1)
+            ->getQuery()
+            ->getResult();
+    }
+
+    /**
+     * @param int $limit The number of advices to return
+     * @param int $status The status of the advices to return
+     * @return Advice[] Returns an array of advices objects ordered by descending date with a limit of 5 by default
+     */
+    public function findForHome(int $limit = 5, int $status = 1)
+    {
+        return $this->createQueryBuilder('ad')
+            ->orderBy('ad.created_at', 'DESC')
+            ->where('ad.status = :status')
+            ->setParameter('status', $status)
             ->setMaxResults($limit)
             ->getQuery()
             ->getResult();

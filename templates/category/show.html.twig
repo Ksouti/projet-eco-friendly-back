@@ -36,7 +36,7 @@
                         </p>       
                         <div class="d-flex flex-nowrap justify-content-end align-items-center">
                             <a class="m-1 btn-sm btn btn-warning" data-bs-toggle="tooltip" data-bs-placement="top" name="&Eacute;diter" href="{{ path('app_backoffice_categories_edit', {'id': category.id}) }}"><i class="bi bi-pencil"></i></a>
-                            <form method="post" action="{{ path('app_backoffice_categories_deactivate', {'id': category.id}) }}" onsubmit="return confirm('Êtes-vous sûr de vouloir désactiver cet category ?');">
+                            <form method="post" action="{{ path('app_backoffice_categories_deactivate', {'id': category.id}) }}" onsubmit="return confirm('Êtes-vous sûr de vouloir désactiver cette catégorie ?');">
                                 <input type="hidden" name="_token" value="{{ csrf_token('deactivate' ~ category.id) }}" />
                                 <button class="m-1 btn-sm btn btn-danger" data-bs-toggle="tooltip" data-bs-placement="top" name="D&eacute;sactiver"><i class="bi bi-x-circle"></i></button>
                             </form>
