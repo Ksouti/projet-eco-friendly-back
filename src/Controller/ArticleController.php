@@ -73,7 +73,8 @@ class ArticleController extends AbstractController
 
             $articleRepository->add($article, true);
 
-            return $this->redirectToRoute('app_backoffice_articles_show', ['id' => $article->getId()], Response::HTTP_SEE_OTHER);
+            $author = $article->getAuthor();
+        return $this->redirectToRoute('app_backoffice_articles_user', ['id' => $author->getId()]);
         }
 
         return $this->renderForm('article/new.html.twig', [
@@ -124,18 +125,23 @@ class ArticleController extends AbstractController
             }
 
             $articleRepository->add($article, true);
-            
-            return $this->redirectToRoute('app_backoffice_articles_list', [], Response::HTTP_SEE_OTHER);
+
+            // Renvoyer l'utilisateur vers la liste de ses articles
+            $user = $article->getAuthor();
+            return $this->redirectToRoute('app_backoffice_articles_user', ['id' => $user->getId()]);
         }
+        
         $this->addFlash(
             'success',
             $article->getTitle() . ' ' . ' a bien été modifié'
         );
+        
         return $this->renderForm('article/edit.html.twig', [
             'article' => $article,
             'form' => $form,
         ]);
     }
+
 
     /**
      * @Route("/back_office/articles/{id}/desactiver", name="app_backoffice_articles_deactivate", requirements={"id":"\d+"}, methods={"POST"})
@@ -153,7 +159,8 @@ class ArticleController extends AbstractController
             'danger',
             $article->getTitle() . ' ' . ' a été désactivé'
         );
-        return $this->redirectToRoute('app_backoffice_articles_list', [], Response::HTTP_SEE_OTHER);
+        $user = $article->getAuthor();
+        return $this->redirectToRoute('app_backoffice_articles_user', ['id' => $user->getId()]);
     }
 
      /**
@@ -171,6 +178,7 @@ class ArticleController extends AbstractController
             'success',
             $article->getTitle() . ' ' . ' a été activé'
         );
-        return $this->redirectToRoute('app_backoffice_articles_list', [], Response::HTTP_SEE_OTHER);
+        $user = $article->getAuthor();
+        return $this->redirectToRoute('app_backoffice_articles_user', ['id' => $user->getId()]);
     }
 }
