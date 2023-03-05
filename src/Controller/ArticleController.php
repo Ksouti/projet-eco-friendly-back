@@ -34,7 +34,7 @@ class ArticleController extends AbstractController
      */
     public function findAllByUser(User $author, ArticleRepository $articleRepository): Response
     {
-        // Vérifier si l'utilisateur connecté est bien l'auteur des articles
+        // Checks if the user is the author or if the user is an admin
         if ($this->getUser() !== $author && !$this->isGranted('ROLE_ADMIN')) {
             throw new AccessDeniedException('Access Denied.');
         }
