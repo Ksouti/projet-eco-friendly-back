@@ -14,6 +14,8 @@ PHP 7.4.3 (minimum)
 
 `cd projet-11-eco-friendly-back`
 
+`git switch develop`
+
 3. Installing dependencies
 
 `composer install`
