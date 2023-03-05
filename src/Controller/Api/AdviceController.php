@@ -50,6 +50,8 @@ class AdviceController extends AbstractController
             $advice = $serializer->deserialize($request->getContent(), Advice::class, 'json');
             $advice->setSlug($slugger->slugify($advice->getTitle()));
             $advice->setCreatedAt(new DateTimeImmutable());
+            // Change of owning contributor has to be prevented
+            $advice->setContributor($this->getUser());
         } catch (NotEncodableValueException $e) {
             return $this->json(['errors' => ['json' => ['Json non valide']]], Response::HTTP_BAD_REQUEST);
         }
@@ -124,6 +126,8 @@ class AdviceController extends AbstractController
             $advice = $serializer->deserialize($request->getContent(), Advice::class, 'json', ['object_to_populate' => $advice]);
             $advice->setSlug($slugger->slugify($advice->getTitle()));
             $advice->setUpdatedAt(new DateTimeImmutable());
+            // Change of owning contributor has to be prevented
+            $advice->setContributor($adviceRepository->find($advice->getId())->getContributor());
         } catch (NotEncodableValueException $e) {
             return $this->json(['errors' => ['json' => ['Json non valide']]], Response::HTTP_BAD_REQUEST);
         }
@@ -180,10 +184,12 @@ class AdviceController extends AbstractController
             return $this->json(['errors' => ['advice' => ['Ce conseil n\'existe pas']]], Response::HTTP_NOT_FOUND);
         }
 
-        $this->denyAccessUnlessGranted('advice_deactivate', $advice);
+        $this->denyAccessUnlessGranted('advice_delete', $advice);
 
         $adviceId = $advice->getId();
         $adviceRepository->remove($advice, true);
+        // Should return 204 but it's not working with the frontend who expects a json 
+        // return, so we return 202 with the id of the deleted advice
         return $this->json(['id' => $adviceId], Response::HTTP_ACCEPTED);
     }
 }

@@ -12,7 +12,7 @@ use Symfony\Component\Security\Core\User\UserInterface;
 class AdviceVoter extends Voter
 {
     const ADVICE_EDIT       = 'advice_edit';
-    const ADVICE_DEACTIVATE = 'advice_deactivate';
+    const ADVICE_DELETE     = 'advice_delete';
 
     private $security;
 
@@ -25,7 +25,7 @@ class AdviceVoter extends Voter
     {
         // replace with your own logic
         // https://symfony.com/doc/current/security/voters.html
-        return in_array($attribute, [self::ADVICE_EDIT, self::ADVICE_DEACTIVATE])
+        return in_array($attribute, [self::ADVICE_EDIT, self::ADVICE_DELETE])
             && $subject instanceof \App\Entity\Advice;
     }
 
@@ -36,8 +36,8 @@ class AdviceVoter extends Voter
         if (!$user instanceof UserInterface) {
             return false;
         }
-        
-         // you know $subject is a Advice object, thanks to `supports()`
+
+        // you know $subject is a Advice object, thanks to `supports()`
         /** @var Advice $advice */
         $advice = $subject;
 
@@ -45,11 +45,11 @@ class AdviceVoter extends Voter
         switch ($attribute) {
             case self::ADVICE_EDIT:
                 // return true or false
-                return $this->hasRight($advice, $user);
+                return $this->canEdit($advice, $user);
                 break;
-            case self::ADVICE_DEACTIVATE:
+            case self::ADVICE_DELETE:
                 // return true or false
-                return $this->hasRight($advice, $user);
+                return $this->canDelete($advice, $user);
                 break;
         }
 
@@ -58,13 +58,18 @@ class AdviceVoter extends Voter
 
     /**
      * @param Advice $advice the subject of the voter
-     * @param User $user the current user 
+     * @param User $user the user requesting action on the subject
      * @return bool true if current user match advice user
      */
-    private function hasRight(Advice $advice, User $user){ 
-
+    private function canEdit(Advice $advice, User $user)
+    {
         // return true or false
-        return $user === $advice->getContributor();
+        return ($user === $advice->getContributor() && $advice->getStatus() !== 2) || $this->security->isGranted('ROLE_ADMIN');
+    }
 
+    private function canDelete(Advice $advice, User $user)
+    {
+        // return true or false
+        return ($user === $advice->getContributor() && $advice->getStatus() !== 2);
     }
 }

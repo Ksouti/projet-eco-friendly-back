@@ -58,17 +58,17 @@ class ArticleVoter extends Voter
             case self::ARTICLE_EDIT:
                 // return true or false
                 // J'appelle ma méthode canEdit pour vérifier si l'utilisateur a le droit
-                return $this->hasRight($article, $user);
+                return $this->canEdit($article, $user);
                 break;
             case self::ARTICLE_DEACTIVATE:
                 // return true or false
                 // J'appelle ma méthode canEdit pour vérifier si l'utilisateur a le droit
-                return $this->hasRight($article, $user);
+                return $this->canDeactivate($article, $user);
                 break;
             case self::ARTICLE_REACTIVATE:
                 // return true or false
                 // J'appelle ma méthode canEdit pour vérifier si l'utilisateur a le droit
-                return $this->hasRight($article, $user);
+                return $this->canReactivate($article, $user);
                 break;
         }
 
@@ -77,26 +77,26 @@ class ArticleVoter extends Voter
 
     /**
      * @param Article $article the subject of the voter
-     * @param User $user the current user 
-     */
-    private function hasRight(Article $article, User $user)
-    {
-
-        // return true or false
-        return ($user === $article->getAuthor() && ($article->getStatus() !== 2));
-    }
-
-    /**
-     * @param Article $article the subject of the voter
-     * @param User $user the current user
+     * @param User $user the user requesting action on the subject
+     * @return bool
      */
     private function canRead(Article $article, User $user)
     {
-        return ($article->getAuthor() === $user || in_array('ROLE_ADMIN', $user->getRoles()));
+        return ($article->getAuthor() === $user || $this->security->isGranted('ROLE_ADMIN'));
+    }
+
+    private function canEdit(Article $article, User $user)
+    {
+        return (($article->getAuthor() === $user && $article->getStatus() !== 2) || $this->security->isGranted('ROLE_ADMIN'));
     }
 
     private function canDeactivate(Article $article, User $user)
     {
-        return ($article->getAuthor() === $user || in_array('ROLE_ADMIN', $user->getRoles()));
+        return ($article->getAuthor() === $user || $this->security->isGranted('ROLE_ADMIN'));
+    }
+
+    private function canReactivate(Article $article, User $user)
+    {
+        return $this->security->isGranted('ROLE_ADMIN');
     }
 }

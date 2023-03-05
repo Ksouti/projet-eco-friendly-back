@@ -17,6 +17,10 @@ use Symfony\Component\HttpFoundation\File\Exception\FileException;
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 
 class UserController extends AbstractController
+
+// TODO: rework this controller and the related voter to clearly separate the possible
+// TODO: backoffice actions on different roles (user and author)
+
 {
     /**
      * @Route("/back_office/utilisateurs/membres", name="app_backoffice_members_list", requirements={"id":"\d+"}, methods={"GET"})
@@ -42,6 +46,7 @@ class UserController extends AbstractController
 
     /**
      * @Route("/back_office/utilisateurs/ajouter", name="app_backoffice_users_new", methods={"GET", "POST"})
+     * @isGranted("ROLE_ADMIN", message="Accès réservé aux administrateurs")
      */
     public function new(Request $request, CodeGeneratorService $codeGeneratorService, UserRepository $userRepository): Response
     {
@@ -118,7 +123,7 @@ class UserController extends AbstractController
                 'success',
                 $user->getFirstname() . ' ' . $user->getLastname() . ' a bien été ajouté(e) à la liste des auteurs'
             );
-            
+
 
             return $this->redirectToRoute('app_backoffice_authors_list', [], Response::HTTP_SEE_OTHER);
         }
@@ -175,7 +180,7 @@ class UserController extends AbstractController
             'success',
             'Le compte de ' . $user->getFirstname() . ' ' . $user->getLastname() . ' a bien été modifié .'
         );
-        
+
         return $this->renderForm('user/edit.html.twig', [
             'user' => $user,
             'form' => $form,

@@ -45,6 +45,7 @@ class Article
     /**
      * @ORM\Column(type="string", length=255)
      * @Assert\Length(min = 10, max = 255)
+     * @Assert\NotBlank
      * @Groups({"articles"})
      */
     private $picture;

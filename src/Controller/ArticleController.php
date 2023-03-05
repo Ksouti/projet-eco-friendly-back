@@ -9,6 +9,7 @@ use App\Repository\ArticleRepository;
 use App\Service\SluggerService;
 use DateTimeImmutable;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Component\HttpFoundation\File\Exception\FileException;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -19,6 +20,7 @@ class ArticleController extends AbstractController
 {
     /**
      * @Route("/back_office/articles", name="app_backoffice_articles_list", methods={"GET"})
+     * @isGranted("ROLE_ADMIN", message="Vous n'avez pas les droits pour accéder à cette page")
      */
     public function list(ArticleRepository $articleRepository): Response
     {
@@ -73,7 +75,12 @@ class ArticleController extends AbstractController
 
             $articleRepository->add($article, true);
 
-            return $this->redirectToRoute('app_backoffice_articles_show', ['id' => $article->getId()], Response::HTTP_SEE_OTHER);
+            $this->addFlash(
+                'success',
+                $article->getTitle() . ' ' . ' a bien été créé'
+            );
+
+            return $this->redirectToRoute('app_backoffice_articles_user', ['id' => $article->getAuthor()->getId()], Response::HTTP_SEE_OTHER);
         }
 
         return $this->renderForm('article/new.html.twig', [
@@ -125,12 +132,13 @@ class ArticleController extends AbstractController
 
             $articleRepository->add($article, true);
 
-            return $this->redirectToRoute('app_backoffice_articles_list', [], Response::HTTP_SEE_OTHER);
+            $this->addFlash(
+                'success',
+                $article->getTitle() . ' ' . ' a bien été modifié'
+            );
+
+            return $this->redirectToRoute('app_backoffice_articles_user', ['id' => $article->getAuthor()->getId()], Response::HTTP_SEE_OTHER);
         }
-        $this->addFlash(
-            'success',
-            $article->getTitle() . ' ' . ' a bien été modifié'
-        );
         return $this->renderForm('article/edit.html.twig', [
             'article' => $article,
             'form' => $form,
@@ -153,7 +161,7 @@ class ArticleController extends AbstractController
             'danger',
             $article->getTitle() . ' ' . ' a été désactivé'
         );
-        return $this->redirectToRoute('app_backoffice_articles_list', [], Response::HTTP_SEE_OTHER);
+        return $this->redirectToRoute('app_backoffice_articles_user', ['id' => $article->getAuthor()->getId()], Response::HTTP_SEE_OTHER);
     }
 
     /**
@@ -169,7 +177,7 @@ class ArticleController extends AbstractController
         }
         $this->addFlash(
             'success',
-            $article->getTitle() . ' ' . ' a été activé'
+            $article->getTitle() . ' ' . ' a été réactivé'
         );
         return $this->redirectToRoute('app_backoffice_articles_list', [], Response::HTTP_SEE_OTHER);
     }
