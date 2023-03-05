@@ -34,12 +34,12 @@ class ArticleController extends AbstractController
     {
         // Vérifier si l'utilisateur connecté est bien l'auteur des articles
         if ($this->getUser() !== $author && !$this->isGranted('ROLE_ADMIN')) {
-        throw new AccessDeniedException('Access Denied.');
-    }
+            throw new AccessDeniedException('Access Denied.');
+        }
 
-    return $this->render('article/list.html.twig', [
-        'articles' => $articleRepository->findAllByUser($author),
-    ]);
+        return $this->render('article/list.html.twig', [
+            'articles' => $articleRepository->findAllByUser($author),
+        ]);
     }
 
     /**
@@ -87,7 +87,7 @@ class ArticleController extends AbstractController
      */
     public function show(Article $article): Response
     {
-        $this->denyAccessUnlessGranted('article_show', $article);
+        $this->denyAccessUnlessGranted('article_read', $article);
 
         return $this->render('article/show.html.twig', [
             'article' => $article,
@@ -124,7 +124,7 @@ class ArticleController extends AbstractController
             }
 
             $articleRepository->add($article, true);
-            
+
             return $this->redirectToRoute('app_backoffice_articles_list', [], Response::HTTP_SEE_OTHER);
         }
         $this->addFlash(
@@ -156,7 +156,7 @@ class ArticleController extends AbstractController
         return $this->redirectToRoute('app_backoffice_articles_list', [], Response::HTTP_SEE_OTHER);
     }
 
-     /**
+    /**
      * @Route("/back_office/articles/{id}/reactiver", name="app_backoffice_articles_reactivate", requirements={"id":"\d+"}, methods={"POST"})
      */
     public function reactivate(Request $request, Article $article, ArticleRepository $articleRepository): Response
