@@ -1,4 +1,3 @@
-
 ###> symfony/framework-bundle ###
 /.env.local
 /.env.local.php
@@ -25,4 +24,3 @@
 /.vscode/
 
 /config/jwt/*.pem
-

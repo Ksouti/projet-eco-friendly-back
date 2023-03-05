@@ -176,12 +176,14 @@ class AdviceController extends AbstractController
      */
     public function delete(?Advice $advice, AdviceRepository $adviceRepository): Response
     {
-        $this->denyAccessUnlessGranted('advice_deactivate', $advice);
-
         if (!$advice) {
             return $this->json(['errors' => ['advice' => ['Ce conseil n\'existe pas']]], Response::HTTP_NOT_FOUND);
         }
+
+        $this->denyAccessUnlessGranted('advice_deactivate', $advice);
+
+        $adviceId = $advice->getId();
         $adviceRepository->remove($advice, true);
-        return $this->json([], Response::HTTP_NO_CONTENT, [], ['groups' => 'advices']);
+        return $this->json(['id' => $adviceId], Response::HTTP_ACCEPTED);
     }
 }
