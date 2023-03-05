@@ -132,6 +132,7 @@ class ArticleController extends AbstractController
 
             $articleRepository->add($article, true);
 
+
             $this->addFlash(
                 'success',
                 $article->getTitle() . ' ' . ' a bien été modifié'
@@ -139,11 +140,13 @@ class ArticleController extends AbstractController
 
             return $this->redirectToRoute('app_backoffice_articles_user', ['id' => $article->getAuthor()->getId()], Response::HTTP_SEE_OTHER);
         }
+
         return $this->renderForm('article/edit.html.twig', [
             'article' => $article,
             'form' => $form,
         ]);
     }
+
 
     /**
      * @Route("/back_office/articles/{id}/desactiver", name="app_backoffice_articles_deactivate", requirements={"id":"\d+"}, methods={"POST"})
@@ -161,6 +164,7 @@ class ArticleController extends AbstractController
             'danger',
             $article->getTitle() . ' ' . ' a été désactivé'
         );
+
         return $this->redirectToRoute('app_backoffice_articles_user', ['id' => $article->getAuthor()->getId()], Response::HTTP_SEE_OTHER);
     }
 
@@ -179,6 +183,7 @@ class ArticleController extends AbstractController
             'success',
             $article->getTitle() . ' ' . ' a été réactivé'
         );
-        return $this->redirectToRoute('app_backoffice_articles_list', [], Response::HTTP_SEE_OTHER);
+        $user = $article->getAuthor();
+        return $this->redirectToRoute('app_backoffice_articles_user', ['id' => $user->getId()]);
     }
 }
