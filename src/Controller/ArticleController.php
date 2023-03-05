@@ -124,10 +124,13 @@ class ArticleController extends AbstractController
             }
 
             $articleRepository->add($article, true);
-
+            
             return $this->redirectToRoute('app_backoffice_articles_list', [], Response::HTTP_SEE_OTHER);
         }
-
+        $this->addFlash(
+            'success',
+            $article->getTitle() . ' ' . ' a bien été modifié'
+        );
         return $this->renderForm('article/edit.html.twig', [
             'article' => $article,
             'form' => $form,
@@ -145,6 +148,11 @@ class ArticleController extends AbstractController
             $article->setStatus(2);
             $articleRepository->add($article, true);
         }
+
+        $this->addFlash(
+            'danger',
+            $article->getTitle() . ' ' . ' a été désactivé'
+        );
         return $this->redirectToRoute('app_backoffice_articles_list', [], Response::HTTP_SEE_OTHER);
     }
 
@@ -159,6 +167,10 @@ class ArticleController extends AbstractController
             $article->setStatus(1);
             $articleRepository->add($article, true);
         }
+        $this->addFlash(
+            'success',
+            $article->getTitle() . ' ' . ' a été activé'
+        );
         return $this->redirectToRoute('app_backoffice_articles_list', [], Response::HTTP_SEE_OTHER);
     }
 }
