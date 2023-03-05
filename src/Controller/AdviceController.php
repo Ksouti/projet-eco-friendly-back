@@ -50,7 +50,10 @@ class AdviceController extends AbstractController
 
             return $this->redirectToRoute('app_backoffice_advices_list', [], Response::HTTP_SEE_OTHER);
         }
-
+        $this->addFlash(
+            'success',
+             $advice->getTitle() . ' ' .  ' a bien été modifié. '
+        );
         return $this->renderForm('advice/edit.html.twig', [
             'advice' => $advice,
             'form' => $form,
@@ -66,6 +69,10 @@ class AdviceController extends AbstractController
             $advice->setStatus(2);
             $adviceRepository->add($advice, true);
         }
+        $this->addFlash(
+            'danger',
+             $advice->getTitle() . ' ' .  ' a bien été désactivé. '
+        );
         return $this->redirectToRoute('app_backoffice_advices_list', [], Response::HTTP_SEE_OTHER);
     }
 
@@ -78,6 +85,10 @@ class AdviceController extends AbstractController
             $advice->setStatus(1);
             $adviceRepository->add($advice, true);
         }
+        $this->addFlash(
+            'sucess',
+             $advice->getTitle() . ' ' .  ' a bien été activé. '
+        );
         return $this->redirectToRoute('app_backoffice_advices_list', [], Response::HTTP_SEE_OTHER);
     }
 }
