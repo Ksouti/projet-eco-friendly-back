@@ -11,7 +11,6 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 use Symfony\Component\Routing\Annotation\Route;
-use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 use Symfony\Component\Serializer\Exception\NotEncodableValueException;
 use Symfony\Component\Serializer\SerializerInterface;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
@@ -47,17 +46,22 @@ class UserController extends AbstractController
         // Verify if the user is the owner of the data
         $this->denyAccessUnlessGranted('user_update', $user);
 
-        // TODO: Recode this part taking into account the denormalizer and the password constraint
-        // TODO: Add a validation for the email / Ensure that is_active and is_verified are not changed
+        // Clone the user to keep the original data for sensitive fields
+        $originalUser = clone $user;
+
         try {
-            $user = $serializer->deserialize($request->getContent(), User::class, 'json');
-            $data = json_decode($request->getContent(), true);
-            $user->setEmail($data['email'] ?? $user->getEmail());
-            $user->setPassword($passwordHasher->hashPassword($user, $data['password'] ?? $user->getPassword()));
-            $user->setFirstname($data['firstname'] ?? $user->getFirstname());
-            $user->setLastname($data['lastname'] ?? $user->getLastname());
-            $user->setNickname($data['nickname'] ?? $user->getNickname());
-            $user->setAvatar($data['avatar'] ?? $user->getAvatar());
+            $user = $serializer->deserialize($request->getContent(), User::class, 'json', ['object_to_populate' => $user]);
+            $user->setFirstName(ucfirst($user->getFirstName()));
+            $user->setLastName(ucfirst($user->getLastName()));
+            // Keep the original data for sensitive fields
+            $user->setPassword($originalUser->getPassword());
+            $user->setCode($originalUser->getCode());
+            $user->setRoles($originalUser->getRoles());
+            $user->setEmail($originalUser->getEmail());
+            $user->setPassword($originalUser->getPassword());
+            $user->setIsActive($originalUser->isActive());
+            $user->setIsVerified($originalUser->isVerified());
+            $user->setCreatedAt($originalUser->getCreatedAt());
             $user->setUpdatedAt(new \DateTimeImmutable());
         } catch (NotEncodableValueException $e) {
             return $this->json(['errors' => ['json' => ['Json non valide']]], Response::HTTP_BAD_REQUEST);
