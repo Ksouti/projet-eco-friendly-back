@@ -1,0 +1,11 @@
+{% if advice.status is same as 1%}
+    <form method="post" action="{{ path('app_backoffice_advices_deactivate', {'id': advice.id}) }}" onsubmit="return confirm('Êtes-vous sûr de vouloir désactiver ce conseil ?');">
+    <input type="hidden" name="_token" value="{{ csrf_token('deactivate' ~ advice.id) }}" />
+    <button class="m-1 btn-sm btn btn-danger" data-bs-toggle="tooltip" data-bs-placement="top" title="D&eacute;sactiver"><i class="bi bi-x-circle"></i></button>
+    </form>
+{% else %}
+    <form method="post" action="{{ path('app_backoffice_advices_reactivate', {'id': advice.id}) }}" onsubmit="return confirm('Êtes-vous sûr de vouloir réactiver ce conseil ?');">
+    <input type="hidden" name="_token" value="{{ csrf_token('reactivate' ~ advice.id) }}" />
+    <button class="m-1 btn-sm btn btn-success" data-bs-toggle="tooltip" data-bs-placement="top" title="Réactiver"><i class="bi bi-arrow-clockwise"></i></button>
+    </form>
+{% endif %}

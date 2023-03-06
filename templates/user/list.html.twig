@@ -32,7 +32,7 @@
                 <th>Prénom</th>
                 <th>Nom</th>
                 <th>Pseudonyme</th>
-                <th class="text-center">Actif</th>
+                <th class="text-center">Vérifié</th>
                 <th class="text-center">Actif</th>
                 <th>Créé le</th>
                 <th>Edité le</th>
@@ -60,10 +60,7 @@
                     <a class="m-1 btn-sm btn btn-success" data-bs-toggle="tooltip" data-bs-placement="top" title="Voir" href="{{ path('app_backoffice_users_show', {'id': user.id}) }}"><i class="bi bi-eye"></i></a>
                     {% if app.request.pathinfo is same as (path('app_backoffice_authors_list'))%}
                     <a class="m-1 btn-sm btn btn-warning" data-bs-toggle="tooltip" data-bs-placement="top" title="&Eacute;diter" href="{{ path('app_backoffice_users_edit', {'id': user.id}) }}"><i class="bi bi-pencil"></i></a>
-                    <form method="post" action="{{ path('app_backoffice_users_deactivate', {'id': user.id}) }}" onsubmit="return confirm('Etes-vous sûr de vouloir désactiver cet utilisateur?');">
-                        <input type="hidden" name="_token" value="{{ csrf_token('deactivate' ~ user.id) }}" />
-                        <button class="m-1 btn-sm btn btn-danger" data-bs-toggle="tooltip" data-bs-placement="top" title="D&eacute;sactiver"><i class="bi bi-x-circle"></i></button>
-                    </form>
+                    {% include "_fragments/_button_activate_author.html.twig"%}
                     {% endif %}
                 </td>
             </tr>
