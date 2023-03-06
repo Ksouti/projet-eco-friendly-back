@@ -74,6 +74,17 @@ class AdviceRepository extends ServiceEntityRepository
             ->getResult();
     }
 
+     /**
+     * @return Advice[] Returns an array of advices objects ordered by descending date
+     */
+    public function findAllOrderByDate()
+    {
+        return $this->createQueryBuilder('ad')
+            ->orderBy('ad.created_at', 'DESC')
+            ->getQuery()
+            ->getResult();
+    }
+
     /**
      * @return Advice[] Returns an array of advices objects filtered by user, published or removed, and ordered by descending date
      */
