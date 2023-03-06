@@ -41,9 +41,9 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     /**
      * @var string The hashed password
      * @ORM\Column(type="string")
-     * @Assert\Length(min = 8, max = 32)
-     * @Assert\Regex(pattern="/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*(_|[^\w])).+$/")
-     * @Assert\NotBlank 
+     * @Assert\Length(min = 8, max = 32, groups={"registration"})
+     * @Assert\Regex(pattern="/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*(_|[^\w])).+$/", groups={"registration"})
+     * @Assert\NotBlank(groups={"registration"}) 
      */
     private $password;
 
@@ -60,7 +60,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
      * @ORM\Column(type="string", length=64, nullable=true)
      * @Assert\Length(max = 64)
      * starts with a capital letter & contains only letters, hyphens and apostrophes
-     * @Assert\Regex(pattern="/^[A-Z][A-Za-z\-\']+$/")
+     * @Assert\Regex(pattern="/^[A-Z][A-Za-zàâçéèêëîïôûùüÿñæœ\s\-\']*$/")
      * @Groups({"articles"})
      * @Groups({"advices"})
      * @Groups({"users"})
@@ -71,7 +71,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
      * @ORM\Column(type="string", length=64, nullable=true)
      * @Assert\Length(max = 64)
      * starts with a capital letter & contains only letters, hyphens and apostrophes
-     * @Assert\Regex(pattern="/^[A-Z][A-Za-z\-\']+$/")
+     * @Assert\Regex(pattern="/^[A-Z][A-Za-zàâçéèêëîïôûùüÿñæœ\s\-\']*$/")
      * @Groups({"articles"})
      * @Groups({"advices"})
      * @Groups({"users"})
@@ -81,7 +81,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     /**
      * @ORM\Column(type="string", length=64)
      * @Assert\Length(min = 3, max = 64)
-     * @Assert\Regex(pattern="/^[^\#]+$/")
+     * @Assert\Regex(pattern="/^[^\#\s]+$/", message="Votre pseudo ne peut pas contenir d'espace ou de #")
      * @Assert\NotBlank
      * @Groups({"articles"})
      * @Groups({"advices"})
