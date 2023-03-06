@@ -28,7 +28,7 @@
                 </div>
             {% endif %}
 
-            <form action="{{ path('app_backoffice_security_login') }}" method="post">
+            <form action="{{ path('app_backoffice_security_login') }}" method="post" />
             <div class="form-group p-2 d-flex flex-column justify-content-between">
                 <label for="username">Email</label>
                 <input class="form-control" type="text" id="username" name="_username" value="{{ last_username }}"/>
@@ -42,6 +42,7 @@
             <div class="buttons float-end p-2 mt-4 ">
                 <div class="btn btn-sm btn-danger p-2 ml-5" href="https://www.eco-friendly.fr">Annuler</div>
                 <button class="btn btn-sm btn-success p-2" type="submit">Se connecter</button>
+                <p><small><a href="{{ path('app_backoffice_forgotpassword_request') }}">mot de passe oublié ?</a></small></p>
             </div>
             </form>
         </h1>
