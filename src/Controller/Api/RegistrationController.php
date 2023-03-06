@@ -76,7 +76,7 @@ class RegistrationController extends AbstractController
         );
 
         // Return a response with a 201 status code only as the user is not yet verified
-        return $this->json([], Response::HTTP_CREATED);
+        return $this->json(['nickname' => $user->getNickname(), 'email' => $user->getEmail()], Response::HTTP_CREATED);
     }
     /**
      * @Route("/verify/email", name="app_verify_email")
