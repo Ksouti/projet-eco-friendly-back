@@ -5,7 +5,7 @@ namespace App\Controller;
 use App\Entity\User;
 use App\Form\UserType;
 use App\Repository\UserRepository;
-use App\Service\CodeGeneratorService;
+use App\Service\GeneratorService;
 use App\Service\SluggerService;
 use DateTimeImmutable;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -13,7 +13,11 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
+use Symfony\Bridge\Twig\Mime\TemplatedEmail;
 use Symfony\Component\HttpFoundation\File\Exception\FileException;
+use Symfony\Component\Mailer\MailerInterface;
+use Symfony\Component\Mime\Address;
+use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 
 class UserController extends AbstractController
@@ -48,22 +52,28 @@ class UserController extends AbstractController
      * @Route("/back_office/utilisateurs/ajouter", name="app_backoffice_users_new", methods={"GET", "POST"})
      * @isGranted("ROLE_ADMIN", message="Accès réservé aux administrateurs")
      */
-    public function new(Request $request, CodeGeneratorService $codeGeneratorService, UserRepository $userRepository): Response
-    {
+    public function new(
+        Request $request,
+        GeneratorService $generator,
+        MailerInterface $mailer,
+        UserPasswordHasherInterface $userPasswordHasher,
+        UserRepository $userRepository
+    ): Response {
         $user = new User();
         $user->setCreatedAt(new DateTimeImmutable());
         $user->setIsActive(true);
         $user->setIsVerified(false);
-        $user->setCode($codeGeneratorService->codeGen());
-        // ! TODO: change when registration via backoffice is ready
-        $user->setPassword('@@12AAaa');
+        $user->setCode($generator->codeGen());
+        $user->setRoles(['ROLE_AUTHOR']);
+        $tempPassword = $generator->passwordGen();
+        $user->setPassword($tempPassword);
 
         $form = $this->createForm(UserType::class, $user);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
 
-            $avatar = $form->get('avatar')->getData();
+            /* $avatar = $form->get('avatar')->getData();
 
             if (!$avatar) {
                 $this->addFlash('danger', 'Image non valide');
@@ -87,7 +97,7 @@ class UserController extends AbstractController
             } catch (FileException $e) {
                 $this->addFlash('danger', 'Une erreur est survenue lors de l\'upload de l\'image');
                 // return $this->redirectToRoute('app_backoffice_users_new');
-            }
+            } 
 
             list($width, $height) = getimagesize($filepath);
             $size = min($width, $height); // get the minimum dimension
@@ -116,14 +126,21 @@ class UserController extends AbstractController
             imagedestroy($new_image);
 
             $user->setAvatar($this->getParameter('uploads_user_url') . $filename);
-
+*/
+            $user->setPassword($userPasswordHasher->hashPassword($user, $user->getPassword()));
             $userRepository->add($user, true);
 
-            $this->addFlash(
-                'success',
-                $user->getFirstname() . ' ' . $user->getLastname() . ' a bien été ajouté(e) à la liste des auteurs'
-            );
+            $email = (new TemplatedEmail())
+                ->from(new Address('no-reply@eco-friendly.fr', 'Eco-Friendly'))
+                ->to($user->getEmail())
+                ->subject('Votre compte Eco-Friendly a été créé !')
+                ->htmlTemplate("email/author_account_creation.html.twig")
+                ->context([
+                    'username' => $user->getEmail(),
+                    'password' => $tempPassword,
+                ]);
 
+            $mailer->send($email);
 
             return $this->redirectToRoute('app_backoffice_authors_list', [], Response::HTTP_SEE_OTHER);
         }
@@ -133,6 +150,50 @@ class UserController extends AbstractController
             'form' => $form,
         ]);
     }
+
+    /**
+     * @Route("/back_office/utilisateurs/creation", name="app_backoffice_users_create", methods={"GET", "POST"})
+     */
+    public function create(
+        Request $request,
+        UserPasswordHasherInterface $userPasswordHasher,
+        UserRepository $userRepository
+    ): Response {
+        // TODO: returns a InvalidArgumentException if the password field is not filled
+        $user = $this->getUser();
+        $form = $this->createForm(UserType::class, $user, ['validation_groups' => ['Default']]);
+        $password = $form->get('password')->getData();
+        if ($password !== null) {
+            $form->handleRequest($request);
+        }
+
+        // As author's required fields are different than these of a member (firstname and lastname mandatory), 
+        // we need to check them because the @assert on the entity can't be used for this purpose (to let things open 
+        // for the api registration)
+        if ($form->isSubmitted()) {
+            if ($user->getFirstname() == null || $user->getLastname() == null) {
+                $this->addFlash('danger', 'Vous devez renseigner votre prénom et votre nom.');
+            }
+
+            if ($password == null) {
+                $this->addFlash('danger', 'Vous devez renseigner un mot de passe.');
+            }
+            $confirmPassword = $form->get('passwordConfirm')->getData();
+            if ($password != $confirmPassword) {
+                $this->addFlash('danger', 'Les mots de passe ne correspondent pas.');
+            }
+        }
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            $user->setPassword($userPasswordHasher->hashPassword($user, $user->getPassword()));
+            $userRepository->add($user, true);
+        }
+        return $this->render('user/create.html.twig', [
+            'user' => $user,
+            'form' => $form->createView(),
+        ]);
+    }
+
     /**
      * @Route("/back_office/utilisateurs/{id}", name="app_backoffice_users_show", requirements={"id":"\d+"}, methods={"GET"})
      */

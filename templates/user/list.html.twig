@@ -50,7 +50,7 @@
                 <td>{{ user.lastname }}</td>
                 <td>{{ user.nickname }}</td>
                 <td class="text-center">
-                    {% include "_fragments/_user_verified_tag.html.twig" with {status:user.isActive} %}
+                    {% include "_fragments/_user_verified_tag.html.twig" with {status:user.isVerified} %}
                 </td>
                 <td class="text-center">
                     {% include "_fragments/_user_active_tag.html.twig" with {status:user.isActive} %}

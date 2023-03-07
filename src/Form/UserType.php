@@ -4,9 +4,9 @@ namespace App\Form;
 
 use App\Entity\User;
 use Symfony\Component\Form\AbstractType;
-use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\EmailType;
 use Symfony\Component\Form\Extension\Core\Type\FileType;
+use Symfony\Component\Form\Extension\Core\Type\PasswordType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
@@ -45,14 +45,19 @@ class UserType extends AbstractType
                 ]
             ])
 
-            ->add('roles', ChoiceType::class, [
-                "choices" => [
-                    "Admin" =>  "ROLE_ADMIN",
-                    "Auteur" => "ROLE_AUTHOR",
-                    "Membre" => "ROLE_USER"
-                ],
-                "expanded" => true,
-                "multiple" => true,
+            ->add('password', PasswordType::class, [
+                "label" => "Nouveau mot de passe",
+                "attr" => [
+                    "placeholder" => "Mot de passe"
+                ]
+            ])
+
+            ->add('passwordConfirm', PasswordType::class, [
+                "mapped" => false,
+                "label" => "Confirmation du mot de passe",
+                "attr" => [
+                    "placeholder" => "Confirmation du mot de passe"
+                ]
             ])
 
             ->add('avatar', FileType::class, [
@@ -77,6 +82,7 @@ class UserType extends AbstractType
     {
         $resolver->setDefaults([
             'data_class' => User::class,
+            'validation_groups' => ['registration']
         ]);
     }
 }

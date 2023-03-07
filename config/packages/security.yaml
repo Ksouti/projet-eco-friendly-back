@@ -50,24 +50,14 @@ security:
     access_control:
         # ! BACK-OFFICE
         - { path: '^/back_office/connexion|deconnexion', roles: [] }
+        - { path: '^/back_office/utilisateurs/creation', roles: ROLE_AUTHOR }
         - { path: '^/back_office/utilisateurs|conseils', roles: ROLE_ADMIN }
         - { path: '^/back_office/categories/(\d+)/(editer|modifier|desactiver)',roles: ROLE_ADMIN}
         - {
-              # path: '^back_office/auteurs/(\d+)/(editer|modifier|desactiver)$',
               path: '^/back_office/connexion|deconnexion',
               roles: [],
-
-
-            #    { path: ^/api/articles, roles: [] }
-            #    { path: ^/api/advices, roles: [] }
-            #    { path: ^/api/users/\d+$, roles: ROLE_USER }
-            #    { path: ^/api/users/d+$, roles: ROLE_USER }
-            #    { path: ^/api/login_check, roles: ROLE_USER }
-            
-          }
-        
+        }
         - {
-              # path: '^back_office/auteurs/(\d+)/(editer|modifier|desactiver)$',
               path: '^/back_office/auteurs/(\d+)/(editer|modifier|desactiver)',
               roles: ROLE_AUTHOR,
           }
@@ -80,9 +70,6 @@ security:
         - { path: ^/api/advices/\d+, roles: ROLE_USER, methods: [PUT, DELETE] }
         - { path: ^/api/users/\d+$, roles: ROLE_USER, methods: [GET, POST, PUT, DELETE] }
        
-
-
-
     role_hierarchy:
         ROLE_ADMIN: ['ROLE_AUTHOR','ROLE_USER']
         ROLE_AUTHOR: ['ROLE_USER']
