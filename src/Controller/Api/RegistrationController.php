@@ -58,7 +58,7 @@ class RegistrationController extends AbstractController
 
         $errors = $validator->validate($user, null, ['Default', 'registration']);
 
-        if (count($errors) > 0) {
+        /* if (count($errors) > 0) {
             $errorsArray = [];
             foreach ($errors as $error) {
                 $errorsArray[$error->getPropertyPath()][] = [$error->getMessage()];
@@ -67,8 +67,25 @@ class RegistrationController extends AbstractController
             foreach ($errorsArray as $key => $value) {
                 $responseArray[] = [$key => $value];
             }
-            return new JsonResponse(['errors' => $responseArray], Response::HTTP_BAD_REQUEST);
+            return $this->json(['errors' => $responseArray], Response::HTTP_BAD_REQUEST);
+        } */
+
+        if (count($errors) > 0) {
+            $errorsArray = [];
+            foreach ($errors as $error) {
+                $errorsArray[$error->getPropertyPath()][] = [$error->getMessage()];
+            }
+            $errorsResponse = [];
+            foreach ($errorsArray as $key => $value) {
+                $errorsResponse[$key] = $value;
+            }
+            // Q: i want to return an array of errors, but i can't figure out how to do it. For now, it returns an object with the errors as properties
+            // A: You can't return an array of errors, you have to return an object with the errors as properties
+
+
+            return $this->json(["errors" => $errorsResponse], Response::HTTP_BAD_REQUEST);
         }
+
         $user->setPassword($userPasswordHasher->hashPassword($user, $user->getPassword()));
         $userRepository->add($user, true);
 
