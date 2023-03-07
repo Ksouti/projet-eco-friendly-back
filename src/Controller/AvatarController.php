@@ -124,11 +124,12 @@ class AvatarController extends AbstractController
     public function deactivate(Request $request, Avatar $avatar, AvatarRepository $avatarRepository): Response
     {
         if ($this->isCsrfTokenValid('deactivate' . $avatar->getId(), $request->request->get('_token'))) {
-            $avatar->$avatarRepository->add($avatar, true);
+            $avatar->setIsActive(false);
+            $avatarRepository->add($avatar, true);
         }
         $this->addFlash(
             'danger',
-            $avatar->getName() . ' ' . ' a été désacitvé'
+            $avatar->getName() . ' ' . ' a été désactivé'
         );
         return $this->redirectToRoute('app_backoffice_avatars_list', [], Response::HTTP_SEE_OTHER);
     }
@@ -139,11 +140,12 @@ class AvatarController extends AbstractController
     public function reactivate(Request $request, Avatar $avatar, AvatarRepository $avatarRepository): Response
     {
         if ($this->isCsrfTokenValid('reactivate' . $avatar->getId(), $request->request->get('_token'))) {
+            $avatar->setIsActive(true);
             $avatarRepository->add($avatar, true);
         }
         $this->addFlash(
             'success',
-            $avatar->getName() . ' ' . ' a été acitvé'
+            $avatar->getName() . ' ' . ' a été activé'
         );
         return $this->redirectToRoute('app_backoffice_avatars_list', [], Response::HTTP_SEE_OTHER);
     }
