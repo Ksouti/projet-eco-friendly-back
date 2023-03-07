@@ -9,6 +9,7 @@ use App\Service\CodeGeneratorService;
 use DateTimeImmutable;
 use Symfony\Bridge\Twig\Mime\TemplatedEmail;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Mailer\MailerInterface;
@@ -55,14 +56,18 @@ class RegistrationController extends AbstractController
             return $this->json(['errors' => ['json' => ['Json non valide']]], Response::HTTP_BAD_REQUEST);
         }
 
-        $errors = $validator->validate($user, null, ['registration']);
+        $errors = $validator->validate($user, null, ['Default', 'registration']);
 
         if (count($errors) > 0) {
             $errorsArray = [];
             foreach ($errors as $error) {
-                $errorsArray[$error->getPropertyPath()][] = $error->getMessage();
+                $errorsArray[$error->getPropertyPath()][] = [$error->getMessage()];
             }
-            return $this->json(['errors' => $errorsArray], Response::HTTP_BAD_REQUEST);
+            $responseArray = [];
+            foreach ($errorsArray as $key => $value) {
+                $responseArray[] = [$key => $value];
+            }
+            return new JsonResponse(['errors' => $responseArray], Response::HTTP_BAD_REQUEST);
         }
         $user->setPassword($userPasswordHasher->hashPassword($user, $user->getPassword()));
         $userRepository->add($user, true);
