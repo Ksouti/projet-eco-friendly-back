@@ -18,125 +18,126 @@
             <!-- Main Content -->
             <div class="col-12 col-xl-9">
                 <div class="row">
-                <!-- Table 1 -->
-                <div class="col-md-6">
-                    <h4>Derniers auteurs ajoutés</h4>
-                    <table class="table table-striped table-sm align-middle">
-                        <thead>
-                            <tr>
-                                <th>Pseudonyme</th>
-                                <th>Prénom Nom</th>
-                                <th>Status</th>
+                    <!-- Table 1 -->
+                    <div class="col-md-6">
+                        <h4>Derniers auteurs ajoutés</h4>
+                        <table class="table table-striped table-sm align-middle">
+                            <thead>
+                                <tr>
+                                    <th>Pseudonyme</th>
+                                    <th>Prénom Nom</th>
+                                    <th>Status</th>
+                                    <th>Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for author in authors %}
+                                <tr>
+                                    <td>{{ author.nickname }}</td>
+                                    <td>{{ author.firstname }} {{ author.lastname }}</td>
+                                    <td>
+                                        {% include "_fragments/_user_verified_tag.html.twig" with {status:author.isActive} %}
+                                        {% include "_fragments/_user_active_tag.html.twig" with {status:author.isActive} %}
+                                    </td>
+                                    <td>
+                                        <a class="m-1 btn-sm btn btn-success" data-bs-toggle="tooltip" data-bs-placement="top" title="Voir" href="{{ path('app_backoffice_users_show', {'id': author.id}) }}"><i class="bi bi-eye"></i></a>
+                                    </td>
+                                </tr>
+                                {% endfor %}                        
+                            </tbody>
+                        </table>
+                        <a href="{{ path('app_backoffice_authors_list') }}" class="btn btn-primary btn-lg btn-block w-100 mb-5">Voir tous les auteurs</a>
+                    </div>
+                    <!-- Table 3 -->
+                    <div class="col-md-6">
+                        <h4>Derniers membres inscrits</h4>
+                        <table class="table table-striped table-sm align-middle">
+                            <thead>
+                                <tr>
+                                    <th>Pseudonyme</th>
+                                    <th>Prénom Nom</th>
+                                    <th>Status</th>
+                                    <th>Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for member in members %}
+                                <tr>
+                                    <td>{{ member.nickname }}</td>
+                                    <td>{{ member.firstname }} {{ member.lastname }}</td>
+                                    <td>
+                                        {% include "_fragments/_user_verified_tag.html.twig" with {status:member.isActive} %}
+                                        {% include "_fragments/_user_active_tag.html.twig" with {status:member.isActive} %}
+                                    </td>
+                                    <td>
+                                        <a class="m-1 btn-sm btn btn-success" data-bs-toggle="tooltip" data-bs-placement="top" title="Voir" href="{{ path('app_backoffice_users_show', {'id': member.id}) }}"><i class="bi bi-eye"></i></a>
+                                    </td>
+                                </tr>
+                                {% endfor %}                        
+                            </tbody>
+                        </table>
+                        <a href="{{ path('app_backoffice_members_list') }}" class="btn btn-primary btn-lg btn-block w-100 mb-5">Voir tous les membres</a>
+                    </div>
+                </div>
+                <div class="row">
+                    <!-- Table 2 -->
+                    <div class="col-md-6">
+                        <h4>Derniers articles publiés</h4>
+                        <table class="table table-striped table-sm align-middle">
+                            <thead>
+                                <tr>
+                                <th>Titre</th>
+                                <th>Auteur</th>
+                                <th>Catégorie</th>
                                 <th>Actions</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            {% for author in authors %}
-                            <tr>
-                                <td>{{ author.nickname }}</td>
-                                <td>{{ author.firstname }} {{ author.lastname }}</td>
-                                <td>
-                                    {% include "_fragments/_user_verified_tag.html.twig" with {status:author.isActive} %}
-                                    {% include "_fragments/_user_active_tag.html.twig" with {status:author.isActive} %}
-                                </td>
-                                <td>
-                                    <a class="m-1 btn-sm btn btn-success" data-bs-toggle="tooltip" data-bs-placement="top" title="Voir" href="{{ path('app_backoffice_users_show', {'id': author.id}) }}"><i class="bi bi-eye"></i></a>
-                                </td>
-                            </tr>
-                            {% endfor %}                        
-                        </tbody>
-                    </table>
-                    <a href="{{ path('app_backoffice_authors_list') }}" class="btn btn-primary btn-lg btn-block w-100 mb-5">Voir tous les auteurs</a>
-                </div>
-                <!-- Table 2 -->
-                <div class="col-md-6">
-                    <h4>Derniers articles publiés</h4>
-                    <table class="table table-striped table-sm align-middle">
-                        <thead>
-                            <tr>
-                            <th>Titre</th>
-                            <th>Auteur</th>
-                            <th>Catégorie</th>
-                            <th>Actions</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            {% for article in articles %}
-                            <tr>
-                                <td>{{ article.title }}</td>
-                                <td>{{ article.author.nickname }}</td>
-                                <td>
-                                    <span class="badge bg-info">{{ article.category.name }}</span>
-                                </td>
-                                <td>
-                                    <a class="m-1 btn-sm btn btn-success" data-bs-toggle="tooltip" data-bs-placement="top" title="Voir" href="{{ path('app_backoffice_articles_show', {'id': article.id}) }}"><i class="bi bi-eye"></i></a>
-                                </td>
-                            </tr>
-                            {% endfor %}                        
-                        </tbody>
-                    </table>
-                    <a href="{{ path('app_backoffice_articles_list') }}" class="btn btn-primary btn-lg btn-block w-100 mb-5">Voir tous les articles</a>
-                </div>
-            </div>
-            <div class="row">
-                <!-- Table 3 -->
-                <div class="col-md-6">
-                    <h4>Derniers membres inscrits</h4>
-                    <table class="table table-striped table-sm align-middle">
-                        <thead>
-                            <tr>
-                                <th>Pseudonyme</th>
-                                <th>Prénom Nom</th>
-                                <th>Status</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for article in articles %}
+                                <tr>
+                                    <td>{{ article.title }}</td>
+                                    <td>{{ article.author.nickname }}</td>
+                                    <td>
+                                        <span class="badge bg-info">{{ article.category.name }}</span>
+                                    </td>
+                                    <td>
+                                        <a class="m-1 btn-sm btn btn-success" data-bs-toggle="tooltip" data-bs-placement="top" title="Voir" href="{{ path('app_backoffice_articles_show', {'id': article.id}) }}"><i class="bi bi-eye"></i></a>
+                                    </td>
+                                </tr>
+                                {% endfor %}                        
+                            </tbody>
+                        </table>
+                        <a href="{{ path('app_backoffice_articles_list') }}" class="btn btn-primary btn-lg btn-block w-100 mb-5">Voir tous les articles</a>
+                    </div>
+                    <!-- Table 4 -->
+                    <div class="col-md-6">
+                        <h4>Derniers conseils publiés</h4>
+                        <table class="table table-striped table-sm align-middle">
+                            <thead>
+                                <tr>
+                                <th>Titre</th>
+                                <th>Membre</th>
+                                <th>Catégorie</th>
                                 <th>Actions</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            {% for member in members %}
-                            <tr>
-                                <td>{{ member.nickname }}</td>
-                                <td>{{ member.firstname }} {{ member.lastname }}</td>
-                                <td>
-                                    {% include "_fragments/_user_verified_tag.html.twig" with {status:member.isActive} %}
-                                    {% include "_fragments/_user_active_tag.html.twig" with {status:member.isActive} %}
-                                </td>
-                                <td>
-                                    <a class="m-1 btn-sm btn btn-success" data-bs-toggle="tooltip" data-bs-placement="top" title="Voir" href="{{ path('app_backoffice_users_show', {'id': member.id}) }}"><i class="bi bi-eye"></i></a>
-                                </td>
-                            </tr>
-                            {% endfor %}                        
-                        </tbody>
-                    </table>
-                    <a href="{{ path('app_backoffice_members_list') }}" class="btn btn-primary btn-lg btn-block w-100 mb-5">Voir tous les membres</a>
-                </div>
-                <!-- Table 4 -->
-                <div class="col-md-6">
-                    <h4>Derniers conseils publiés</h4>
-                    <table class="table table-striped table-sm align-middle">
-                        <thead>
-                            <tr>
-                            <th>Titre</th>
-                            <th>Membre</th>
-                            <th>Catégorie</th>
-                            <th>Actions</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            {% for advice in advices %}
-                            <tr>
-                                <td>{{ advice.title }}</td>
-                                <td>{{ advice.contributor.nickname }}</td>
-                                <td>
-                                    <span class="badge bg-info">{{ advice.category.name }}</span>
-                                </td>
-                                <td>
-                                    <a class="m-1 btn-sm btn btn-success" data-bs-toggle="tooltip" data-bs-placement="top" title="Voir" href="{{ path('app_backoffice_advices_show', {'id': advice.id}) }}"><i class="bi bi-eye"></i></a>
-                                </td>
-                            </tr>
-                            {% endfor %}                        
-                        </tbody>
-                    </table>
-                    <a href="{{ path('app_backoffice_advices_list') }}" class="btn btn-primary btn-lg btn-block w-100 mb-5">Voir tous les conseils</a>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for advice in advices %}
+                                <tr>
+                                    <td>{{ advice.title }}</td>
+                                    <td>{{ advice.contributor.nickname }}</td>
+                                    <td>
+                                        <span class="badge bg-info">{{ advice.category.name }}</span>
+                                    </td>
+                                    <td>
+                                        <a class="m-1 btn-sm btn btn-success" data-bs-toggle="tooltip" data-bs-placement="top" title="Voir" href="{{ path('app_backoffice_advices_show', {'id': advice.id}) }}"><i class="bi bi-eye"></i></a>
+                                    </td>
+                                </tr>
+                                {% endfor %}                        
+                            </tbody>
+                        </table>
+                        <a href="{{ path('app_backoffice_advices_list') }}" class="btn btn-primary btn-lg btn-block w-100 mb-5">Voir tous les conseils</a>
+                    </div>
                 </div>
             </div>
         </div>
