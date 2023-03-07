@@ -4,8 +4,9 @@
 
 {% block body %}
 
+{% include "_fragments/_flash_message.html.twig" %}
+
     <div class="d-flex justify-content-between align-items-center mb-4">
-     {% include "_fragments/_flash_message.html.twig" %}
         <h1>Liste des avatars</h1>
         <a class="btn btn-primary" href="{{ path('app_backoffice_avatars_new') }}">Créer un avatar</a>
     </div>

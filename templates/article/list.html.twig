@@ -9,9 +9,10 @@
 {% endblock %}
 
 {% block body %}
+
+{% include "_fragments/_flash_message.html.twig" %}
     
     <div class="d-flex justify-content-between align-items-center mb-4">
-     {% include "_fragments/_flash_message.html.twig" %}
     {% if app.request.pathinfo is same as (path('app_backoffice_articles_user', {id:app.user.id}))%}
         <h1>Mes articles</h1>
     {% else %}
