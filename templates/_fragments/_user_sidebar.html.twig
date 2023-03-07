@@ -33,11 +33,7 @@
             <div class="d-flex flex-row flex-nowrap justify-content-end align-items-center">
                 {% if "ROLE_AUTHOR" in app.user.roles %}
                 <a class="m-1 btn-sm btn btn-warning" data-bs-toggle="tooltip" data-bs-placement="top" title="&Eacute;diter" href="{{ path('app_backoffice_users_edit', {'id': user.id}) }}"><i class="bi bi-pencil"></i></a>
-                {% endif %}
-                <form method="post" action="{{ path('app_backoffice_users_deactivate', {'id': user.id}) }}" onsubmit="return confirm('Êtes-vous sûr de vouloir désactiver cet utilisateur ?');">
-                    <input type="hidden" name="_token" value="{{ csrf_token('deactivate' ~ user.id) }}" />
-                    <button class="m-1 btn-sm btn btn-danger" data-bs-toggle="tooltip" data-bs-placement="top" title="D&eacute;sactiver"><i class="bi bi-x-circle"></i></button>
-                </form>
+                {% endif %}   
             </div>
             {% endif %}
         </div>
