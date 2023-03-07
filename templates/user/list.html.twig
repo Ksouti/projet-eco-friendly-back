@@ -50,14 +50,14 @@
                 <td>{{ user.lastname }}</td>
                 <td>{{ user.nickname }}</td>
                 <td class="text-center">
-                    {% include "_fragments/_user_verified_tag.html.twig" with {status:user.isActive} %}
+                    {% include "_fragments/_user_verified_tag.html.twig" with {status:user.isVerified} %}
                 </td>
                 <td class="text-center">
                     {% include "_fragments/_user_active_tag.html.twig" with {status:user.isActive} %}
                 </td>
                 <td>{{ user.createdAt|date('d-m-Y H:i:s') }}</td>
                 <td>{{ user.updatedAt ? user.updatedAt|date('d-m-Y H:i:s') : '' }}</td>
-                <td class="d-flex flex-nowrap texte-center">
+                <td class="d-flex flex-nowrap justify-content-center">
                     <a class="m-1 btn-sm btn btn-success" data-bs-toggle="tooltip" data-bs-placement="top" title="Voir" href="{{ path('app_backoffice_users_show', {'id': user.id}) }}"><i class="bi bi-eye"></i></a>
                     {% if app.request.pathinfo is same as (path('app_backoffice_authors_list'))%}
                     <a class="m-1 btn-sm btn btn-warning" data-bs-toggle="tooltip" data-bs-placement="top" title="&Eacute;diter" href="{{ path('app_backoffice_users_edit', {'id': user.id}) }}"><i class="bi bi-pencil"></i></a>

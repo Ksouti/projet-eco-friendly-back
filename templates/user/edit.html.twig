@@ -16,7 +16,7 @@
 				</div>
 				<div class="col-6 d-flex justify-content-end">
 					Vérifié :&nbsp;&nbsp;
-					{% include "_fragments/_user_verified_tag.html.twig" with {status:user.isActive} %}
+					{% include "_fragments/_user_verified_tag.html.twig" with {status:user.isVerified} %}
 					&nbsp;&nbsp;&nbsp;&nbsp;Actif :&nbsp;&nbsp;
 					{% include "_fragments/_user_active_tag.html.twig" with {status:user.isActive} %}
 				</div>

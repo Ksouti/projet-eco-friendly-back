@@ -6,6 +6,6 @@
 {% else %}
     <form method="post" action="{{ path('app_backoffice_users_reactivate', {'id': user.id}) }}" onsubmit="return confirm('Êtes-vous sûr de vouloir réactiver cet utilisateur ?');">
         <input type="hidden" name="_token" value="{{ csrf_token('reactivate' ~ user.id) }}" />
-        <button class="m-1 btn-sm btn btn-success" data-bs-toggle="tooltip" data-bs-placement="top" title="Réactiver"><i class="bi bi-arrow-clockwise"></i></button>
+        <button class="m-1 btn-sm btn btn-info" data-bs-toggle="tooltip" data-bs-placement="top" title="Réactiver"><i class="bi bi-arrow-clockwise"></i></button>
     </form>
 {% endif %}

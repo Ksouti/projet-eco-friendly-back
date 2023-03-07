@@ -6,7 +6,7 @@
 {% else %}
     <form method="post" action="{{ path('app_backoffice_advices_reactivate', {'id': category.id}) }}" onsubmit="return confirm('Êtes-vous sûr de vouloir réactiver cette catégorie ?');">
     <input type="hidden" name="_token" value="{{ csrf_token('reactivate' ~ category.id) }}" />
-    <button class="m-1 btn-sm btn btn-success" data-bs-toggle="tooltip" data-bs-placement="top" title="Réactiver"><i class="bi bi-arrow-clockwise"></i></button>
+    <button class="m-1 btn-sm btn btn-info" data-bs-toggle="tooltip" data-bs-placement="top" title="Réactiver"><i class="bi bi-arrow-clockwise"></i></button>
     </form>
 {% endif %}
   

@@ -34,7 +34,7 @@
                     </td>
                     <td>{{ avatar.createdAt|date('d-m-Y H:i:s') }}</td>
                     <td>{{ avatar.updatedAt ? avatar.updatedAt|date('d-m-Y H:i:s') : '' }}</td>
-                    <td class="d-flex flex-nowrap text-center">
+                    <td class="d-flex flex-nowrap justify-content-center">
                         <a class="m-1 btn-sm btn btn-success" data-bs-toggle="tooltip" data-bs-placement="top" title="Voir" href="{{ path('app_backoffice_avatars_show', {'id': avatar.id}) }}"><i class="bi bi-eye"></i></a>
                         <a class="m-1 btn-sm btn btn-warning" data-bs-toggle="tooltip" data-bs-placement="top" title="&Eacute;diter" href="{{ path('app_backoffice_avatars_edit', {'id': avatar.id}) }}"><i class="bi bi-pencil"></i></a>
                       {% include "_fragments/_button_activate_avatar.html.twig"%}
