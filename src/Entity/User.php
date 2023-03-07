@@ -44,6 +44,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
      * @Assert\Length(min = 8, max = 32)
      * @Assert\Regex(pattern="/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*(_|[^\w])).+$/")
      * @Assert\NotBlank
+     * @Assert\NotNull
      * @Groups({"users"})
      */
     private $password;

@@ -1,5 +1,13 @@
 {{ form_start(form, {attr:{novalidate:"novalidate"}}) }}
-    {{ form_widget(form) }}
+    {{ form_row(form.firstname) }}
+    {{ form_row(form.lastname) }}
+    {{ form_row(form.nickname) }}
+    {{ form_row(form.email) }}
+    {% if app.user.isVerified is same as false %}
+        {{ form_row(form.password) }}
+        {{ form_row(form.passwordConfirm) }}
+    {% endif %}
+    {{ form_row(form.avatar) }}
     <button class="btn btn-success">{{ button_label|default('Sauvegarder') }}</button>
 {{ form_end(form) }}
 

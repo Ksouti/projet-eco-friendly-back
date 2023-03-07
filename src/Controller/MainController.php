@@ -5,6 +5,7 @@ namespace App\Controller;
 use App\Entity\Advice;
 use App\Entity\Article;
 use App\Entity\User;
+use App\Form\UserType;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
@@ -27,6 +28,9 @@ class MainController extends AbstractController
      */
     public function home(EntityManagerInterface $entityManager): Response
     {
+        if (!$this->getUser()->isVerified()) {
+            return $this->redirectToRoute('app_backoffice_users_create');
+        }
         if (in_array('ROLE_ADMIN', $this->getUser()->getRoles())) {
             return $this->render('home/admin.html.twig', [
                 'user' => $this->getUser(),

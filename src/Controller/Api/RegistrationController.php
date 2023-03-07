@@ -3,12 +3,10 @@
 namespace App\Controller\Api;
 
 use App\Entity\User;
-use App\Form\RegistrationFormType;
 use App\Repository\UserRepository;
 use App\Security\EmailVerifier;
-use App\Service\CodeGeneratorService;
+use App\Service\GeneratorService;
 use DateTimeImmutable;
-use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bridge\Twig\Mime\TemplatedEmail;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -17,11 +15,9 @@ use Symfony\Component\Mailer\MailerInterface;
 use Symfony\Component\Mime\Address;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 use Symfony\Component\Routing\Annotation\Route;
-use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\Serializer\Exception\NotEncodableValueException;
 use Symfony\Component\Serializer\SerializerInterface;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
-use Symfony\Contracts\Translation\TranslatorInterface;
 use SymfonyCasts\Bundle\VerifyEmail\Exception\VerifyEmailExceptionInterface;
 
 class RegistrationController extends AbstractController
@@ -36,14 +32,14 @@ class RegistrationController extends AbstractController
     /**
      * @Route("/api/register", name="app_api_users_register", methods={"POST"})
      */
-    public function register(Request $request, SerializerInterface $serializer, CodeGeneratorService $codeGenerator, ValidatorInterface $validator, UserPasswordHasherInterface $userPasswordHasher, MailerInterface $mailer, UserRepository $userRepository): Response
+    public function register(Request $request, SerializerInterface $serializer, GeneratorService $generator, ValidatorInterface $validator, UserPasswordHasherInterface $userPasswordHasher, MailerInterface $mailer, UserRepository $userRepository): Response
     {
         try {
             $user = $serializer->deserialize($request->getContent(), User::class, 'json');
             // ensure that first name & last name are capitalized
             $user->setFirstName(ucfirst($user->getFirstName()));
             $user->setLastName(ucfirst($user->getLastName()));
-            $user->setCode($codeGenerator->codeGen());
+            $user->setCode($generator->codeGen());
             $user->setRoles(['ROLE_USER']);
             $user->setIsActive(true);
             $user->setIsVerified(false);
