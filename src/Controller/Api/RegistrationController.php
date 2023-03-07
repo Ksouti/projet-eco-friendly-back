@@ -55,7 +55,7 @@ class RegistrationController extends AbstractController
             return $this->json(['errors' => ['json' => ['Json non valide']]], Response::HTTP_BAD_REQUEST);
         }
 
-        $errors = $validator->validate($user, null, ['registration']);
+        $errors = $validator->validate($user, null, ['Default', 'registration']);
 
         if (count($errors) > 0) {
             $errorsArray = [];

@@ -56,22 +56,12 @@ class AdviceController extends AbstractController
             return $this->json(['errors' => ['json' => ['Json non valide']]], Response::HTTP_BAD_REQUEST);
         }
 
-        $errors = $validator->validate($advice);
-
-        // If the advice is a draft, it must have at least a title or a content
-        if ($advice->getStatus() === 0 && ($advice->getTitle() === "" && $advice->getContent() === "")) {
-            return $this->json(
-                ['errors' => ['advice' => ['Un brouillon de conseil doit avoir au moins un titre ou un contenu']]],
-                Response::HTTP_UNPROCESSABLE_ENTITY
-            );
+        if ($advice->getStatus() === 0) {
+            $errors = $validator->validate($advice, null, ['Default']);
         }
 
-        // If the advice is published, it must have a title, a content and a category
-        if ($advice->getStatus() === 1 && ($advice->getTitle() === "" || $advice->getContent() === "" || $advice->getCategory() === null)) {
-            return $this->json(
-                ['errors' => ['advice' => ['Un conseil publié doit avoir un titre, un contenu et une catégorie']]],
-                Response::HTTP_UNPROCESSABLE_ENTITY
-            );
+        if ($advice->getStatus() === 1) {
+            $errors = $validator->validate($advice, null, ['Default', 'publish']);
         }
 
         if (count($errors) > 0) {
@@ -118,36 +108,26 @@ class AdviceController extends AbstractController
     {
         $this->denyAccessUnlessGranted('advice_edit', $advice);
 
-        if (!$advice) {
-            return $this->json(['errors' => ['Conseil' => ['Ce conseil n\'existe pas']]], Response::HTTP_NOT_FOUND);
-        }
-
         try {
             $advice = $serializer->deserialize($request->getContent(), Advice::class, 'json', ['object_to_populate' => $advice]);
             $advice->setSlug($slugger->slugify($advice->getTitle()));
             $advice->setUpdatedAt(new DateTimeImmutable());
             // Change of owning contributor has to be prevented
-            $advice->setContributor($adviceRepository->find($advice->getId())->getContributor());
+            $advice->setContributor($this->getUser());
         } catch (NotEncodableValueException $e) {
             return $this->json(['errors' => ['json' => ['Json non valide']]], Response::HTTP_BAD_REQUEST);
         }
 
-        $errors = $validator->validate($advice);
-
-        // If the advice is a draft, it must have at least a title or a content
-        if ($advice->getStatus() === 0 && ($advice->getTitle() === "" && $advice->getContent() === "")) {
-            return $this->json(
-                ['errors' => ['advice' => ['Un brouillon de conseil doit avoir au moins un titre ou un contenu']]],
-                Response::HTTP_UNPROCESSABLE_ENTITY
-            );
+        if (!$advice) {
+            return $this->json(['errors' => ['Conseil' => ['Ce conseil n\'existe pas']]], Response::HTTP_NOT_FOUND);
         }
 
-        // If the advice is published, it must have a title, a content and a category
-        if ($advice->getStatus() === 1 && ($advice->getTitle() === "" || $advice->getContent() === "" || $advice->getCategory() === null)) {
-            return $this->json(
-                ['errors' => ['advice' => ['Un conseil publié doit avoir un titre, un contenu et une catégorie']]],
-                Response::HTTP_UNPROCESSABLE_ENTITY
-            );
+        if ($advice->getStatus() === 0) {
+            $errors = $validator->validate($advice, null, ['Default']);
+        }
+
+        if ($advice->getStatus() === 1) {
+            $errors = $validator->validate($advice, null, ['Default', 'publish']);
         }
 
         if (count($errors) > 0) {

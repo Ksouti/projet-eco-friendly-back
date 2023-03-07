@@ -26,6 +26,7 @@ class Advice
     /**
      * @ORM\Column(type="string", length=128, unique=true)
      * @Assert\Length(max = 128)
+     * @Assert\NotBlank
      * @Groups({"advices"})
      * @Groups({"users"})
      */
@@ -34,6 +35,7 @@ class Advice
     /**
      * @ORM\Column(type="text")
      * @Assert\Length(max = 1023)
+     * @Assert\NotBlank(groups={"publish"})
      * @Groups({"advices"})
      * @Groups({"users"})
      */
@@ -83,7 +85,7 @@ class Advice
     /**
      * @ORM\ManyToOne(targetEntity=Category::class, inversedBy="advices")
      * @ORM\JoinColumn(nullable=true, name="category_id", referencedColumnName="id")
-     * @Assert\NotBlank
+     * @Assert\NotBlank(groups={"publish"})
      * @Groups({"advices"})
      * @Groups({"users"})
      */
