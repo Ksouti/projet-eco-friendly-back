@@ -3,7 +3,7 @@
 <form 
     method="post" 
     action="{{ path('app_backoffice_avatars_deactivate', {'id': avatar.id}) }}" 
-    onsubmit="return confirm('Êtes-vous sûr de vouloir désactiver ce conseil ?');"
+    onsubmit="return confirm('Êtes-vous sûr de vouloir désactiver cet avatar ?');"
     class="d-flex justify-content-start align-items-center"
 >
     <input 
@@ -24,7 +24,7 @@
 <form 
     method="post" 
     action="{{ path('app_backoffice_avatars_reactivate', {'id': avatar.id}) }}" 
-    onsubmit="return confirm('Êtes-vous sûr de vouloir réactiver ce conseil ?');"
+    onsubmit="return confirm('Êtes-vous sûr de vouloir réactiver cet avatar ?');"
     class="d-flex justify-content-start align-items-center"
 >
     <input 

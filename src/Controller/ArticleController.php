@@ -9,6 +9,7 @@ use App\Repository\ArticleRepository;
 use App\Service\SluggerService;
 use DateTimeImmutable;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Component\HttpFoundation\File\Exception\FileException;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -19,6 +20,7 @@ class ArticleController extends AbstractController
 {
     /**
      * @Route("/back_office/articles", name="app_backoffice_articles_list", methods={"GET"})
+     * @isGranted("ROLE_ADMIN", message="Vous n'avez pas les droits pour accéder à cette page")
      */
     public function list(ArticleRepository $articleRepository): Response
     {
@@ -32,14 +34,14 @@ class ArticleController extends AbstractController
      */
     public function findAllByUser(User $author, ArticleRepository $articleRepository): Response
     {
-        // Vérifier si l'utilisateur connecté est bien l'auteur des articles
+        // Checks if the user is the author or if the user is an admin
         if ($this->getUser() !== $author && !$this->isGranted('ROLE_ADMIN')) {
-        throw new AccessDeniedException('Access Denied.');
-    }
+            throw new AccessDeniedException('Access Denied.');
+        }
 
-    return $this->render('article/list.html.twig', [
-        'articles' => $articleRepository->findAllByUser($author),
-    ]);
+        return $this->render('article/list.html.twig', [
+            'articles' => $articleRepository->findAllByUser($author),
+        ]);
     }
 
     /**
@@ -73,7 +75,12 @@ class ArticleController extends AbstractController
 
             $articleRepository->add($article, true);
 
-            return $this->redirectToRoute('app_backoffice_articles_show', ['id' => $article->getId()], Response::HTTP_SEE_OTHER);
+            $this->addFlash(
+                'success',
+                $article->getTitle() . ' ' . ' a bien été créé'
+            );
+
+            return $this->redirectToRoute('app_backoffice_articles_user', ['id' => $article->getAuthor()->getId()], Response::HTTP_SEE_OTHER);
         }
 
         return $this->renderForm('article/new.html.twig', [
@@ -87,7 +94,7 @@ class ArticleController extends AbstractController
      */
     public function show(Article $article): Response
     {
-        $this->denyAccessUnlessGranted('article_show', $article);
+        $this->denyAccessUnlessGranted('article_read', $article);
 
         return $this->render('article/show.html.twig', [
             'article' => $article,
@@ -125,7 +132,13 @@ class ArticleController extends AbstractController
 
             $articleRepository->add($article, true);
 
-            return $this->redirectToRoute('app_backoffice_articles_list', [], Response::HTTP_SEE_OTHER);
+
+            $this->addFlash(
+                'success',
+                $article->getTitle() . ' ' . ' a bien été modifié'
+            );
+
+            return $this->redirectToRoute('app_backoffice_articles_user', ['id' => $article->getAuthor()->getId()], Response::HTTP_SEE_OTHER);
         }
 
         return $this->renderForm('article/edit.html.twig', [
@@ -133,6 +146,7 @@ class ArticleController extends AbstractController
             'form' => $form,
         ]);
     }
+
 
     /**
      * @Route("/back_office/articles/{id}/desactiver", name="app_backoffice_articles_deactivate", requirements={"id":"\d+"}, methods={"POST"})
@@ -145,10 +159,16 @@ class ArticleController extends AbstractController
             $article->setStatus(2);
             $articleRepository->add($article, true);
         }
-        return $this->redirectToRoute('app_backoffice_articles_list', [], Response::HTTP_SEE_OTHER);
+
+        $this->addFlash(
+            'danger',
+            $article->getTitle() . ' ' . ' a été désactivé'
+        );
+
+        return $this->redirectToRoute('app_backoffice_articles_user', ['id' => $article->getAuthor()->getId()], Response::HTTP_SEE_OTHER);
     }
 
-     /**
+    /**
      * @Route("/back_office/articles/{id}/reactiver", name="app_backoffice_articles_reactivate", requirements={"id":"\d+"}, methods={"POST"})
      */
     public function reactivate(Request $request, Article $article, ArticleRepository $articleRepository): Response
@@ -159,6 +179,11 @@ class ArticleController extends AbstractController
             $article->setStatus(1);
             $articleRepository->add($article, true);
         }
-        return $this->redirectToRoute('app_backoffice_articles_list', [], Response::HTTP_SEE_OTHER);
+        $this->addFlash(
+            'success',
+            $article->getTitle() . ' ' . ' a été réactivé'
+        );
+        $user = $article->getAuthor();
+        return $this->redirectToRoute('app_backoffice_articles_user', ['id' => $user->getId()]);
     }
 }

@@ -4,6 +4,8 @@
 
 {% block body %}
 
+{% include "_fragments/_flash_message.html.twig" %}
+
     <div class="d-flex justify-content-between align-items-center mb-4">
         <h1>Liste des avatars</h1>
         <a class="btn btn-primary" href="{{ path('app_backoffice_avatars_new') }}">Créer un avatar</a>
@@ -35,10 +37,7 @@
                     <td class="d-flex flex-nowrap text-center">
                         <a class="m-1 btn-sm btn btn-success" data-bs-toggle="tooltip" data-bs-placement="top" title="Voir" href="{{ path('app_backoffice_avatars_show', {'id': avatar.id}) }}"><i class="bi bi-eye"></i></a>
                         <a class="m-1 btn-sm btn btn-warning" data-bs-toggle="tooltip" data-bs-placement="top" title="&Eacute;diter" href="{{ path('app_backoffice_avatars_edit', {'id': avatar.id}) }}"><i class="bi bi-pencil"></i></a>
-                        <form method="post" action="{{ path('app_backoffice_avatars_deactivate', {'id': avatar.id}) }}" onsubmit="return confirm('Êtes-vous sûr de vouloir désactiver ce conseil ?');">
-                            <input type="hidden" name="_token" value="{{ csrf_token('deactivate' ~ avatar.id) }}" />
-                            <button class="m-1 btn-sm btn btn-danger" data-bs-toggle="tooltip" data-bs-placement="top" title="D&eacute;sactiver"><i class="bi bi-x-circle"></i></button>
-                        </form>
+                      {% include "_fragments/_button_activate_avatar.html.twig"%}
                     </td>
                 </tr>
             {% else %}

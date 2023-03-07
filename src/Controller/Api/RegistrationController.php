@@ -3,12 +3,10 @@
 namespace App\Controller\Api;
 
 use App\Entity\User;
-use App\Form\RegistrationFormType;
 use App\Repository\UserRepository;
 use App\Security\EmailVerifier;
 use App\Service\CodeGeneratorService;
 use DateTimeImmutable;
-use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bridge\Twig\Mime\TemplatedEmail;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -17,7 +15,6 @@ use Symfony\Component\Mailer\MailerInterface;
 use Symfony\Component\Mime\Address;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 use Symfony\Component\Routing\Annotation\Route;
-use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\Serializer\Exception\NotEncodableValueException;
 use Symfony\Component\Serializer\SerializerInterface;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
@@ -36,8 +33,14 @@ class RegistrationController extends AbstractController
     /**
      * @Route("/api/register", name="app_api_users_register", methods={"POST"})
      */
-    public function register(Request $request, SerializerInterface $serializer, CodeGeneratorService $codeGenerator, ValidatorInterface $validator, UserPasswordHasherInterface $userPasswordHasher, MailerInterface $mailer, UserRepository $userRepository): Response
-    {
+    public function register(
+        Request $request,
+        SerializerInterface $serializer,
+        CodeGeneratorService $codeGenerator,
+        ValidatorInterface $validator,
+        UserPasswordHasherInterface $userPasswordHasher,
+        UserRepository $userRepository
+    ): Response {
         try {
             $user = $serializer->deserialize($request->getContent(), User::class, 'json');
             // ensure that first name & last name are capitalized
@@ -52,7 +55,7 @@ class RegistrationController extends AbstractController
             return $this->json(['errors' => ['json' => ['Json non valide']]], Response::HTTP_BAD_REQUEST);
         }
 
-        $errors = $validator->validate($user);
+        $errors = $validator->validate($user, null, ['registration']);
 
         if (count($errors) > 0) {
             $errorsArray = [];
@@ -76,8 +79,40 @@ class RegistrationController extends AbstractController
         );
 
         // Return a response with a 201 status code only as the user is not yet verified
-        return $this->json([], Response::HTTP_CREATED);
+        return $this->json(['nickname' => $user->getNickname(), 'email' => $user->getEmail()], Response::HTTP_CREATED);
     }
+
+    /**
+     * @Route("/api/resend-email-confirmation", name="app_api_users_resendemailconfirmation", methods={"POST"})
+     */
+    public function resendEmailConfirmation(
+        Request $request,
+        UserRepository $userRepository
+    ): Response {
+        $email = json_decode($request->getContent(), true)['email'];
+        $user = $userRepository->findOneBy(['email' => $email]);
+        // TODO: See if this is the best way to handle this, maybe a custom exception would be better
+        if (!$user) {
+            return $this->json(['errors' => ['email' => ['Cette adresse email n\'existe pas']]], Response::HTTP_BAD_REQUEST);
+        }
+        if ($user->isVerified()) {
+            return $this->json(['errors' => ['email' => ['Cette adresse email est déjà vérifiée']]], Response::HTTP_BAD_REQUEST);
+        }
+        // generate a signed url and email it to the user
+        $this->emailVerifier->sendEmailConfirmation(
+            'app_verify_email',
+            $user,
+            (new TemplatedEmail())
+                ->from(new Address('no-reply@eco-friendly.fr', 'Eco-Friendly'))
+                ->to($user->getEmail())
+                ->subject('Confirmez votre adresse email et rejoignez-nous !')
+                ->htmlTemplate('email/confirmation_email.html.twig')
+        );
+
+        // Returns a response with a 200 status code as the user is not yet verified
+        return $this->json(['nickname' => $user->getNickname(), 'email' => $user->getEmail()], Response::HTTP_OK);
+    }
+
     /**
      * @Route("/verify/email", name="app_verify_email")
      */

@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="fr">
+    <head>
+        <meta charset="UTF-8">
+        <title>Réinitialisation de votre mot de passe</title>
+        <style>
+            body {
+                text-align: center;
+                margin: 0;
+                padding: 40px 30px;
+                font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+                font-size: 16px;
+                line-height: 1.4;
+                color: #444;
+                background-color: #f5f5f5;
+                -webkit-text-size-adjust: 100%;
+                -ms-text-size-adjust: 100%;
+            }
+            h2 {
+                font-family: 'Courier New', Courier, monospace;
+                font-size: 24px;
+            }
+        </style>
+    </head>
+    <body>
+        <img src="http://vps-79770841.vps.ovh.net/assets/img/logos/logo-eco-friendly-V3-maxcropcenterh.png" style="height: 150px">
+        <h2>Eco-Friendly</h2>
+        <br>
+        <h1>Réinitialisation de votre mot de passe</h1>
+        <p>Afin de réinitialiser votre mot de passe, veuillez suivre le lien ci-dessous :</p>
+        <a href="{{ url('app_reset_password', {token: resetToken.token}) }}">{{ url('app_reset_password', {token: resetToken.token}) }}</a>
+        <p>Ce lien expirera dans {{ resetToken.expirationMessageKey|trans(resetToken.expirationMessageData, 'ResetPasswordBundle') }}.</p>
+        <p>A tout de suite,</p>
+        <p>L'équipe d'Eco-Friendly</p>
+    </body>
+</html>
