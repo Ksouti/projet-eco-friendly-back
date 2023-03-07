@@ -23,7 +23,7 @@ class AdviceController extends AbstractController
     public function list(AdviceRepository $adviceRepository): Response
     {
         return $this->render('advice/list.html.twig', [
-            'advices' => $adviceRepository->findAll(),
+            'advices' => $adviceRepository->findAllOrderByDate(),
         ]);
     }
 
