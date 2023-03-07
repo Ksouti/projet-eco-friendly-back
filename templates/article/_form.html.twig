@@ -1,4 +1,12 @@
 {{ form_start(form, {attr:{novalidate:"novalidate"}}) }}
-    {{ form_widget(form) }}
+    {{ form_widget(form.title) }}
+    {{ form_row(form.contenu, {
+        'attr': {
+            'class': 'form-control',
+            'rows': 10,
+            'allow_html': true
+        }
+    }) }}
+    {{ form_widget(form.isPublished) }}
     <button class="btn btn-success">{{ button_label|default('Sauvegarder') }}</button>
 {{ form_end(form) }}
