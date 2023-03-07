@@ -60,7 +60,7 @@ class AdviceController extends AbstractController
     /**
      * @Route("/back_office/conseils/{id}/desactiver", name="app_backoffice_advices_deactivate", requirements={"id":"\d+"}, methods={"POST"})
      */
-    public function deactivate(Advice $advice, AdviceRepository $adviceRepository, Request $request ): Response
+    public function deactivate(Advice $advice, AdviceRepository $adviceRepository, Request $request): Response
     {
         if ($this->isCsrfTokenValid('deactivate' . $advice->getId(), $request->request->get('_token'))) {
             $advice->setStatus(2);
@@ -81,3 +81,6 @@ class AdviceController extends AbstractController
         return $this->redirectToRoute('app_backoffice_advices_list', [], Response::HTTP_SEE_OTHER);
     }
 }
+
+
+

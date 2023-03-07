@@ -42,7 +42,7 @@ class AdviceRepository extends ServiceEntityRepository
     /**
      * @param int $status The status of the advices to return
      * @param int $category The category of the advices to return
-     * 
+     *
      * @return Advice[] Returns an array of advices objects ordered by descending date with a limit of 5 by default
      */
     public function findLatestByCategory(int $status = 1, int $category = null)
@@ -81,6 +81,7 @@ class AdviceRepository extends ServiceEntityRepository
     {
         return $this->createQueryBuilder('ad')
             ->orderBy('ad.created_at', 'DESC')
+            ->where('ad.status = 1 OR ad.status = 2')
             ->getQuery()
             ->getResult();
     }
@@ -88,14 +89,13 @@ class AdviceRepository extends ServiceEntityRepository
     /**
      * @return Advice[] Returns an array of advices objects filtered by user, published or removed, and ordered by descending date
      */
-    public function findAllByUser($author)
+    public function findAllByUser($contributor)
     {
-
-        return $this->createQueryBuilder('ar')
-            ->where('ar.author = :author')
-            ->setParameter("author", $author)
-            ->andWhere('ar.status = 1 OR ar.status = 2')
-            ->orderBy('ar.created_at', 'DESC')
+        return $this->createQueryBuilder('ad')
+            ->where('ad.contributor = :contributor')
+            ->setParameter("contributor", $contributor)
+            ->andWhere('ad.status = 1 OR ad.status = 2')
+            ->orderBy('ad.created_at', 'DESC')
             ->getQuery()
             ->getResult();
     }

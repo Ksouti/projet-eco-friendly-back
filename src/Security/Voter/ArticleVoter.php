@@ -77,7 +77,8 @@ class ArticleVoter extends Voter
     private function hasRight(Article $article, User $user){ 
 
         // return true or false
-        return $user === $article->getAuthor();
+        return ($user === $article->getAuthor() || in_array("ROLE_ADMIN", $user->getRoles()));
+        
 
     }
 
