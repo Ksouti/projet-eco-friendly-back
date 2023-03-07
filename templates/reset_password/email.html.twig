@@ -2,7 +2,7 @@
 <html lang="fr">
     <head>
         <meta charset="UTF-8">
-        <title>Confirmation d'inscription</title>
+        <title>Réinitialisation de votre mot de passe</title>
         <style>
             body {
                 text-align: center;
@@ -26,11 +26,10 @@
         <img src="http://vps-79770841.vps.ovh.net/assets/img/logos/logo-eco-friendly-V3-maxcropcenterh.png" style="height: 150px">
         <h2>Eco-Friendly</h2>
         <br>
-        <h1>Confirmation d'inscription</h1>
-        <p>Merci de votre inscription! Votre compte a bien été créé.</p>
-        <p>Pour confirmer votre inscription, veuillez cliquer sur le lien ci-dessous:</p>
-        <a href="{{ signedUrl }}">Confirmer l'inscription</a>
-        <p>Ce lien expirera dans {{ expiresAtMessageKey|trans(expiresAtMessageData, 'VerifyEmailBundle') }}.</p>
+        <h1>Réinitialisation de votre mot de passe</h1>
+        <p>Afin de réinitialiser votre mot de passe, veuillez suivre le lien ci-dessous :</p>
+        <a href="{{ url('app_reset_password', {token: resetToken.token}) }}">{{ url('app_reset_password', {token: resetToken.token}) }}</a>
+        <p>Ce lien expirera dans {{ resetToken.expirationMessageKey|trans(resetToken.expirationMessageData, 'ResetPasswordBundle') }}.</p>
         <p>A tout de suite,</p>
         <p>L'équipe d'Eco-Friendly</p>
     </body>
