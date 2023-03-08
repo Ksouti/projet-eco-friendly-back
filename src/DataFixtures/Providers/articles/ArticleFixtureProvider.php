@@ -85,66 +85,53 @@ pourquoi ne pas opter pour un vélo électrique pour votre prochain trajet éco-
     maison plus respectueuse de l'environnement tout en créant un intérieur chaleureux et confortable.</p>
 
 <h2>Comment rendre votre maison plus respectueuse de l'environnement :</h2>
-
-<ol>
-    <li>
         <h3>Utilisez des matériaux durables</h3>
-    </li>
     <p>Lorsque vous choisissez des matériaux pour votre décoration, optez pour des matériaux durables et respectueux de
         l'environnement, tels que le bois, le bambou, le lin, le coton biologique et le chanvre. Évitez les matériaux
         synthétiques qui sont souvent fabriqués à partir de produits pétrochimiques et sont donc très polluants.</p>
 
-    <li>
         <h3>Utilisez des produits naturels</h3>
-    </li>
     <p>Lorsque vous nettoyez votre maison, utilisez des produits naturels tels que du vinaigre blanc, du bicarbonate de soude
         et du citron. Évitez les produits de nettoyage commerciaux qui contiennent des produits chimiques toxiques qui peuvent
         nuire à votre santé et à l'environnement.</p>
 
-    <li>
         <h3>Utilisez des meubles recyclés ou réutilisés</h3>
-    </li>
     <p>Plutôt que d'acheter des meubles neufs, optez pour des meubles recyclés ou réutilisés. Vous pouvez trouver des meubles
         d'occasion dans les magasins de seconde main ou les vide-greniers. En réutilisant des meubles, vous réduisez votre
         empreinte carbone et vous donnez une seconde vie à des objets qui autrement seraient jetés.</p>
 
-    <li>
         <h3>Utilisez des tissus éco-responsables</h3>
-    </li>
     <p>Lorsque vous choisissez des tissus pour vos rideaux, vos coussins ou vos nappes, optez pour des tissus éco-responsables
         tels que le lin, le coton biologique, la soie sauvage et le chanvre. Ces tissus sont durables, respectueux de
         l'environnement et ils ont une belle texture naturelle.</p>
 
-    <li>
         <h3>Utilisez des éclairages LED</h3>
-    </li>
     <p>Les ampoules LED sont plus éco-responsables que les ampoules traditionnelles car elles consomment moins d'énergie et ont
         une durée de vie plus longue. Elles sont également disponibles dans une grande variété de styles et de couleurs pour
         s'adapter à tous les goûts et à tous les styles de décoration.</p>
-</ol>
 
 <h2>FAQ :</h2>
 
-<p></p><b>Q: Comment puis-je savoir si un produit est respectueux de l'environnement ?</b><br />
+<p><b>Q: Comment puis-je savoir si un produit est respectueux de l'environnement ?</b><br />
 <b>R:</b> Vous pouvez chercher des certifications environnementales telles que le label écologique européen ou le label FSC
 pour le bois durable. Vous pouvez également consulter les critiques en ligne pour savoir si d'autres personnes ont testé
 le produit et si elles ont été satisfaites de son impact environnemental.</p>
 
-<p></p><b>Q: Comment puis-je réduire l'empreinte carbone de ma maison ?</b><br />
+<p><b>Q: Comment puis-je réduire l'empreinte carbone de ma maison ?</b><br />
 <b>R:</b> En plus de choisir des matériaux et des produits éco-responsables pour votre décoration, vous pouvez également
 prendre des mesures pour réduire votre consommation d'énergie. Par exemple, vous pouvez installer des panneaux solaires
 sur votre toit, utiliser des appareils économes en énergie et faire attention à votre consommation d'eau.</p>
 
-<p></p><b>Q: Est-il possible de rendre ma maison plus écologique sans dépenser beaucoup d'argent ?</b><br />
+<p><b>Q: Est-il possible de rendre ma maison plus écologique sans dépenser beaucoup d'argent ?</b><br />
 <b>R:</b> Absolument ! Il y a de nombreuses façons de rendre votre maison plus respectueuse de l'environnement sans dépenser
 beaucoup d'argent. Vous pouvez réutiliser des meubles, faire vos propres produits de nettoyage et utiliser des tissus
 recyclés. Vous pouvez également investir dans des ampoules LED, qui sont relativement peu coûteuses et qui peuvent faire
 une grande différence en termes de réduction de votre consommation d'énergie.</p>
 
-La décoration écologique est une façon simple et amusante de contribuer à la protection de l'environnement tout en
+<p>La décoration écologique est une façon simple et amusante de contribuer à la protection de l'environnement tout en
 créant un intérieur chaleureux et confortable. En suivant ces astuces simples, vous pouvez rendre votre maison plus
 respectueuse de l'environnement et réduire votre empreinte carbone. Alors, n'hésitez pas à opter pour des choix
-écologiques et durables dans votre prochaine session de décoration !"
+écologiques et durables dans votre prochaine session de décoration !</p>"
             ],
             [
                 'title' => "Produits de santé écologiques: guide pour une vie saine et respectueuse de l'environnement",

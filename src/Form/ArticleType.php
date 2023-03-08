@@ -4,6 +4,7 @@ namespace App\Form;
 
 use App\Entity\Article;
 use App\Entity\Category;
+use App\Form\DataTransformer\ImageUrlToFileTransformer;
 use FOS\CKEditorBundle\Form\Type\CKEditorType;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
@@ -65,6 +66,8 @@ class ArticleType extends AbstractType
                 "label" => "Catégorie",
                 "multiple" => false,
             ]);
+
+        $builder->get('picture')->addModelTransformer(new ImageUrlToFileTransformer());
     }
 
     public function configureOptions(OptionsResolver $resolver): void
