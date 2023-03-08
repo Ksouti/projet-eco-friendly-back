@@ -95,6 +95,15 @@ class UserController extends AbstractController
     }
 
     /**
+     * @Route("/api/users/email-update", name="app_api_users_emailupdate", methods={"PUT"})
+     */
+    public function emailUpdate(Request $request)
+    {
+        $email = $request->get('email');
+        $user = $this->getUser();
+    }
+
+    /**
      * @Route("/api/users/{id}/avatar", name="app_api_users_avatar", requirements={"id":"\d+"}, methods={"POST"})
      */
     // TODO: Create a service to handle file upload & reuse it in several controllers
