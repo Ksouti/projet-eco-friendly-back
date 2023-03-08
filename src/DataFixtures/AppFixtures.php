@@ -175,9 +175,26 @@ class AppFixtures extends Fixture
         for ($index = 0; $index < 20; $index++) {
             $article = new Article();
             $article->setTitle($faker->sentence(6, true));
-            $article->setContent($faker->paragraph(6, true));
+            $article->setContent(
+                "<p><em>" . $faker->paragraph(6, true) . "</em></p>
+                <h3>" . $faker->sentence(6, true) . "</h3>
+                <p>" . $faker->paragraph(6, true) . "</p>
+                <p><b>" . $faker->paragraph(6, true) . "</b></p>
+                <p>" . $faker->paragraph(6, true) . "</p>
+                <h4>" . $faker->sentence(6, true) . "</h4>
+                <ul>
+                    <li>" . $faker->sentence(6, true) . "</li>
+                    <li>" . $faker->sentence(6, true) . "</li>
+                    <li>" . $faker->sentence(6, true) . "</li>
+                </ul>
+                <h3>" . $faker->sentence(6, true) . "</h3>
+                <p>" . $faker->paragraph(6, true) . "</p>
+                <p>" . $faker->paragraph(6, true) . "</p>
+                <p>" . $faker->paragraph(6, true) . "</p>
+                <p><em>" . $faker->paragraph(6, true) . "</em></p>"
+            );
             $article->setSlug($this->slugger->slugify($article->getTitle()));
-            $article->setPicture('https://picsum.photos/id/' . $faker->numberBetween(1, 200) . '/300/450.jpg');
+            $article->setPicture('https://picsum.photos/id/' . $faker->numberBetween(1, 200) . '/1000/1000.jpg');
             $article->setStatus($faker->numberBetween(0, 2));
             $article->setAuthor($authors[array_rand($authors)]);
             $article->setCategory($categories[$faker->numberBetween(0, count($categories) - 1)]);
@@ -191,9 +208,26 @@ class AppFixtures extends Fixture
         for ($index = 0; $index < 20; $index++) {
             $article = new Article();
             $article->setTitle($faker->sentence(6, true));
-            $article->setContent($faker->paragraph(6, true));
+            $article->setContent(
+                "<p><em>" . $faker->paragraph(6, true) . "</em></p>
+                <h3>" . $faker->sentence(6, true) . "</h3>
+                <p>" . $faker->paragraph(6, true) . "</p>
+                <p><b>" . $faker->paragraph(6, true) . "</b></p>
+                <p>" . $faker->paragraph(6, true) . "</p>
+                <h4>" . $faker->sentence(6, true) . "</h4>
+                <ul>
+                    <li>" . $faker->sentence(6, true) . "</li>
+                    <li>" . $faker->sentence(6, true) . "</li>
+                    <li>" . $faker->sentence(6, true) . "</li>
+                </ul>
+                <h3>" . $faker->sentence(6, true) . "</h3>
+                <p>" . $faker->paragraph(6, true) . "</p>
+                <p>" . $faker->paragraph(6, true) . "</p>
+                <p>" . $faker->paragraph(6, true) . "</p>
+                <p><em>" . $faker->paragraph(6, true) . "</em></p>"
+            );
             $article->setSlug($this->slugger->slugify($article->getTitle()));
-            $article->setPicture('https://picsum.photos/id/' . $faker->numberBetween(1, 200) . '/300/450.jpg');
+            $article->setPicture('https://picsum.photos/id/' . $faker->numberBetween(1, 200) . '/1000/1000.jpg');
             $article->setStatus(1);
             $article->setAuthor($authors[array_rand($authors)]);
             $article->setCategory($categories[$faker->numberBetween(0, count($categories) - 1)]);
@@ -215,7 +249,11 @@ class AppFixtures extends Fixture
         for ($index = 0; $index < 30; $index++) {
             $advice = new Advice();
             $advice->setTitle($faker->sentence(6, true));
-            $advice->setContent($faker->paragraph(6, true));
+            $advice->setContent(
+                "<p>" . $faker->paragraph(6, true) . "</p>
+                <p>" . $faker->paragraph(6, true) . "</p>
+                <p>" . $faker->paragraph(6, true) . "</p>"
+            );
             $advice->setSlug($this->slugger->slugify($advice->getTitle()));
             $advice->setStatus($faker->numberBetween(0, 2));
             $advice->setContributor($contributors[array_rand($contributors)]);
@@ -230,7 +268,11 @@ class AppFixtures extends Fixture
         for ($index = 0; $index < 30; $index++) {
             $advice = new Advice();
             $advice->setTitle($faker->sentence(6, true));
-            $advice->setContent($faker->paragraph(6, true));
+            $advice->setContent(
+                "<p>" . $faker->paragraph(6, true) . "</p>
+                <p>" . $faker->paragraph(6, true) . "</p>
+                <p>" . $faker->paragraph(6, true) . "</p>"
+            );
             $advice->setSlug($this->slugger->slugify($advice->getTitle()));
             $advice->setStatus(1);
             $advice->setContributor($contributors[array_rand($contributors)]);
