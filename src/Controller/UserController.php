@@ -174,7 +174,7 @@ class UserController extends AbstractController
 
             $userRepository->add($user, true);
 
-            return $this->redirectToRoute('app_backoffice_members_list', [], Response::HTTP_SEE_OTHER);
+            return $this->redirectToRoute('app_backoffice_authors_list', [], Response::HTTP_SEE_OTHER);
         }
         $this->addFlash(
             'success',
@@ -200,7 +200,7 @@ class UserController extends AbstractController
             'danger',
             'Le compte de ' . $user->getFirstname() . ' ' . $user->getLastname() . ' a bien été désactivé .'
         );
-        return $this->redirectToRoute('app_backoffice_members_list', [], Response::HTTP_SEE_OTHER);
+        return $this->redirectToRoute('app_backoffice_authors_list', [], Response::HTTP_SEE_OTHER);
     }
 
     /**
@@ -216,6 +216,6 @@ class UserController extends AbstractController
             'success',
             'Le compte de ' . $user->getFirstname() . ' ' . $user->getLastname() . ' a bien été activé .'
         );
-        return $this->redirectToRoute('app_backoffice_members_list', [], Response::HTTP_SEE_OTHER);
+        return $this->redirectToRoute('app_backoffice_authors_list', [], Response::HTTP_SEE_OTHER);
     }
 }
