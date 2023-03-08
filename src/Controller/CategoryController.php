@@ -90,7 +90,7 @@ class CategoryController extends AbstractController
 
     /**
      * @Route("/back_office/categories/{id}/desactiver", name="app_backoffice_categories_deactivate", requirements={"id":"\d+"}, methods={"POST"})
-     * @isGranted("ROLE_ADMIN"), message="Vous n'avez pas les droits pour accéder à cette page"
+    
      */
     public function deactivate(Request $request, Category $category, CategoryRepository $categoryRepository): Response
     {
@@ -108,7 +108,7 @@ class CategoryController extends AbstractController
 
     /**
      * @Route("/back_office/categories/{id}/reactiver", name="app_backoffice_categories_reactivate", requirements={"id":"\d+"}, methods={"POST"})
-     * @isGranted("ROLE_ADMIN"), message="Vous n'avez pas les droits pour accéder à cette page"
+     
      */
     public function reactivate(Request $request, Category $category, CategoryRepository $categoryRepository): Response
     {
