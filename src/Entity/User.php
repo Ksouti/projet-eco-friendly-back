@@ -41,9 +41,10 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     /**
      * @var string The hashed password
      * @ORM\Column(type="string")
-     * @Assert\Length(min = 8, max = 32, groups={"registration"})
-     * @Assert\Regex(pattern="/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*(_|[^\w])).+$/", groups={"registration"})
-     * @Assert\NotBlank(groups={"registration"}) 
+     * @Assert\Length(min = 8, max = 32, groups={"registration", "bo-registration"})
+     * must contain at least one lowercase letter, one uppercase letter, one number and one special character
+     * @Assert\Regex(pattern="/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*(_|[^\w])).+$/", groups={"registration", "bo-registration"})
+     * @Assert\NotBlank(groups={"registration", "bo-registration"})
      */
     private $password;
 
@@ -59,6 +60,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     /**
      * @ORM\Column(type="string", length=64, nullable=true)
      * @Assert\Length(max = 64)
+     * @Assert\NotBlank(groups={"bo-registration"})
      * starts with a capital letter & contains only letters, hyphens and apostrophes
      * @Assert\Regex(pattern="/^[A-Z][A-Za-zàâçéèêëîïôûùüÿñæœ\s\-\']*$/")
      * @Groups({"articles"})
@@ -70,6 +72,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     /**
      * @ORM\Column(type="string", length=64, nullable=true)
      * @Assert\Length(max = 64)
+     * @Assert\NotBlank(groups={"bo-registration"})
      * starts with a capital letter & contains only letters, hyphens and apostrophes
      * @Assert\Regex(pattern="/^[A-Z][A-Za-zàâçéèêëîïôûùüÿñæœ\s\-\']*$/")
      * @Groups({"articles"})

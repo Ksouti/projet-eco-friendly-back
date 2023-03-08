@@ -33,7 +33,7 @@ class ArticleType extends AbstractType
                 ],
                 "config" => [
                     "uiColor" => "#eeeeee",
-                    "toolbar" => "basic",
+                    "toolbar" => "standard",
                 ],
             ])
 

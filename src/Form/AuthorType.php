@@ -12,7 +12,7 @@ use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Validator\Constraints\File;
 
-class UserType extends AbstractType
+class AuthorType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
@@ -42,6 +42,21 @@ class UserType extends AbstractType
                 "label" => "Email",
                 "attr" => [
                     "placeholder" => "Email"
+                ]
+            ])
+
+            ->add('password', PasswordType::class, [
+                "label" => "Nouveau mot de passe",
+                "attr" => [
+                    "placeholder" => "Mot de passe"
+                ]
+            ])
+
+            ->add('passwordConfirm', PasswordType::class, [
+                "mapped" => false,
+                "label" => "Confirmation du mot de passe",
+                "attr" => [
+                    "placeholder" => "Confirmation du mot de passe"
                 ]
             ])
 

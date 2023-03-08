@@ -3,6 +3,7 @@
 namespace App\Controller;
 
 use App\Entity\User;
+use App\Form\AuthorType;
 use App\Form\UserType;
 use App\Repository\UserRepository;
 use App\Service\GeneratorService;
@@ -14,11 +15,14 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Bridge\Twig\Mime\TemplatedEmail;
+use Symfony\Component\Form\FormError;
 use Symfony\Component\HttpFoundation\File\Exception\FileException;
 use Symfony\Component\Mailer\MailerInterface;
 use Symfony\Component\Mime\Address;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;
+use SymfonyCasts\Bundle\ResetPassword\Controller\ResetPasswordControllerTrait;
+use SymfonyCasts\Bundle\ResetPassword\ResetPasswordHelperInterface;
 
 class UserController extends AbstractController
 
@@ -65,14 +69,67 @@ class UserController extends AbstractController
         $user->setIsVerified(false);
         $user->setCode($generator->codeGen());
         $user->setRoles(['ROLE_AUTHOR']);
-        $tempPassword = $generator->passwordGen();
-        $user->setPassword($tempPassword);
 
         $form = $this->createForm(UserType::class, $user);
-        $form->handleRequest($request);
+        $form->handleRequest($request, null, ['validation_groups' => ['Default']]);
 
         if ($form->isSubmitted() && $form->isValid()) {
+            $tempPassword = $generator->passwordGen();
+            $user->setPassword($userPasswordHasher->hashPassword($user, $tempPassword));
+            $userRepository->add($user, true);
 
+            $email = (new TemplatedEmail())
+                ->from(new Address('no-reply@eco-friendly.fr', 'Eco-Friendly'))
+                ->to($user->getEmail())
+                ->subject('Votre compte Eco-Friendly a été créé !')
+                ->htmlTemplate("email/author_account_creation.html.twig")
+                ->context([
+                    'username' => $user->getEmail(),
+                    'password' => $tempPassword,
+                ]);
+
+            $mailer->send($email);
+
+            return $this->redirectToRoute('app_backoffice_authors_list', [], Response::HTTP_SEE_OTHER);
+        }
+
+        return $this->renderForm('user/new.html.twig', [
+            'user' => $user,
+            'form' => $form,
+        ]);
+    }
+
+    // Q: why is the following method redirecting to the login page with a 302 status code?
+    // A: because the user is not logged in and the voter is not called
+    // Q: it is logged in, why is the voter not called?
+
+    /**
+     * @Route("/back_office/utilisateurs/creation", name="app_backoffice_users_create", methods={"GET", "POST"})
+     */
+    public function create(
+        Request $request,
+        UserPasswordHasherInterface $userPasswordHasher,
+        UserRepository $userRepository
+    ): Response {
+        // TODO: returns a InvalidArgumentException if the password field is not filled
+
+        $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
+
+        $user = $this->getUser();
+        $user->setPassword('');
+        $form = $this->createForm(AuthorType::class, $user);
+        $form->handleRequest($request, null, ['validation_groups' => ['Default', 'bo-registration']]);
+        // As author's required fields are different than these of a member (firstname and lastname mandatory),
+        // we need to check them because the @assert on the entity can't be used for this purpose (to let things open
+        // for the api registration)
+        if ($form->isSubmitted()) {
+            if ($form->get('password')->getData() == '') {
+                $form->get('password')->addError(new FormError('Ce champ est obligatoire'));
+            }
+        }
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            dd($user, $form->getErrors(true, true));
             /* $avatar = $form->get('avatar')->getData();
 
             if (!$avatar) {
@@ -127,64 +184,7 @@ class UserController extends AbstractController
 
             $user->setAvatar($this->getParameter('uploads_user_url') . $filename);
 */
-            $user->setPassword($userPasswordHasher->hashPassword($user, $user->getPassword()));
-            $userRepository->add($user, true);
 
-            $email = (new TemplatedEmail())
-                ->from(new Address('no-reply@eco-friendly.fr', 'Eco-Friendly'))
-                ->to($user->getEmail())
-                ->subject('Votre compte Eco-Friendly a été créé !')
-                ->htmlTemplate("email/author_account_creation.html.twig")
-                ->context([
-                    'username' => $user->getEmail(),
-                    'password' => $tempPassword,
-                ]);
-
-            $mailer->send($email);
-
-            return $this->redirectToRoute('app_backoffice_authors_list', [], Response::HTTP_SEE_OTHER);
-        }
-
-        return $this->renderForm('user/new.html.twig', [
-            'user' => $user,
-            'form' => $form,
-        ]);
-    }
-
-    /**
-     * @Route("/back_office/utilisateurs/creation", name="app_backoffice_users_create", methods={"GET", "POST"})
-     */
-    public function create(
-        Request $request,
-        UserPasswordHasherInterface $userPasswordHasher,
-        UserRepository $userRepository
-    ): Response {
-        // TODO: returns a InvalidArgumentException if the password field is not filled
-        $user = $this->getUser();
-        $form = $this->createForm(UserType::class, $user, ['validation_groups' => ['Default']]);
-        $password = $form->get('password')->getData();
-        if ($password !== null) {
-            $form->handleRequest($request);
-        }
-
-        // As author's required fields are different than these of a member (firstname and lastname mandatory), 
-        // we need to check them because the @assert on the entity can't be used for this purpose (to let things open 
-        // for the api registration)
-        if ($form->isSubmitted()) {
-            if ($user->getFirstname() == null || $user->getLastname() == null) {
-                $this->addFlash('danger', 'Vous devez renseigner votre prénom et votre nom.');
-            }
-
-            if ($password == null) {
-                $this->addFlash('danger', 'Vous devez renseigner un mot de passe.');
-            }
-            $confirmPassword = $form->get('passwordConfirm')->getData();
-            if ($password != $confirmPassword) {
-                $this->addFlash('danger', 'Les mots de passe ne correspondent pas.');
-            }
-        }
-
-        if ($form->isSubmitted() && $form->isValid()) {
             $user->setPassword($userPasswordHasher->hashPassword($user, $user->getPassword()));
             $userRepository->add($user, true);
         }

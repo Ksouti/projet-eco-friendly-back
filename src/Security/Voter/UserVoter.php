@@ -25,7 +25,14 @@ class UserVoter extends Voter
     {
         // replace with your own logic
         // https://symfony.com/doc/current/security/voters.html
-        return in_array($attribute, [self::USER_READ, self::USER_UPDATE, self::USER_DELETE])
+        return in_array(
+            $attribute,
+            [
+                self::USER_READ,
+                self::USER_UPDATE,
+                self::USER_DELETE
+            ]
+        )
             && $subject instanceof \App\Entity\User;
     }
 
@@ -38,9 +45,9 @@ class UserVoter extends Voter
         }
 
         // you know $subject is a User object, thanks to `supports()`
-        /** @var User $user */
+        /** @var User $userSubject */
         $userSubject = $subject;
-
+        dd($userSubject, $user);
         // ... (check conditions and return true to grant permission) ...
         switch ($attribute) {
             case self::USER_READ:
@@ -77,7 +84,7 @@ class UserVoter extends Voter
     private function canUpdate(User $userSubject, User $user)
     {
         // return true or false
-        return $userSubject === $user;
+        return ($userSubject === $user || ($this->security->isGranted('ROLE_ADMIN') && $userSubject->getRoles() === ['ROLE_AUTHOR']));
     }
 
     private function canDelete(User $userSubject, User $user)
