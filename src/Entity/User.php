@@ -29,8 +29,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 
     /**
      * @ORM\Column(type="string", length=180, unique=true)
-     * @Assert\Length(min = 6, max = 180)
-     * @Assert\Email(mode = "strict")
+     * @Assert\Email(mode = "strict", message="L’email est invalide.")
      * @Assert\NotBlank
      * @Groups({"articles"})
      * @Groups({"advices"})
@@ -41,8 +40,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     /**
      * @var string The hashed password
      * @ORM\Column(type="string")
-     * @Assert\Length(min = 8, max = 32, groups={"registration"})
-     * @Assert\Regex(pattern="/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*(_|[^\w])).+$/", groups={"registration"})
+     * @Assert\Regex(pattern="/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*(_|[^\w])).{8,32}$/", groups={"registration"}, message="Le mot de passe doit contenir au moins 8 caractères dont une minuscule, une majuscule, un chiffre et un caractère spécial")
      * @Assert\NotBlank(groups={"registration"}) 
      */
     private $password;
