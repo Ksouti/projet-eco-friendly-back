@@ -89,7 +89,8 @@ class CategoryController extends AbstractController
     }
 
     /**
-     * @Route("/back_office/categories/{id}", name="app_backoffice_categories_deactivate", requirements={"id":"\d+"}, methods={"POST"})
+     * @Route("/back_office/categories/{id}/desactiver", name="app_backoffice_categories_deactivate", requirements={"id":"\d+"}, methods={"POST"})
+     * @isGranted("ROLE_ADMIN"), message="Vous n'avez pas les droits pour accéder à cette page"
      */
     public function deactivate(Request $request, Category $category, CategoryRepository $categoryRepository): Response
     {
@@ -104,4 +105,24 @@ class CategoryController extends AbstractController
         );
         return $this->redirectToRoute('app_backoffice_categories_list', [], Response::HTTP_SEE_OTHER);
     }
+
+    /**
+     * @Route("/back_office/categories/{id}/reactiver", name="app_backoffice_categories_reactivate", requirements={"id":"\d+"}, methods={"POST"})
+     * @isGranted("ROLE_ADMIN"), message="Vous n'avez pas les droits pour accéder à cette page"
+     */
+    public function reactivate(Request $request, Category $category, CategoryRepository $categoryRepository): Response
+    {
+        if ($this->isCsrfTokenValid('reactivate' . $category->getId(), $request->request->get('_token'))) {
+            $category->setIsActive(true);
+            $categoryRepository->add($category, true);
+        }
+        $this->addFlash(
+            'success',
+            'La catégorie' . $category->getName() . '" a bien été réactivée'
+        );
+      
+        return $this->redirectToRoute('app_backoffice_categories_list', [], Response::HTTP_SEE_OTHER);
+    }
 }
+
+   
