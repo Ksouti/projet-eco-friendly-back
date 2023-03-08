@@ -121,7 +121,7 @@ class UserController extends AbstractController
 
             $this->addFlash(
                 'success',
-                $user->getFirstname() . ' ' . $user->getLastname() . ' a bien été ajouté(e) à la liste des auteurs'
+                '<em>' . $user->getFirstname() . ' ' . $user->getLastname() . '</em> a bien été ajouté(e) à la liste des auteurs'
             );
 
 

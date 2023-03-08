@@ -33,14 +33,12 @@ class ArticleType extends AbstractType
                 ],
                 "config" => [
                     "uiColor" => "#eeeeee",
-                    "toolbar" => "basic",
+                    "toolbar" => "standard",
                 ],
             ])
 
             ->add('picture', FileType::class, [
                 "label" => "Image d'illustration",
-                "mapped" => false,
-                "required" => false,
                 "constraints" => [
                     new File([
                         "maxSize" => "2048k",

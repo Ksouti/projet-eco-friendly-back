@@ -43,7 +43,7 @@ class CategoryController extends AbstractController
         }
         $this->addFlash(
             'success',
-            'La catégorie ' . $category->getName() . ' ' .  ' a bien été ajoutée'
+            'La catégorie "' . $category->getName() . '" a bien été ajoutée'
         );
         return $this->renderForm('category/new.html.twig', [
             'category' => $category,
@@ -79,9 +79,9 @@ class CategoryController extends AbstractController
 
         $this->addFlash(
             'success',
-            'La catégorie ' . $category->getName() . ' ' .  ' a bien été modifiée'
+            'La catégorie "' . $category->getName() . '" a bien été modifiée'
         );
-        
+
         return $this->renderForm('category/edit.html.twig', [
             'category' => $category,
             'form' => $form,
@@ -100,7 +100,7 @@ class CategoryController extends AbstractController
 
         $this->addFlash(
             'danger',
-            'La catégorie ' . $category->getName() . ' ' .  ' a bien été désactivée'
+            'La catégorie "' . $category->getName() . '" a bien été désactivée.'
         );
         return $this->redirectToRoute('app_backoffice_categories_list', [], Response::HTTP_SEE_OTHER);
     }

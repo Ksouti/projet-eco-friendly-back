@@ -56,7 +56,7 @@ class AdviceController extends AbstractController
         }
         $this->addFlash(
             'success',
-            $advice->getTitle() . ' ' .  ' a bien été modifié. '
+            '"' . $advice->getTitle() . '" a bien été modifié.'
         );
         return $this->renderForm('advice/edit.html.twig', [
             'advice' => $advice,
@@ -76,7 +76,7 @@ class AdviceController extends AbstractController
         }
         $this->addFlash(
             'danger',
-            $advice->getTitle() . ' ' .  ' a bien été désactivé. '
+            '"' . $advice->getTitle() . '" a bien été désactivé. '
         );
         return $this->redirectToRoute('app_backoffice_advices_list', [], Response::HTTP_SEE_OTHER);
     }
@@ -93,7 +93,7 @@ class AdviceController extends AbstractController
         }
         $this->addFlash(
             'sucess',
-            $advice->getTitle() . ' ' .  ' a bien été réactivé. '
+            '"' . $advice->getTitle() . '" a bien été réactivé. '
         );
         return $this->redirectToRoute('app_backoffice_advices_list', [], Response::HTTP_SEE_OTHER);
     }

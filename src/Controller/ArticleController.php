@@ -77,7 +77,7 @@ class ArticleController extends AbstractController
 
             $this->addFlash(
                 'success',
-                $article->getTitle() . ' ' . ' a bien été créé'
+                '"' . $article->getTitle() . '" a bien été créé'
             );
 
             return $this->redirectToRoute('app_backoffice_articles_user', ['id' => $article->getAuthor()->getId()], Response::HTTP_SEE_OTHER);
@@ -135,7 +135,7 @@ class ArticleController extends AbstractController
 
             $this->addFlash(
                 'success',
-                $article->getTitle() . ' ' . ' a bien été modifié'
+                '"' . $article->getTitle() . '" a bien été modifié'
             );
 
             return $this->redirectToRoute('app_backoffice_articles_user', ['id' => $article->getAuthor()->getId()], Response::HTTP_SEE_OTHER);
@@ -162,7 +162,7 @@ class ArticleController extends AbstractController
 
         $this->addFlash(
             'danger',
-            $article->getTitle() . ' ' . ' a été désactivé'
+            '"' . $article->getTitle() . '" a été désactivé'
         );
 
         return $this->redirectToRoute('app_backoffice_articles_user', ['id' => $article->getAuthor()->getId()], Response::HTTP_SEE_OTHER);
@@ -181,7 +181,7 @@ class ArticleController extends AbstractController
         }
         $this->addFlash(
             'success',
-            $article->getTitle() . ' ' . ' a été réactivé'
+            '"' . $article->getTitle() . '" a été réactivé'
         );
         $user = $article->getAuthor();
         return $this->redirectToRoute('app_backoffice_articles_user', ['id' => $user->getId()]);
