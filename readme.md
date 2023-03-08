@@ -51,3 +51,8 @@ PHP 7.4.3 (minimum)
 1. Start a development server
 
     From the project's root: `php -S 0.0.0.0:8000 -t public`
+
+2. To remove users who have not confirmed their email in the specified number of days (now 7)
+   
+    `php bin/console app:remove-unverified-users --days=7`
+
