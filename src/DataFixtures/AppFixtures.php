@@ -115,6 +115,24 @@ class AppFixtures extends Fixture
         $user->setUpdatedAt(DateTimeImmutable::createFromMutable($faker->dateTimeBetween('-1 years', 'now')));
         $manager->persist($user);
 
+        for ($index = 0; $index < 8; $index++) {
+            $user = new User();
+            $user->setEmail($faker->email);
+            $user->setPassword($faker->password);
+            $user->setRoles(['ROLE_AUTHOR']);
+            $user->setPassword($faker->password(8, 12));
+            $user->setFirstname($faker->firstName());
+            $user->setLastname($faker->lastName());
+            $user->setNickname($faker->userName());
+            $user->setCode($this->codeGenerator->codeGen());
+            $user->setAvatar($avatars[array_rand($avatars)]);
+            $user->setIsActive(1);
+            $user->setIsVerified(1);
+            $user->setCreatedAt(DateTimeImmutable::createFromMutable($faker->dateTimeBetween('-1 years', 'now')));
+            $user->setUpdatedAt(DateTimeImmutable::createFromMutable($faker->dateTimeBetween('-1 years', 'now')));
+            $manager->persist($user);
+        }
+
         for ($index = 0; $index < 35; $index++) {
             $user = new User();
             $user->setEmail($faker->email);
