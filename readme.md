@@ -59,3 +59,7 @@ PHP 7.4.3 (minimum)
 3. To Fixe missing or broken avatar images for users
    
     `php bin/console app:fix-broken-avatar`
+
+4. To Fixe missing or broken articles picture
+   
+    `php bin/console app:fix-broken-picture`
