@@ -134,7 +134,7 @@ class UserController extends AbstractController
                 ->from(new Address('no-reply@eco-friendly.fr', 'Eco-Friendly'))
                 ->to($user->getEmail())
                 ->subject('Confirmez votre adresse email et rejoignez-nous !')
-                ->htmlTemplate('email/confirmation_email.html.twig')
+                ->htmlTemplate('email/email_confirmation.html.twig')
         );
 
         // Return a response with a 201 status code only as the user is not yet verified

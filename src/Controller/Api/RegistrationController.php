@@ -5,20 +5,18 @@ namespace App\Controller\Api;
 use App\Entity\User;
 use App\Repository\UserRepository;
 use App\Security\EmailVerifier;
-use App\Service\CodeGeneratorService;
+use App\Service\GeneratorService;
 use DateTimeImmutable;
 use Symfony\Bridge\Twig\Mime\TemplatedEmail;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\Mailer\MailerInterface;
 use Symfony\Component\Mime\Address;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Serializer\Exception\NotEncodableValueException;
 use Symfony\Component\Serializer\SerializerInterface;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
-use Symfony\Contracts\Translation\TranslatorInterface;
 use SymfonyCasts\Bundle\VerifyEmail\Exception\VerifyEmailExceptionInterface;
 
 class RegistrationController extends AbstractController
@@ -36,7 +34,7 @@ class RegistrationController extends AbstractController
     public function register(
         Request $request,
         SerializerInterface $serializer,
-        CodeGeneratorService $codeGenerator,
+        GeneratorService $generator,
         ValidatorInterface $validator,
         UserPasswordHasherInterface $userPasswordHasher,
         UserRepository $userRepository
@@ -46,7 +44,7 @@ class RegistrationController extends AbstractController
             // ensure that first name & last name are capitalized
             $user->setFirstName(ucfirst($user->getFirstName()));
             $user->setLastName(ucfirst($user->getLastName()));
-            $user->setCode($codeGenerator->codeGen());
+            $user->setCode($generator->codeGen());
             $user->setRoles(['ROLE_USER']);
             $user->setIsActive(true);
             $user->setIsVerified(false);
@@ -75,7 +73,7 @@ class RegistrationController extends AbstractController
                 ->from(new Address('no-reply@eco-friendly.fr', 'Eco-Friendly'))
                 ->to($user->getEmail())
                 ->subject('Confirmez votre adresse email et rejoignez-nous !')
-                ->htmlTemplate('email/confirmation_email.html.twig')
+                ->htmlTemplate('email/email_confirmation.html.twig')
         );
 
         // Return a response with a 201 status code only as the user is not yet verified
@@ -106,7 +104,7 @@ class RegistrationController extends AbstractController
                 ->from(new Address('no-reply@eco-friendly.fr', 'Eco-Friendly'))
                 ->to($user->getEmail())
                 ->subject('Confirmez votre adresse email et rejoignez-nous !')
-                ->htmlTemplate('email/confirmation_email.html.twig')
+                ->htmlTemplate('email/email_confirmation.html.twig')
         );
 
         // Returns a response with a 200 status code as the user is not yet verified

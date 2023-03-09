@@ -7,7 +7,7 @@ use App\Entity\Article;
 use App\Entity\Avatar;
 use App\Entity\Category;
 use App\Entity\User;
-use App\Service\CodeGeneratorService;
+use App\Service\GeneratorService;
 use App\Service\SluggerService;
 use DateTimeImmutable;
 use Doctrine\Bundle\FixturesBundle\Fixture;
@@ -19,13 +19,13 @@ class AppFixtures extends Fixture
 {
     private $passwordHasher;
     private $slugger;
-    private $codeGenerator;
+    private $generator;
 
-    public function __construct(SluggerService $slugger, UserPasswordHasherInterface $passwordHasher, CodeGeneratorService $codeGenerator)
+    public function __construct(SluggerService $slugger, UserPasswordHasherInterface $passwordHasher, GeneratorService $generator)
     {
         $this->passwordHasher = $passwordHasher;
         $this->slugger = $slugger;
-        $this->codeGenerator = $codeGenerator;
+        $this->generator = $generator;
     }
     public function load(ObjectManager $manager): void
     {
@@ -77,7 +77,7 @@ class AppFixtures extends Fixture
         $user->setFirstname('Admin');
         $user->setLastname('Istrateur');
         $user->setNickname('NoSysAdmin');
-        $user->setCode($this->codeGenerator->codeGen());
+        $user->setCode($this->generator->codeGen());
         $user->setAvatar('http://vps-79770841.vps.ovh.net//uploads/users/nosysadmin63ff3ea8de28a.png');
         $user->setIsActive(1);
         $user->setIsVerified(1);
@@ -92,7 +92,7 @@ class AppFixtures extends Fixture
         $user->setFirstname('Milan');
         $user->setLastname('Kundera');
         $user->setNickname('MilKuKu');
-        $user->setCode($this->codeGenerator->codeGen());
+        $user->setCode($this->generator->codeGen());
         $user->setAvatar('http://vps-79770841.vps.ovh.net//uploads/users/chanda-bec6400ed2e2a75b.jpg');
         $user->setIsActive(1);
         $user->setIsVerified(1);
@@ -107,7 +107,7 @@ class AppFixtures extends Fixture
         $user->setFirstname('Jeff');
         $user->setLastname('Lebowski');
         $user->setNickname('The_Dude');
-        $user->setCode($this->codeGenerator->codeGen());
+        $user->setCode($this->generator->codeGen());
         $user->setAvatar('http://vps-79770841.vps.ovh.net//uploads/users/martina-br6400ec427207b.png');
         $user->setIsActive(1);
         $user->setIsVerified(1);
@@ -124,7 +124,7 @@ class AppFixtures extends Fixture
             $user->setFirstname($faker->firstName());
             $user->setLastname($faker->lastName());
             $user->setNickname($faker->userName());
-            $user->setCode($this->codeGenerator->codeGen());
+            $user->setCode($this->generator->codeGen());
             $user->setAvatar($avatars[array_rand($avatars)]);
             $user->setIsActive(1);
             $user->setIsVerified(1);
@@ -142,7 +142,7 @@ class AppFixtures extends Fixture
             $user->setFirstname($faker->firstName());
             $user->setLastname($faker->lastName());
             $user->setNickname($faker->userName());
-            $user->setCode($this->codeGenerator->codeGen());
+            $user->setCode($this->generator->codeGen());
             $user->setAvatar($avatars[array_rand($avatars)]);
             $user->setIsActive(1);
             $user->setIsVerified(1);

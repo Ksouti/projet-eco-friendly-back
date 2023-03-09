@@ -6,6 +6,7 @@ use App\Entity\User;
 use App\Form\UserType;
 use App\Repository\UserRepository;
 use App\Service\CodeGeneratorService;
+use App\Service\GeneratorService;
 use App\Service\SluggerService;
 use DateTimeImmutable;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -13,7 +14,11 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
+use Symfony\Bridge\Twig\Mime\TemplatedEmail;
 use Symfony\Component\HttpFoundation\File\Exception\FileException;
+use Symfony\Component\Mailer\MailerInterface;
+use Symfony\Component\Mime\Address;
+use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 
 class UserController extends AbstractController
@@ -48,23 +53,29 @@ class UserController extends AbstractController
      * @Route("/back_office/utilisateurs/ajouter", name="app_backoffice_users_new", methods={"GET", "POST"})
      * @isGranted("ROLE_ADMIN", message="Accès réservé aux administrateurs")
      */
-    public function new(Request $request, CodeGeneratorService $codeGeneratorService, UserRepository $userRepository): Response
-    {
+    public function new(
+        Request $request,
+        GeneratorService $generator,
+        UserPasswordHasherInterface $passwordHasher,
+        UserRepository $userRepository,
+        MailerInterface $mailer
+    ): Response {
         $user = new User();
         $user->setCreatedAt(new DateTimeImmutable());
         $user->setRoles(['ROLE_AUTHOR']);
         $user->setAvatar('http://vps-79770841.vps.ovh.net/assets/img/misc/default-avatar.png');
         $user->setIsActive(true);
         $user->setIsVerified(false);
-        $user->setCode($codeGeneratorService->codeGen());
-
-        // ! TODO: change when registration via backoffice is ready
-        $user->setPassword('@@12AAaa');
+        $user->setCode($generator->codeGen());
+        $tempPassword = $generator->passwordGen();
+        $user->setPassword($tempPassword);
 
         $form = $this->createForm(UserType::class, $user);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
+
+            $user->setPassword($passwordHasher->hashPassword($user, $tempPassword));
 
             $avatarFile = $form->get('avatarFile')->getData();
 
@@ -119,11 +130,22 @@ class UserController extends AbstractController
 
             $userRepository->add($user, true);
 
+            $email = (new TemplatedEmail())
+                ->from(new Address('no-reply@eco-friendly.fr', 'Eco-Friendly'))
+                ->to($user->getEmail())
+                ->subject('Votre compte Eco-Friendly a été créé !')
+                ->htmlTemplate("email/profile_creation.html.twig")
+                ->context([
+                    'username' => $user->getEmail(),
+                    'password' => $tempPassword,
+                ]);
+
+            $mailer->send($email);
+
             $this->addFlash(
                 'success',
                 '"' . $user->getFirstname() . ' ' . $user->getLastname() . '" a bien été ajouté(e) à la liste des auteurs'
             );
-
 
             return $this->redirectToRoute('app_backoffice_authors_list', [], Response::HTTP_SEE_OTHER);
         }
@@ -133,6 +155,7 @@ class UserController extends AbstractController
             'form' => $form,
         ]);
     }
+
     /**
      * @Route("/back_office/utilisateurs/{id}", name="app_backoffice_users_show", requirements={"id":"\d+"}, methods={"GET"})
      */
