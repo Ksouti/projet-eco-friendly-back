@@ -60,13 +60,6 @@ class AppFixtures extends Fixture
 
         $passwordHasher = $this->passwordHasher;
 
-        $roles = [
-            'ROLE_AUTHOR',
-            '',
-            '',
-            '',
-        ];
-
         $avatars = [
             'Ours' => 'http://vps-79770841.vps.ovh.net//assets/img/avatars/ours.png',
             'Mésange bleu' => 'http://vps-79770841.vps.ovh.net//assets/img/avatars/mesange-bleue.png',
@@ -79,7 +72,7 @@ class AppFixtures extends Fixture
 
         $user = new User();
         $user->setEmail('admin@admin.com');
-        $user->setRoles(['ROLE_USER', 'ROLE_ADMIN']);
+        $user->setRoles(['ROLE_ADMIN']);
         $user->setPassword($passwordHasher->hashPassword($user, 'admin'));
         $user->setFirstname('Admin');
         $user->setLastname('Istrateur');
@@ -94,7 +87,7 @@ class AppFixtures extends Fixture
 
         $user = new User();
         $user->setEmail('author@author.com');
-        $user->setRoles(['ROLE_USER', 'ROLE_AUTHOR']);
+        $user->setRoles(['ROLE_AUTHOR']);
         $user->setPassword($passwordHasher->hashPassword($user, 'author'));
         $user->setFirstname('Milan');
         $user->setLastname('Kundera');
@@ -126,7 +119,7 @@ class AppFixtures extends Fixture
             $user = new User();
             $user->setEmail($faker->email);
             $user->setPassword($faker->password);
-            $user->setRoles(['ROLE_USER', $roles[$faker->numberBetween(0, count($roles) - 1)]]);
+            $user->setRoles(['ROLE_USER']);
             $user->setPassword($faker->password(8, 12));
             $user->setFirstname($faker->firstName());
             $user->setLastname($faker->lastName());
@@ -172,27 +165,10 @@ class AppFixtures extends Fixture
             return in_array('ROLE_AUTHOR', $user->getRoles());
         });
 
-        for ($index = 0; $index < 20; $index++) {
+        for ($index = 0; $index < 50; $index++) {
             $article = new Article();
             $article->setTitle($faker->sentence(6, true));
-            $article->setContent(
-                "<p><em>" . $faker->paragraph(6, true) . "</em></p>
-                <h3>" . $faker->sentence(6, true) . "</h3>
-                <p>" . $faker->paragraph(6, true) . "</p>
-                <p><b>" . $faker->paragraph(6, true) . "</b></p>
-                <p>" . $faker->paragraph(6, true) . "</p>
-                <h4>" . $faker->sentence(6, true) . "</h4>
-                <ul>
-                    <li>" . $faker->sentence(6, true) . "</li>
-                    <li>" . $faker->sentence(6, true) . "</li>
-                    <li>" . $faker->sentence(6, true) . "</li>
-                </ul>
-                <h3>" . $faker->sentence(6, true) . "</h3>
-                <p>" . $faker->paragraph(6, true) . "</p>
-                <p>" . $faker->paragraph(6, true) . "</p>
-                <p>" . $faker->paragraph(6, true) . "</p>
-                <p><em>" . $faker->paragraph(6, true) . "</em></p>"
-            );
+            $article->setContent("<p><em>" . $faker->paragraph(6, true) . "</em></p><h3>" . $faker->sentence(6, true) . "</h3><p>" . $faker->paragraph(6, true) . "</p><p><b>" . $faker->paragraph(6, true) . "</b></p><p>" . $faker->paragraph(6, true) . "</p><h4>" . $faker->sentence(6, true) . "</h4><ul><li>" . $faker->sentence(6, true) . "</li><li>" . $faker->sentence(6, true) . "</li><li>" . $faker->sentence(6, true) . "</li></ul><h3>" . $faker->sentence(6, true) . "</h3><p>" . $faker->paragraph(6, true) . "</p><p>" . $faker->paragraph(6, true) . "</p><p>" . $faker->paragraph(6, true) . "</p><p><em>" . $faker->paragraph(6, true) . "</em></p>");
             $article->setSlug($this->slugger->slugify($article->getTitle()));
             $article->setPicture('https://picsum.photos/id/' . $faker->numberBetween(1, 200) . '/1000/1000.jpg');
             $article->setStatus($faker->numberBetween(0, 2));
@@ -205,27 +181,10 @@ class AppFixtures extends Fixture
 
         $manager->flush();
 
-        for ($index = 0; $index < 20; $index++) {
+        for ($index = 0; $index < 50; $index++) {
             $article = new Article();
             $article->setTitle($faker->sentence(6, true));
-            $article->setContent(
-                "<p><em>" . $faker->paragraph(6, true) . "</em></p>
-                <h3>" . $faker->sentence(6, true) . "</h3>
-                <p>" . $faker->paragraph(6, true) . "</p>
-                <p><b>" . $faker->paragraph(6, true) . "</b></p>
-                <p>" . $faker->paragraph(6, true) . "</p>
-                <h4>" . $faker->sentence(6, true) . "</h4>
-                <ul>
-                    <li>" . $faker->sentence(6, true) . "</li>
-                    <li>" . $faker->sentence(6, true) . "</li>
-                    <li>" . $faker->sentence(6, true) . "</li>
-                </ul>
-                <h3>" . $faker->sentence(6, true) . "</h3>
-                <p>" . $faker->paragraph(6, true) . "</p>
-                <p>" . $faker->paragraph(6, true) . "</p>
-                <p>" . $faker->paragraph(6, true) . "</p>
-                <p><em>" . $faker->paragraph(6, true) . "</em></p>"
-            );
+            $article->setContent("<p><em>" . $faker->paragraph(6, true) . "</em></p><h3>" . $faker->sentence(6, true) . "</h3><p>" . $faker->paragraph(6, true) . "</p><p><b>" . $faker->paragraph(6, true) . "</b></p><p>" . $faker->paragraph(6, true) . "</p><h4>" . $faker->sentence(6, true) . "</h4><ul><li>" . $faker->sentence(6, true) . "</li><li>" . $faker->sentence(6, true) . "</li><li>" . $faker->sentence(6, true) . "</li></ul><h3>" . $faker->sentence(6, true) . "</h3><p>" . $faker->paragraph(6, true) . "</p><p>" . $faker->paragraph(6, true) . "</p><p>" . $faker->paragraph(6, true) . "</p><p><em>" . $faker->paragraph(6, true) . "</em></p>");
             $article->setSlug($this->slugger->slugify($article->getTitle()));
             $article->setPicture('https://picsum.photos/id/' . $faker->numberBetween(1, 200) . '/1000/1000.jpg');
             $article->setStatus(1);
@@ -246,14 +205,10 @@ class AppFixtures extends Fixture
             return !in_array('ROLE_AUTHOR', $user->getRoles()) && !in_array('ROLE_ADMIN', $user->getRoles());
         });
 
-        for ($index = 0; $index < 30; $index++) {
+        for ($index = 0; $index < 70; $index++) {
             $advice = new Advice();
             $advice->setTitle($faker->sentence(6, true));
-            $advice->setContent(
-                "<p>" . $faker->paragraph(6, true) . "</p>
-                <p>" . $faker->paragraph(6, true) . "</p>
-                <p>" . $faker->paragraph(6, true) . "</p>"
-            );
+            $advice->setContent("<p>" . $faker->paragraph(6, true) . "</p><p>" . $faker->paragraph(6, true) . "</p><p>" . $faker->paragraph(6, true) . "</p>");
             $advice->setSlug($this->slugger->slugify($advice->getTitle()));
             $advice->setStatus($faker->numberBetween(0, 2));
             $advice->setContributor($contributors[array_rand($contributors)]);
@@ -265,14 +220,10 @@ class AppFixtures extends Fixture
 
         $manager->flush();
 
-        for ($index = 0; $index < 30; $index++) {
+        for ($index = 0; $index < 70; $index++) {
             $advice = new Advice();
             $advice->setTitle($faker->sentence(6, true));
-            $advice->setContent(
-                "<p>" . $faker->paragraph(6, true) . "</p>
-                <p>" . $faker->paragraph(6, true) . "</p>
-                <p>" . $faker->paragraph(6, true) . "</p>"
-            );
+            $advice->setContent("<p>" . $faker->paragraph(6, true) . "</p><p>" . $faker->paragraph(6, true) . "</p><p>" . $faker->paragraph(6, true) . "</p>");
             $advice->setSlug($this->slugger->slugify($advice->getTitle()));
             $advice->setStatus(1);
             $advice->setContributor($contributors[array_rand($contributors)]);
