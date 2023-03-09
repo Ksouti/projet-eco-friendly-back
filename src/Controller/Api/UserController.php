@@ -27,22 +27,6 @@ class UserController extends AbstractController
     } */
 
     /**
-     * @Route("/api/users/{id}", name="app_api_users_read", requirements={"id":"\d+"}, methods={"GET"})
-     */
-    public function read(?User $user, UserRepository $userRepository): Response
-    {
-        // Verify if the user exists
-        if (!$user) {
-            return $this->json(['errors' => ['user' => ['Cet utilisateur n\'existe pas']]], Response::HTTP_NOT_FOUND);
-        }
-
-        // Verify if the user is the owner of the data
-        $this->denyAccessUnlessGranted('user_read', $user);
-
-        return $this->json($userRepository->find($user->getId()), Response::HTTP_OK, [], ['groups' => 'users']);
-    }
-
-    /**
      * @Route("/api/users/{id}", name="app_api_users_update", requirements={"id":"\d+"}, methods={"PUT"})
      */
     public function update(Request $request, ?User $user, SerializerInterface $serializer, ValidatorInterface $validator, UserRepository $userRepository): Response
@@ -100,6 +84,22 @@ class UserController extends AbstractController
                 'groups' => 'users',
             ]
         );
+    }
+
+    /**
+     * @Route("/api/users/{id}", name="app_api_users_read", requirements={"id":"\d+"}, methods={"GET"})
+     */
+    public function read(?User $user, UserRepository $userRepository): Response
+    {
+        // Verify if the user exists
+        if (!$user) {
+            return $this->json(['errors' => ['user' => ['Cet utilisateur n\'existe pas']]], Response::HTTP_NOT_FOUND);
+        }
+
+        // Verify if the user is the owner of the data
+        $this->denyAccessUnlessGranted('user_read', $user);
+
+        return $this->json($userRepository->find($user->getId()), Response::HTTP_OK, [], ['groups' => 'users']);
     }
 
     /**
