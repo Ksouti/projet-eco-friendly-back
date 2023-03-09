@@ -52,12 +52,15 @@ class AdviceController extends AbstractController
             $advice->setUpdatedAt(new DateTimeImmutable());
             $adviceRepository->add($advice, true);
 
+            $this->addFlash(
+                'success',
+                '"' . $advice->getTitle() . '" a bien été modifié.'
+            );
+
             return $this->redirectToRoute('app_backoffice_advices_list', [], Response::HTTP_SEE_OTHER);
         }
-        $this->addFlash(
-            'success',
-            '"' . $advice->getTitle() . '" a bien été modifié.'
-        );
+    
+        
         return $this->renderForm('advice/edit.html.twig', [
             'advice' => $advice,
             'form' => $form,
