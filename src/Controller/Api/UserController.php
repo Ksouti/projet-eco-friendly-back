@@ -12,7 +12,6 @@ use Symfony\Component\HttpFoundation\File\Exception\FileException;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Mime\Address;
-use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Serializer\Exception\NotEncodableValueException;
 use Symfony\Component\Serializer\SerializerInterface;
@@ -43,11 +42,10 @@ class UserController extends AbstractController
         return $this->json($userRepository->find($user->getId()), Response::HTTP_OK, [], ['groups' => 'users']);
     }
 
-
     /**
      * @Route("/api/users/{id}", name="app_api_users_update", requirements={"id":"\d+"}, methods={"PUT"})
      */
-    public function update(Request $request, ?User $user, SerializerInterface $serializer, UserPasswordHasherInterface $passwordHasher, ValidatorInterface $validator, UserRepository $userRepository): Response
+    public function update(Request $request, ?User $user, SerializerInterface $serializer, ValidatorInterface $validator, UserRepository $userRepository): Response
     {
         if (!$user) {
             return $this->json(['errors' => ['Utilisateur' => 'Cet utilisateur n\'existe pas']], Response::HTTP_NOT_FOUND);
