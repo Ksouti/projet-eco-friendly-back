@@ -39,6 +39,7 @@ class ArticleType extends AbstractType
 
             ->add('pictureFile', FileType::class, [
                 "label" => "Image d'illustration",
+                "mapped" => false,
                 "constraints" => [
                     new File([
                         "maxSize" => "2048k",
