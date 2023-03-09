@@ -52,9 +52,12 @@ class UserController extends AbstractController
     {
         $user = new User();
         $user->setCreatedAt(new DateTimeImmutable());
+        $user->setRoles(['ROLE_AUTHOR']);
+        $user->setAvatar('http://0.0.0.0:8000/assets/img/misc/default-avatar.png');
         $user->setIsActive(true);
         $user->setIsVerified(false);
         $user->setCode($codeGeneratorService->codeGen());
+
         // ! TODO: change when registration via backoffice is ready
         $user->setPassword('@@12AAaa');
 
@@ -63,65 +66,62 @@ class UserController extends AbstractController
 
         if ($form->isSubmitted() && $form->isValid()) {
 
-            $avatar = $form->get('avatar')->getData();
+            $avatarFile = $form->get('avatarFile')->getData();
 
-            if (!$avatar) {
-                $this->addFlash('danger', 'Image non valide');
-                // return $this->redirectToRoute('app_backoffice_users_new');
+            if ($avatarFile) {
+                $extension = $avatarFile->guessExtension();
+                if (!in_array($extension, ['jpg', 'jpeg', 'png'])) {
+                    $this->addFlash('danger', 'Format d\'image non supporté');
+                    // return $this->redirectToRoute('app_backoffice_users_new');
+                }
+
+                $filename = $user->getId() . '-' . uniqid() . '.' . $extension;
+                $filepath = $this->getParameter('uploads_user_directory') . '/' . $filename;
+
+                try {
+                    $avatarFile->move(
+                        $this->getParameter('uploads_user_directory'),
+                        $filename
+                    );
+                } catch (FileException $e) {
+                    $this->addFlash('danger', 'Une erreur est survenue lors de l\'upload de l\'image');
+                    // return $this->redirectToRoute('app_backoffice_users_new');
+                }
+
+                list($width, $height) = getimagesize($filepath);
+                $size = min($width, $height); // get the minimum dimension
+                $dst_x = ($width - $size) / 2;
+                $dst_y = ($height - $size) / 2;
+                $src_x = 0;
+                $src_y = 0;
+                $new_width = $new_height = 80;
+
+                if ($extension === 'png') {
+                    $image = imagecreatefrompng($filepath);
+                } else {
+                    $image = imagecreatefromjpeg($filepath);
+                }
+
+                $new_image = imagecreatetruecolor($new_width, $new_height);
+                imagecopyresampled($new_image, $image, 0, 0, $src_x + $dst_x, $src_y + $dst_y, $new_width, $new_height, $size, $size);
+
+                if ($extension === 'png') {
+                    imagepng($new_image, $filepath);
+                } else {
+                    imagejpeg($new_image, $filepath);
+                }
+
+                imagedestroy($image);
+                imagedestroy($new_image);
+
+                $user->setAvatar($this->getParameter('uploads_user_url') . $filename);
             }
-
-            $extension = $avatar->guessExtension();
-            if (!in_array($extension, ['jpg', 'jpeg', 'png'])) {
-                $this->addFlash('danger', 'Format d\'image non supporté');
-                // return $this->redirectToRoute('app_backoffice_users_new');
-            }
-
-            $filename = $user->getId() . '-' . uniqid() . '.' . $extension;
-            $filepath = $this->getParameter('uploads_user_directory') . '/' . $filename;
-
-            try {
-                $avatar->move(
-                    $this->getParameter('uploads_user_directory'),
-                    $filename
-                );
-            } catch (FileException $e) {
-                $this->addFlash('danger', 'Une erreur est survenue lors de l\'upload de l\'image');
-                // return $this->redirectToRoute('app_backoffice_users_new');
-            }
-
-            list($width, $height) = getimagesize($filepath);
-            $size = min($width, $height); // get the minimum dimension
-            $dst_x = ($width - $size) / 2;
-            $dst_y = ($height - $size) / 2;
-            $src_x = 0;
-            $src_y = 0;
-            $new_width = $new_height = 80;
-
-            if ($extension === 'png') {
-                $image = imagecreatefrompng($filepath);
-            } else {
-                $image = imagecreatefromjpeg($filepath);
-            }
-
-            $new_image = imagecreatetruecolor($new_width, $new_height);
-            imagecopyresampled($new_image, $image, 0, 0, $src_x + $dst_x, $src_y + $dst_y, $new_width, $new_height, $size, $size);
-
-            if ($extension === 'png') {
-                imagepng($new_image, $filepath);
-            } else {
-                imagejpeg($new_image, $filepath);
-            }
-
-            imagedestroy($image);
-            imagedestroy($new_image);
-
-            $user->setAvatar($this->getParameter('uploads_user_url') . $filename);
 
             $userRepository->add($user, true);
 
             $this->addFlash(
                 'success',
-                '<em>' . $user->getFirstname() . ' ' . $user->getLastname() . '</em> a bien été ajouté(e) à la liste des auteurs'
+                '"' . $user->getFirstname() . ' ' . $user->getLastname() . '" a bien été ajouté(e) à la liste des auteurs'
             );
 
 
@@ -148,7 +148,7 @@ class UserController extends AbstractController
      */
     public function edit(Request $request, SluggerService $slugger, User $user, UserRepository $userRepository): Response
     {
-        // Vérifiez si l'utilisateur à modifier a le rôle approprié
+        // TODO: use the voter instead
         if (!in_array('ROLE_ADMIN', $this->getUser()->getRoles()) || !in_array('ROLE_AUTHOR', $user->getRoles())) {
             throw new AccessDeniedException("Vous n'avez pas le droit de modifier cet utilisateur.");
         }
@@ -157,19 +157,56 @@ class UserController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $picture = $form->get('avatar')->getData();
-            if ($picture) {
-                $pictureName = substr($slugger->slugify($user->getNickname()), 0, 10) . uniqid() . '.' . $picture->guessExtension();
+
+            $avatarFile = $form->get('avatarFile')->getData();
+
+            if ($avatarFile) {
+                $extension = $avatarFile->guessExtension();
+                if (!in_array($extension, ['jpg', 'jpeg', 'png'])) {
+                    $this->addFlash('danger', 'Format d\'image non supporté');
+                    // return $this->redirectToRoute('app_backoffice_users_new');
+                }
+
+                $filename = $user->getId() . '-' . uniqid() . '.' . $extension;
+                $filepath = $this->getParameter('uploads_user_directory') . '/' . $filename;
 
                 try {
-                    $picture->move(
+                    $avatarFile->move(
                         $this->getParameter('uploads_user_directory'),
-                        $pictureName
+                        $filename
                     );
-                    $user->setAvatar($this->getParameter('uploads_user_url') . $pictureName);
                 } catch (FileException $e) {
-                    $this->addFlash('danger', 'Une erreur s\"est produite lors de l\'upload de l\'image');
+                    $this->addFlash('danger', 'Une erreur est survenue lors de l\'upload de l\'image');
+                    // return $this->redirectToRoute('app_backoffice_users_new');
                 }
+
+                list($width, $height) = getimagesize($filepath);
+                $size = min($width, $height); // get the minimum dimension
+                $dst_x = ($width - $size) / 2;
+                $dst_y = ($height - $size) / 2;
+                $src_x = 0;
+                $src_y = 0;
+                $new_width = $new_height = 80;
+
+                if ($extension === 'png') {
+                    $image = imagecreatefrompng($filepath);
+                } else {
+                    $image = imagecreatefromjpeg($filepath);
+                }
+
+                $new_image = imagecreatetruecolor($new_width, $new_height);
+                imagecopyresampled($new_image, $image, 0, 0, $src_x + $dst_x, $src_y + $dst_y, $new_width, $new_height, $size, $size);
+
+                if ($extension === 'png') {
+                    imagepng($new_image, $filepath);
+                } else {
+                    imagejpeg($new_image, $filepath);
+                }
+
+                imagedestroy($image);
+                imagedestroy($new_image);
+
+                $user->setAvatar($this->getParameter('uploads_user_url') . $filename);
             }
 
             $userRepository->add($user, true);
@@ -178,7 +215,7 @@ class UserController extends AbstractController
         }
         $this->addFlash(
             'success',
-            'Le compte de ' . $user->getFirstname() . ' ' . $user->getLastname() . ' a bien été modifié .'
+            'Le profil de ' . $user->getFirstname() . ' ' . $user->getLastname() . ' a bien été modifié.'
         );
 
         return $this->renderForm('user/edit.html.twig', [
@@ -198,7 +235,7 @@ class UserController extends AbstractController
         }
         $this->addFlash(
             'danger',
-            'Le compte de ' . $user->getFirstname() . ' ' . $user->getLastname() . ' a bien été désactivé .'
+            'Le profil de ' . $user->getFirstname() . ' ' . $user->getLastname() . ' a bien été désactivé.'
         );
         return $this->redirectToRoute('app_backoffice_authors_list', [], Response::HTTP_SEE_OTHER);
     }
@@ -214,7 +251,7 @@ class UserController extends AbstractController
         }
         $this->addFlash(
             'success',
-            'Le compte de ' . $user->getFirstname() . ' ' . $user->getLastname() . ' a bien été activé .'
+            'Le profil de ' . $user->getFirstname() . ' ' . $user->getLastname() . ' a bien été réactivé.'
         );
         return $this->redirectToRoute('app_backoffice_authors_list', [], Response::HTTP_SEE_OTHER);
     }

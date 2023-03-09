@@ -41,6 +41,7 @@ class CategoryController extends AbstractController
 
             return $this->redirectToRoute('app_backoffice_categories_list', [], Response::HTTP_SEE_OTHER);
         }
+        // ! TODO: return the old name (empty here) between the quotes
         $this->addFlash(
             'success',
             'La catégorie "' . $category->getName() . '" a bien été ajoutée'
@@ -77,6 +78,7 @@ class CategoryController extends AbstractController
             return $this->redirectToRoute('app_backoffice_categories_list', [], Response::HTTP_SEE_OTHER);
         }
 
+        // ! TODO: return the old name between the quotes
         $this->addFlash(
             'success',
             'La catégorie "' . $category->getName() . '" a bien été modifiée'
@@ -120,9 +122,7 @@ class CategoryController extends AbstractController
             'success',
             'La catégorie' . $category->getName() . '" a bien été réactivée'
         );
-      
+
         return $this->redirectToRoute('app_backoffice_categories_list', [], Response::HTTP_SEE_OTHER);
     }
 }
-
-   
