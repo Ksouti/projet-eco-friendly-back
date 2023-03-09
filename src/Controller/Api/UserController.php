@@ -5,10 +5,13 @@ namespace App\Controller\Api;
 use App\Entity\User;
 use App\Repository\AdviceRepository;
 use App\Repository\UserRepository;
+use App\Security\EmailVerifier;
+use Symfony\Bridge\Twig\Mime\TemplatedEmail;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\File\Exception\FileException;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\Mime\Address;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Serializer\Exception\NotEncodableValueException;
@@ -17,6 +20,13 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 class UserController extends AbstractController
 {
+    private EmailVerifier $emailVerifier;
+
+    public function __construct(EmailVerifier $emailVerifier)
+    {
+        $this->emailVerifier = $emailVerifier;
+    }
+
     /**
      * @Route("/api/users/{id}", name="app_api_users_read", requirements={"id":"\d+"}, methods={"GET"})
      */
@@ -95,12 +105,47 @@ class UserController extends AbstractController
     }
 
     /**
-     * @Route("/api/users/email-update", name="app_api_users_emailupdate", methods={"PUT"})
+     * @Route("/api/users/{id}/email-update", name="app_api_users_emailupdate", methods={"POST"})
      */
-    public function emailUpdate(Request $request)
+    public function emailUpdate(Request $request, ?User $user, UserRepository $userRepository)
     {
-        $email = $request->get('email');
-        $user = $this->getUser();
+        if (!$user) {
+            return $this->json(['errors' => ['Utilisateur' => 'Cet utilisateur n\'existe pas']], Response::HTTP_NOT_FOUND);
+        }
+
+        // Verify if the user is the owner of the data
+        $this->denyAccessUnlessGranted('user_update', $user);
+
+        $email = json_decode($request->getContent(), true)['email'];
+
+        // check if the email is valid
+        if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
+            return $this->json(['errors' => ['email' => ['Cet email n\'est pas valide']]], Response::HTTP_UNPROCESSABLE_ENTITY);
+        }
+
+        // check if the email is already used
+        if ($userRepository->findOneBy(['email' => $email])) {
+            return $this->json(['errors' => ['email' => ['Cet email est déjà utilisé']]], Response::HTTP_UNPROCESSABLE_ENTITY);
+        }
+
+        $user->setEmail($email);
+        $user->setIsVerified(false);
+
+        $userRepository->add($user, true);
+
+        // generate a signed url and email it to the user
+        $this->emailVerifier->sendEmailConfirmation(
+            'app_verify_email',
+            $user,
+            (new TemplatedEmail())
+                ->from(new Address('no-reply@eco-friendly.fr', 'Eco-Friendly'))
+                ->to($user->getEmail())
+                ->subject('Confirmez votre adresse email et rejoignez-nous !')
+                ->htmlTemplate('email/confirmation_email.html.twig')
+        );
+
+        // Return a response with a 201 status code only as the user is not yet verified
+        return $this->json(['nickname' => $user->getNickname(), 'email' => $user->getEmail()], Response::HTTP_CREATED);
     }
 
     /**
