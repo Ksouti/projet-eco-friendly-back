@@ -19,12 +19,12 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 class UserController extends AbstractController
 {
-    private EmailVerifier $emailVerifier;
+    /* private EmailVerifier $emailVerifier;
 
     public function __construct(EmailVerifier $emailVerifier)
     {
         $this->emailVerifier = $emailVerifier;
-    }
+    } */
 
     /**
      * @Route("/api/users/{id}", name="app_api_users_read", requirements={"id":"\d+"}, methods={"GET"})
@@ -105,7 +105,7 @@ class UserController extends AbstractController
     /**
      * @Route("/api/users/{id}/email-update", name="app_api_users_emailupdate", methods={"POST"})
      */
-    public function emailUpdate(Request $request, ?User $user, UserRepository $userRepository)
+    public function emailUpdate(Request $request, ?User $user, EmailVerifier $emailVerifier, UserRepository $userRepository)
     {
         // Verify if the user exists
         if (!$user) {
@@ -133,7 +133,7 @@ class UserController extends AbstractController
         $userRepository->add($user, true);
 
         // Generate a signed url and email it to the user
-        $this->emailVerifier->sendEmailConfirmation(
+        $emailVerifier->sendEmailConfirmation(
             'app_verify_email',
             $user,
             (new TemplatedEmail())
