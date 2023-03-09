@@ -8,6 +8,7 @@ use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\EmailType;
 use Symfony\Component\Form\Extension\Core\Type\FileType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
+use Symfony\Component\Form\Extension\Core\Type\UrlType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Validator\Constraints\File;
@@ -45,20 +46,9 @@ class UserType extends AbstractType
                 ]
             ])
 
-            ->add('roles', ChoiceType::class, [
-                "choices" => [
-                    "Admin" =>  "ROLE_ADMIN",
-                    "Auteur" => "ROLE_AUTHOR",
-                    "Membre" => "ROLE_USER"
-                ],
-                "expanded" => true,
-                "multiple" => true,
-            ])
-
-            ->add('avatar', FileType::class, [
-                "label" => "Image d'illustration",
+            ->add('avatarFile', FileType::class, [
+                "label" => "Avatar",
                 "mapped" => false,
-                "required" => false,
                 "constraints" => [
                     new File([
                         "maxSize" => "2048k",
