@@ -26,7 +26,7 @@ class AdviceController extends AbstractController
         $category = $request->get('category', null);
         $status = $request->get('status', null);
         $page = $request->get('page', 1);
-        $limit = $request->get('limit', 10);
+        $limit = $request->get('limit', 25);
         $offset = $request->get('offset', ($page - 1) * $limit ?? 0);
         $sortType = $request->get('sorttype', 'created_at');
         $order = $request->get('order', 'desc');

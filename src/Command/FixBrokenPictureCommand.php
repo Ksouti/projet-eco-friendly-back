@@ -2,7 +2,7 @@
 
 namespace App\Command;
 
-use App\Entity\User;
+use App\Entity\Article;
 use Doctrine\ORM\EntityManagerInterface;
 use Exception;
 use Symfony\Component\Console\Command\Command;
@@ -11,9 +11,9 @@ use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Style\SymfonyStyle;
 use Symfony\Contracts\HttpClient\HttpClientInterface;
 
-class FixBrokenAvatarCommand extends Command
+class FixBrokenPictureCommand extends Command
 {
-    protected static $defaultName = 'app:fix-broken-avatar';
+    protected static $defaultName = 'app:fix-broken-picture';
 
     private $client;
     private $entityManager;
@@ -28,29 +28,29 @@ class FixBrokenAvatarCommand extends Command
 
     protected function configure()
     {
-        $this->setDescription('Fixes missing or broken avatar images for users');
+        $this->setDescription('Fixes missing or broken article picture');
     }
 
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
         $io = new SymfonyStyle($input, $output);
-        $users = $this->entityManager->getRepository(User::class)->findAll();
+        $articles = $this->entityManager->getRepository(Article::class)->findAll();
         $broken = 0;
+        $defaultPicture = 'http://vps-79770841.vps.ovh.net/assets/img/misc/default-article-illustration.png';
 
-        foreach ($users as $user) {
+        foreach ($articles as $article) {
             try {
                 $response = $this->client->request(
                     'GET',
-                    $user->getAvatar()
+                    $article->getPicture()
                 );
                 $response->getContent();
             } catch (Exception $e) {
                 $broken++;
-                $io->text(sprintf('Avatar cassé trouvé pour l\'utilisateur %s (%s)', $user->getUsername(), $user->getAvatar()));
+                $io->text(sprintf('Lien cassé ou image manquante trouvée pour l\'article "%s" (%s)', $article->getTitle(), $article->getPicture()));
                 $io->progressStart(100);
-                $newAvatar = 'http://vps-79770841.vps.ovh.net/assets/img/misc/default-avatar.png';
-                if ($newAvatar) {
-                    $user->setAvatar($newAvatar);
+                if ($defaultPicture) {
+                    $article->setPicture($defaultPicture);
                     $io->progressFinish();
                 }
                 $this->entityManager->flush();
@@ -58,9 +58,9 @@ class FixBrokenAvatarCommand extends Command
         }
 
         if ($broken > 0) {
-            $io->success(sprintf('Les avatar cassés ont été remplacés pour %d utilisateur(s)', $broken));
+            $io->success(sprintf('Les liens cassés ou images manquantes ont été remplacés pour %d article(s)', $broken));
         } else {
-            $io->success('Aucun avatar cassé trouvé.');
+            $io->success('Aucun lien cassé ou image manquante trouvé.');
         }
 
         return Command::SUCCESS;

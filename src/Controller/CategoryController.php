@@ -39,13 +39,14 @@ class CategoryController extends AbstractController
             $category->setSlug($slugger->slugify($category->getName()));
             $categoryRepository->add($category, true);
 
+            $this->addFlash(
+                'success',
+                'La catégorie "' . $category->getName() . '" a bien été ajoutée'
+            );
+
             return $this->redirectToRoute('app_backoffice_categories_list', [], Response::HTTP_SEE_OTHER);
         }
-        // ! TODO: return the old name (empty here) between the quotes
-        $this->addFlash(
-            'success',
-            'La catégorie "' . $category->getName() . '" a bien été ajoutée'
-        );
+
         return $this->renderForm('category/new.html.twig', [
             'category' => $category,
             'form' => $form,
@@ -74,15 +75,13 @@ class CategoryController extends AbstractController
 
             $category->setSlug($slugger->slugify($category->getName()));
             $categoryRepository->add($category, true);
+            $this->addFlash(
+                'success',
+                'La catégorie "' . $category->getName() . '" a bien été modifiée'
+            );
 
             return $this->redirectToRoute('app_backoffice_categories_list', [], Response::HTTP_SEE_OTHER);
         }
-
-        // ! TODO: return the old name between the quotes
-        $this->addFlash(
-            'success',
-            'La catégorie "' . $category->getName() . '" a bien été modifiée'
-        );
 
         return $this->renderForm('category/edit.html.twig', [
             'category' => $category,
@@ -120,7 +119,7 @@ class CategoryController extends AbstractController
         }
         $this->addFlash(
             'success',
-            'La catégorie' . $category->getName() . '" a bien été réactivée'
+            'La catégorie' . $category->getName() . '" a bien été réactivée.'
         );
 
         return $this->redirectToRoute('app_backoffice_categories_list', [], Response::HTTP_SEE_OTHER);
