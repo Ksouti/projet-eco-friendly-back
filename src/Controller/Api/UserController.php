@@ -19,12 +19,21 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 class UserController extends AbstractController
 {
-    /* private EmailVerifier $emailVerifier;
-
-    public function __construct(EmailVerifier $emailVerifier)
+    /**
+     * @Route("/api/users/{id}", name="app_api_users_read", requirements={"id":"\d+"}, methods={"GET"})
+     */
+    public function read(?User $user, UserRepository $userRepository): Response
     {
-        $this->emailVerifier = $emailVerifier;
-    } */
+        // Verify if the user exists
+        if (!$user) {
+            return $this->json(['errors' => ['user' => ['Cet utilisateur n\'existe pas']]], Response::HTTP_NOT_FOUND);
+        }
+
+        // Verify if the user is the owner of the data
+        $this->denyAccessUnlessGranted('user_read', $user);
+
+        return $this->json($userRepository->find($user->getId()), Response::HTTP_OK, [], ['groups' => 'users']);
+    }
 
     /**
      * @Route("/api/users/{id}", name="app_api_users_update", requirements={"id":"\d+"}, methods={"PUT"})
@@ -86,21 +95,6 @@ class UserController extends AbstractController
         );
     }
 
-    /**
-     * @Route("/api/users/{id}", name="app_api_users_read", requirements={"id":"\d+"}, methods={"GET"})
-     */
-    public function read(?User $user, UserRepository $userRepository): Response
-    {
-        // Verify if the user exists
-        if (!$user) {
-            return $this->json(['errors' => ['user' => ['Cet utilisateur n\'existe pas']]], Response::HTTP_NOT_FOUND);
-        }
-
-        // Verify if the user is the owner of the data
-        $this->denyAccessUnlessGranted('user_read', $user);
-
-        return $this->json($userRepository->find($user->getId()), Response::HTTP_OK, [], ['groups' => 'users']);
-    }
 
     /**
      * @Route("/api/users/{id}/email-update", name="app_api_users_emailupdate", methods={"POST"})
