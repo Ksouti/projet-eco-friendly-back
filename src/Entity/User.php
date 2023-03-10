@@ -98,9 +98,10 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     private $code;
 
     /**
-     * @ORM\Column(type="string", length=255, nullable=true)
+     * @ORM\Column(type="string", length=255)
      * @Assert\Length(max = 255)
      * @Assert\Url
+     * @Assert\NotBlank
      * @Groups({"articles"})
      * @Groups({"advices"})
      * @Groups({"users"})

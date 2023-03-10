@@ -38,7 +38,7 @@
                         href="{{ path('app_backoffice_home') }}">Accueil</a>
                         {% if "ROLE_ADMIN" in app.user.roles %}
                         <a class="d-flex justify-content-center align-items-center nav-link{% if ('membres' in pathinfo) or (user is defined and 'ROLE_USER' in user.roles) %} active{% endif %}" 
-                        href="{{ path('app_backoffice_members_list') }}">Membres</a>
+                            href="{{ path('app_backoffice_members_list') }}">Membres</a>
                         <a class="d-flex justify-content-center align-items-center nav-link{% if ('auteurs' in pathinfo) or (user is defined and 'ROLE_AUTHOR' in user.roles) %} active{% endif %}"
                             href="{{ path('app_backoffice_authors_list') }}">Auteurs</a>
                         <a class="d-flex justify-content-center align-items-center nav-link{% if 'articles' in pathinfo %} active{% endif %}" 
