@@ -31,6 +31,10 @@
                 </button>
                 <div class="collapse navbar-collapse mx-auto" id="navbarNavAltMarkup">
                     <div class="navbar-nav ms-auto">
+
+                    {% set pathinfo = app.request.pathinfo %}
+                    {# {{ dump(pathinfo) }} #}
+
                         <a class="d-flex justify-content-center align-items-center nav-link{% if app.request.pathinfo is same as (path('app_backoffice_home'))%} active{% endif %}" 
                         href="{{ path('app_backoffice_home') }}">Accueil</a>
                         {% if "ROLE_ADMIN" in app.user.roles %}
@@ -38,12 +42,15 @@
                         href="{{ path('app_backoffice_members_list') }}">Membres</a>
                         <a class="d-flex justify-content-center align-items-center nav-link{% if app.request.pathinfo is same as (path('app_backoffice_authors_list'))%} active{% endif %}" 
                             href="{{ path('app_backoffice_authors_list') }}">Auteurs</a>
-                        <a class="d-flex justify-content-center align-items-center nav-link{% if app.request.pathinfo is same as (path('app_backoffice_articles_list'))%} active{% endif %}" 
+                        <a class="d-flex justify-content-center align-items-center nav-link{% if 'articles' in pathinfo or 'article' in pathinfo %} active{% endif %}" 
                             href="{{ path('app_backoffice_articles_list') }}">Articles</a>
-                        <a class="d-flex justify-content-center align-items-center nav-link{% if app.request.pathinfo is same as (path('app_backoffice_advices_list'))%} active{% endif %}" 
+                        <a class="d-flex justify-content-center align-items-center nav-link{% if 'advices' in pathinfo or 'advice' in pathinfo  %} active{% endif %}" 
                             href="{{ path('app_backoffice_advices_list') }}">Conseils</a>
-                        <a class="d-flex justify-content-center align-items-center nav-link{% if app.request.pathinfo is same as (path('app_backoffice_categories_list'))%} active{% endif %}" 
+
+                        <a class="d-flex justify-content-center align-items-center nav-link{% if 'categories' in pathinfo %} active{% endif %}" 
                             href="{{ path('app_backoffice_categories_list') }}">Cat&eacute;gories</a>
+                        {# <a class="d-flex justify-content-center align-items-center nav-link{% if app.request.pathinfo is same as (path('app_backoffice_categories_list'))%} active{% endif %}" 
+                            href="{{ path('app_backoffice_categories_list') }}">Cat&eacute;gories</a> #}
                         <a class="d-flex justify-content-center align-items-center nav-link{% if app.request.pathinfo is same as (path('app_backoffice_avatars_list'))%} active{% endif %}" 
                             href="{{ path('app_backoffice_avatars_list') }}">Avatars</a>
                         {% else %}
