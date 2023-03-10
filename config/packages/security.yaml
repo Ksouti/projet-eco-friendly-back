@@ -68,7 +68,7 @@ security:
         
         - {
               # path: '^back_office/auteurs/(\d+)/(editer|modifier|desactiver)$',
-              path: '^/back_office/auteurs/(\d+)/(editer|modifier|desactiver)',
+              path: '^/back_office/auteurs/(\d+)/(editer|modifier|desactiver|creer)',
               roles: ROLE_AUTHOR,
           }
         - { path: '^/back_office/articles', roles: ROLE_AUTHOR }

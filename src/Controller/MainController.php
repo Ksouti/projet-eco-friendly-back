@@ -27,7 +27,11 @@ class MainController extends AbstractController
      */
     public function home(EntityManagerInterface $entityManager): Response
     {
-        if (in_array('ROLE_ADMIN', $this->getUser()->getRoles())) {
+        if (!$this->getUser()->isActive()) {
+            return $this->redirectToRoute('app_backoffice_security_login');
+        } else if (!$this->getUser()->isVerified()) {
+            return $this->redirectToRoute('app_backoffice_users_create', ['id' => $this->getUser()->getId()]);
+        } else if (in_array('ROLE_ADMIN', $this->getUser()->getRoles())) {
             return $this->render('home/admin.html.twig', [
                 'user' => $this->getUser(),
                 'members' => $entityManager->getRepository(User::class)->findMembersForHome(),
@@ -35,10 +39,11 @@ class MainController extends AbstractController
                 'articles' => $entityManager->getRepository(Article::class)->findForHome(),
                 'advices' => $entityManager->getRepository(Advice::class)->findForHome(),
             ]);
+        } else {
+            return $this->render('user/show.html.twig', [
+                'user' => $this->getUser(),
+                'articles' => $entityManager->getRepository(Article::class)->findAllByUser($this->getUser()),
+            ]);
         }
-        return $this->render('user/show.html.twig', [
-            'user' => $this->getUser(),
-            'articles' => $entityManager->getRepository(Article::class)->findAllByUser($this->getUser()),
-        ]);
     }
 }
