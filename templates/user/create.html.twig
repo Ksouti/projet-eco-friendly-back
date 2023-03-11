@@ -6,8 +6,7 @@
 
 	<div class="container-fluid col-12 col-lg-8 mx-auto">
 		<h1>
-			Créer mon profil d'auteur<br />
-			"{{ user.nickname }}"
+			Créer mon profil d'auteur
 		</h1>
 		<div>
 			<div class="row mb-3">
@@ -22,9 +21,7 @@
 				</div>
 			</div>
 			{{ include('user/_form.html.twig', {'button_label': 'Valider'}) }}
-			{{ include('user/_delete_form.html.twig') }}
 		</div>
-		<a href="{{ path('app_backoffice_authors_list') }}">Retour à la liste</a>
     </div>
 	
 {% endblock %}

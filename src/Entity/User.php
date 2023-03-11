@@ -58,7 +58,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
      * @ORM\Column(type="string", length=64, nullable=true)
      * @Assert\Length(max = 64)
      * starts with a capital letter & contains only letters, hyphens and apostrophes
-     * @Assert\Regex(pattern="/^[A-Z][A-Za-zàâçéèêëîïôûùüÿñæœ\s\-\']*$/")
+     * @Assert\Regex(pattern="/^[A-Za-zàâçéèêëîïôûùüÿñæœ\s\-\']*$/", message="Le prénom ne peut contenir que des lettres, des apostrophes, des tirets et des espaces")
      * @Groups({"articles"})
      * @Groups({"advices"})
      * @Groups({"users"})
@@ -69,7 +69,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
      * @ORM\Column(type="string", length=64, nullable=true)
      * @Assert\Length(max = 64)
      * starts with a capital letter & contains only letters, hyphens and apostrophes
-     * @Assert\Regex(pattern="/^[A-Z][A-Za-zàâçéèêëîïôûùüÿñæœ\s\-\']*$/")
+     * @Assert\Regex(pattern="/^[A-Za-zàâçéèêëîïôûùüÿñæœ\s\-\']*$/", message="Le nom ne peut contenir que des lettres, des apostrophes, des tirets et des espaces")
      * @Groups({"articles"})
      * @Groups({"advices"})
      * @Groups({"users"})

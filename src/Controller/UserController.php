@@ -3,6 +3,7 @@
 namespace App\Controller;
 
 use App\Entity\User;
+use App\Form\ProfileType;
 use App\Form\UserType;
 use App\Repository\UserRepository;
 use App\Service\CodeGeneratorService;
@@ -173,11 +174,18 @@ class UserController extends AbstractController
         UserRepository $userRepository,
         UserPasswordHasherInterface $passwordHasher
     ): Response {
-        $form = $this->createForm(UserType::class, $user);
-        $form->handleRequest($request);
+        $form = $this->createForm(ProfileType::class, $user);
+        $form->handleRequest($request, null, ['validation_groups' => ['Default']]);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $user->setPassword($passwordHasher->hashPassword($user, $user->getPassword()));
+            $user->setFirstName(ucfirst($user->getFirstName()));
+            $user->setLastName(ucfirst($user->getLastName()));
+
+            $password = $form->get('new_password')->getData();
+            $user->setPassword($passwordHasher->hashPassword($user, $password));
+
+            $user->setUpdatedAt(new DateTimeImmutable());
+            $user->setIsVerified(true);
 
             $avatarFile = $form->get('avatarFile')->getData();
 
