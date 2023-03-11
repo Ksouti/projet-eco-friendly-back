@@ -46,6 +46,7 @@ class RegistrationController extends AbstractController
             $user->setLastName(ucfirst($user->getLastName()));
             $user->setCode($generator->codeGen());
             $user->setRoles(['ROLE_USER']);
+            $user->setAvatar('https://eco-friendly.fr/assets/img/misc/default-avatar.png');
             $user->setIsActive(true);
             $user->setIsVerified(false);
             $user->setCreatedAt(new DateTimeImmutable());

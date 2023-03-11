@@ -38,13 +38,13 @@
                         <a class="d-flex justify-content-center align-items-center nav-link{% if app.request.pathinfo is same as (path('app_backoffice_home'))%} active{% endif %}" 
                         href="{{ path('app_backoffice_home') }}">Accueil</a>
                         {% if "ROLE_ADMIN" in app.user.roles %}
-                        <a class="d-flex justify-content-center align-items-center nav-link{% if app.request.pathinfo is same as (path('app_backoffice_members_list')) %} active{% endif %}" 
-                        href="{{ path('app_backoffice_members_list') }}">Membres</a>
-                        <a class="d-flex justify-content-center align-items-center nav-link{% if app.request.pathinfo is same as (path('app_backoffice_authors_list'))%} active{% endif %}" 
+                        <a class="d-flex justify-content-center align-items-center nav-link{% if ('membres' in pathinfo) or (user is defined and 'ROLE_USER' in user.roles) %} active{% endif %}" 
+                            href="{{ path('app_backoffice_members_list') }}">Membres</a>
+                        <a class="d-flex justify-content-center align-items-center nav-link{% if ('auteurs' in pathinfo) or (user is defined and 'ROLE_AUTHOR' in user.roles) %} active{% endif %}"
                             href="{{ path('app_backoffice_authors_list') }}">Auteurs</a>
-                        <a class="d-flex justify-content-center align-items-center nav-link{% if app.request.pathinfo is same as (path('app_backoffice_articles_list'))%} active{% endif %}" 
+                        <a class="d-flex justify-content-center align-items-center nav-link{% if 'articles' in pathinfo %} active{% endif %}" 
                             href="{{ path('app_backoffice_articles_list') }}">Articles</a>
-                        <a class="d-flex justify-content-center align-items-center nav-link{% if app.request.pathinfo is same as (path('app_backoffice_advices_list'))%} active{% endif %}" 
+                        <a class="d-flex justify-content-center align-items-center nav-link{%  if 'conseils' in pathinfo %} active{% endif %}" 
                             href="{{ path('app_backoffice_advices_list') }}">Conseils</a>
                         <a class="d-flex justify-content-center align-items-center nav-link{% if 'categories' in pathinfo %} active{% endif %}" 
                             href="{{ path('app_backoffice_categories_list') }}">Cat&eacute;gories</a>
