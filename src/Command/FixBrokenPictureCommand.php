@@ -36,7 +36,7 @@ class FixBrokenPictureCommand extends Command
         $io = new SymfonyStyle($input, $output);
         $articles = $this->entityManager->getRepository(Article::class)->findAll();
         $broken = 0;
-        $defaultPicture = 'http://vps-79770841.vps.ovh.net/assets/img/misc/default-article-illustration.png';
+        $defaultPicture = 'https://eco-friendly.fr/assets/img/misc/default-article-illustration.png';
 
         foreach ($articles as $article) {
             try {

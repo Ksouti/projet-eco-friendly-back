@@ -64,7 +64,7 @@ class UserController extends AbstractController
         $user = new User();
         $user->setCreatedAt(new DateTimeImmutable());
         $user->setRoles(['ROLE_AUTHOR']);
-        $user->setAvatar('http://vps-79770841.vps.ovh.net/assets/img/misc/default-avatar.png');
+        $user->setAvatar('https://eco-friendly.fr/assets/img/misc/default-avatar.png');
         $user->setIsActive(true);
         $user->setIsVerified(false);
         $user->setCode($generator->codeGen());

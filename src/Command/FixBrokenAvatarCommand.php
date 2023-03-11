@@ -48,7 +48,7 @@ class FixBrokenAvatarCommand extends Command
                 $broken++;
                 $io->text(sprintf('Avatar cassé trouvé pour l\'utilisateur %s (%s)', $user->getUsername(), $user->getAvatar()));
                 $io->progressStart(100);
-                $newAvatar = 'http://vps-79770841.vps.ovh.net/assets/img/misc/default-avatar.png';
+                $newAvatar = 'https://eco-friendly.fr/assets/img/misc/default-avatar.png';
                 if ($newAvatar) {
                     $user->setAvatar($newAvatar);
                     $io->progressFinish();

@@ -61,13 +61,13 @@ class AppFixtures extends Fixture
         $passwordHasher = $this->passwordHasher;
 
         $avatars = [
-            'Ours' => 'http://vps-79770841.vps.ovh.net//assets/img/avatars/ours.png',
-            'Mésange bleu' => 'http://vps-79770841.vps.ovh.net//assets/img/avatars/mesange-bleue.png',
-            'Biche' => 'http://vps-79770841.vps.ovh.net//assets/img/avatars/biche.png',
-            'Grenouille' => 'http://vps-79770841.vps.ovh.net//assets/img/avatars/grenouille.png',
-            'Renard' => 'http://vps-79770841.vps.ovh.net//assets/img/avatars/renard.png',
-            'Lièvre' => 'http://vps-79770841.vps.ovh.net//assets/img/avatars/lievre.png',
-            'Papillon' => 'http://vps-79770841.vps.ovh.net//assets/img/avatars/papillon.png',
+            'Ours' => 'https://eco-friendly.fr//assets/img/avatars/ours.png',
+            'Mésange bleu' => 'https://eco-friendly.fr//assets/img/avatars/mesange-bleue.png',
+            'Biche' => 'https://eco-friendly.fr//assets/img/avatars/biche.png',
+            'Grenouille' => 'https://eco-friendly.fr//assets/img/avatars/grenouille.png',
+            'Renard' => 'https://eco-friendly.fr//assets/img/avatars/renard.png',
+            'Lièvre' => 'https://eco-friendly.fr//assets/img/avatars/lievre.png',
+            'Papillon' => 'https://eco-friendly.fr//assets/img/avatars/papillon.png',
         ];
 
         $user = new User();
@@ -78,7 +78,7 @@ class AppFixtures extends Fixture
         $user->setLastname('Istrateur');
         $user->setNickname('NoSysAdmin');
         $user->setCode($this->generator->codeGen());
-        $user->setAvatar('http://vps-79770841.vps.ovh.net//uploads/users/nosysadmin63ff3ea8de28a.png');
+        $user->setAvatar('https://eco-friendly.fr//uploads/users/nosysadmin63ff3ea8de28a.png');
         $user->setIsActive(1);
         $user->setIsVerified(1);
         $user->setCreatedAt(DateTimeImmutable::createFromMutable($faker->dateTimeBetween('-1 years', 'now')));
@@ -93,7 +93,7 @@ class AppFixtures extends Fixture
         $user->setLastname('Kundera');
         $user->setNickname('MilKuKu');
         $user->setCode($this->generator->codeGen());
-        $user->setAvatar('http://vps-79770841.vps.ovh.net//uploads/users/chanda-bec6400ed2e2a75b.jpg');
+        $user->setAvatar('https://eco-friendly.fr//uploads/users/chanda-bec6400ed2e2a75b.jpg');
         $user->setIsActive(1);
         $user->setIsVerified(1);
         $user->setCreatedAt(DateTimeImmutable::createFromMutable($faker->dateTimeBetween('-1 years', 'now')));
@@ -108,7 +108,7 @@ class AppFixtures extends Fixture
         $user->setLastname('Lebowski');
         $user->setNickname('The_Dude');
         $user->setCode($this->generator->codeGen());
-        $user->setAvatar('http://vps-79770841.vps.ovh.net//uploads/users/martina-br6400ec427207b.png');
+        $user->setAvatar('https://eco-friendly.fr//uploads/users/martina-br6400ec427207b.png');
         $user->setIsActive(1);
         $user->setIsVerified(1);
         $user->setCreatedAt(DateTimeImmutable::createFromMutable($faker->dateTimeBetween('-1 years', 'now')));

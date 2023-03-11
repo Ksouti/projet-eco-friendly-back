@@ -52,7 +52,7 @@ class ArticleController extends AbstractController
         $article = new Article();
         $article->setAuthor($this->getUser());
         $article->setCreatedAt(new DateTimeImmutable());
-        $article->setPicture('http://vps-79770841.vps.ovh.net/assets/img/misc/default-article-illustration.png');
+        $article->setPicture('https://eco-friendly.fr/assets/img/misc/default-article-illustration.png');
 
         $form = $this->createForm(ArticleType::class, $article);
         $form->handleRequest($request);
