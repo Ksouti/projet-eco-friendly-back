@@ -56,19 +56,35 @@ class AppFixtures extends Fixture
 
         echo 'Categories added !' . PHP_EOL;
 
+
+        // ! Adding Avatars
+
+        $avatars = [
+            'Ours' => 'https://eco-friendly.fr/assets/img/avatars/ours.png',
+            'Mésange bleue' => 'https://eco-friendly.fr/assets/img/avatars/mesange-bleue.png',
+            'Biche' => 'https://eco-friendly.fr/assets/img/avatars/biche.png',
+            'Grenouille' => 'https://eco-friendly.fr/assets/img/avatars/grenouille.png',
+            'Renard' => 'https://eco-friendly.fr/assets/img/avatars/renard.png',
+            'Lièvre' => 'https://eco-friendly.fr/assets/img/avatars/lievre.png',
+            'Papillon' => 'https://eco-friendly.fr/assets/img/avatars/papillon.png',
+        ];
+
+        foreach ($avatars as $name => $picture) {
+            $avatar = new Avatar();
+            $avatar->setName($name);
+            $avatar->setPicture($picture);
+            $avatar->setIsActive(true);
+            $avatar->setCreatedAt(new DateTimeImmutable());
+            $manager->persist($avatar);
+        }
+
+        $manager->flush();
+
+        echo 'Avatars added !' . PHP_EOL;
+
         // ! Adding Users
 
         $passwordHasher = $this->passwordHasher;
-
-        $avatars = [
-            'Ours' => 'https://eco-friendly.fr//assets/img/avatars/ours.png',
-            'Mésange bleu' => 'https://eco-friendly.fr//assets/img/avatars/mesange-bleue.png',
-            'Biche' => 'https://eco-friendly.fr//assets/img/avatars/biche.png',
-            'Grenouille' => 'https://eco-friendly.fr//assets/img/avatars/grenouille.png',
-            'Renard' => 'https://eco-friendly.fr//assets/img/avatars/renard.png',
-            'Lièvre' => 'https://eco-friendly.fr//assets/img/avatars/lievre.png',
-            'Papillon' => 'https://eco-friendly.fr//assets/img/avatars/papillon.png',
-        ];
 
         $user = new User();
         $user->setEmail('admin@admin.com');
@@ -78,7 +94,7 @@ class AppFixtures extends Fixture
         $user->setLastname('Istrateur');
         $user->setNickname('NoSysAdmin');
         $user->setCode($this->generator->codeGen());
-        $user->setAvatar('https://eco-friendly.fr//uploads/users/nosysadmin63ff3ea8de28a.png');
+        $user->setAvatar('https://eco-friendly.fr/uploads/users/nosysadmin63ff3ea8de28a.png');
         $user->setIsActive(1);
         $user->setIsVerified(1);
         $user->setCreatedAt(DateTimeImmutable::createFromMutable($faker->dateTimeBetween('-1 years', 'now')));
@@ -93,7 +109,7 @@ class AppFixtures extends Fixture
         $user->setLastname('Kundera');
         $user->setNickname('MilKuKu');
         $user->setCode($this->generator->codeGen());
-        $user->setAvatar('https://eco-friendly.fr//uploads/users/chanda-bec6400ed2e2a75b.jpg');
+        $user->setAvatar('https://eco-friendly.fr/uploads/users/chanda-bec6400ed2e2a75b.jpg');
         $user->setIsActive(1);
         $user->setIsVerified(1);
         $user->setCreatedAt(DateTimeImmutable::createFromMutable($faker->dateTimeBetween('-1 years', 'now')));
@@ -108,7 +124,7 @@ class AppFixtures extends Fixture
         $user->setLastname('Lebowski');
         $user->setNickname('The_Dude');
         $user->setCode($this->generator->codeGen());
-        $user->setAvatar('https://eco-friendly.fr//uploads/users/martina-br6400ec427207b.png');
+        $user->setAvatar('https://eco-friendly.fr/uploads/users/martina-br6400ec427207b.png');
         $user->setIsActive(1);
         $user->setIsVerified(1);
         $user->setCreatedAt(DateTimeImmutable::createFromMutable($faker->dateTimeBetween('-1 years', 'now')));
@@ -154,22 +170,6 @@ class AppFixtures extends Fixture
         $manager->flush();
 
         echo 'Users added !' . PHP_EOL;
-
-        // ! Adding default avatars
-
-        foreach ($avatars as $name => $url) {
-            $avatar = new Avatar();
-            $avatar->setName($name);
-            $avatar->setPicture($url);
-            $avatar->setIsActive(1);
-            $avatar->setCreatedAt(DateTimeImmutable::createFromMutable($faker->dateTimeBetween('-1 years', 'now')));
-            $avatar->setUpdatedAt(DateTimeImmutable::createFromMutable($faker->dateTimeBetween('-1 years', 'now')));
-            $manager->persist($avatar);
-        }
-
-        $manager->flush();
-
-        echo 'Avatars added !' . PHP_EOL;
 
         // ! Catégories & Users list
 

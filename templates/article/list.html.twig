@@ -41,7 +41,7 @@
                 <tr>
                     <td>{{ article.id }}</td>
                     <td>{{ article.title }}</td>
-                    <td>{{ article.content|slice(0, 100)|raw }} [...]</td>
+                    <td>{{ article.content|slice(0, 100)|striptags }} [...]</td>
                     <td>{{ article.author.firstname }} {{ article.author.lastname }}</td>
                     <td class="text-center"><img src="{{ article.picture }}" alt="{{ article.slug }}" style="max-width: 80px; max-height: 80px;"></td>
                     <td class="text-center">{{ article.category.name }}</td>

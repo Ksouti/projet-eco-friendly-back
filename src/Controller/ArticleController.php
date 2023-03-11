@@ -76,7 +76,8 @@ class ArticleController extends AbstractController
                     $this->addFlash('danger', 'Une erreur est survenue lors de l\'upload de l\'image');
                 }
             }
-
+            // TODO: The following code works for downscaling the image but not for upscaling it
+            // TODO: It has to be fixed, maybe only to square the image
             /*             if ($pictureFile) {
 
                 $extension = $pictureFile->guessExtension();
@@ -133,7 +134,11 @@ class ArticleController extends AbstractController
                 '"' . $article->getTitle() . '" a bien été créé.'
             );
 
-            return $this->redirectToRoute('app_backoffice_articles_user', ['id' => $article->getAuthor()->getId()], Response::HTTP_SEE_OTHER);
+            if ($this->getUser()->isGranted('ROLE_ADMIN')) {
+                return $this->redirectToRoute('app_backoffice_articles_list', [], Response::HTTP_SEE_OTHER);
+            } else {
+                return $this->redirectToRoute('app_backoffice_articles_user', ['id' => $article->getAuthor()->getId()], Response::HTTP_SEE_OTHER);
+            }
         }
 
         return $this->renderForm('article/new.html.twig', [
@@ -191,7 +196,11 @@ class ArticleController extends AbstractController
                 '"' . $article->getTitle() . '" a bien été modifié.'
             );
 
-            return $this->redirectToRoute('app_backoffice_articles_user', ['id' => $article->getAuthor()->getId()], Response::HTTP_SEE_OTHER);
+            if ($this->isGranted('ROLE_ADMIN')) {
+                return $this->redirectToRoute('app_backoffice_articles_list', [], Response::HTTP_SEE_OTHER);
+            } else {
+                return $this->redirectToRoute('app_backoffice_articles_user', ['id' => $article->getAuthor()->getId()], Response::HTTP_SEE_OTHER);
+            }
         }
 
         return $this->renderForm('article/edit.html.twig', [
