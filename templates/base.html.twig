@@ -31,14 +31,13 @@
                 </button>
                 <div class="collapse navbar-collapse mx-auto" id="navbarNavAltMarkup">
                     <div class="navbar-nav ms-auto">
-    
                     {% if app.user.isVerified %}
-
-                    {% set pathinfo = app.request.pathinfo %}
+                            
+                        {% set pathinfo = app.request.pathinfo %}
                         <a class="d-flex justify-content-center align-items-center nav-link{% if app.request.pathinfo is same as (path('app_backoffice_home'))%} active{% endif %}" 
                         href="{{ path('app_backoffice_home') }}">Accueil</a>
                         {% if "ROLE_ADMIN" in app.user.roles %}
-                        <a class="d-flex justify-content-center align-items-center nav-link{% if ('membres' in pathinfo) or (user is defined and 'ROLE_USER' in user.roles) %} active{% endif %}" 
+                        <a class="d-flex justify-content-center align-items-center nav-link{% if ('membres' in pathinfo) or (user is defined and 'ROLE_USER' in user.roles and 'ROLE_AUTHOR' not in user.roles) and ('home' not in pathinfo) %} active{% endif %}" 
                             href="{{ path('app_backoffice_members_list') }}">Membres</a>
                         <a class="d-flex justify-content-center align-items-center nav-link{% if ('auteurs' in pathinfo) or (user is defined and 'ROLE_AUTHOR' in user.roles) %} active{% endif %}"
                             href="{{ path('app_backoffice_authors_list') }}">Auteurs</a>
