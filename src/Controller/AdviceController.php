@@ -59,8 +59,8 @@ class AdviceController extends AbstractController
 
             return $this->redirectToRoute('app_backoffice_advices_list', [], Response::HTTP_SEE_OTHER);
         }
-    
-        
+
+
         return $this->renderForm('advice/edit.html.twig', [
             'advice' => $advice,
             'form' => $form,
@@ -95,11 +95,9 @@ class AdviceController extends AbstractController
             $adviceRepository->add($advice, true);
         }
         $this->addFlash(
-            'sucess',
+            'success',
             '"' . $advice->getTitle() . '" a bien été réactivé. '
         );
         return $this->redirectToRoute('app_backoffice_advices_list', [], Response::HTTP_SEE_OTHER);
     }
-
-    
 }

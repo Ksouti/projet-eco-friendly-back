@@ -32,7 +32,7 @@
                                     <h6 class="card-subtitle mb-2 text-muted">Crée le {{ article.createdAt|date('d-m-Y H:i:s') }}</h6>
                                     <p class="float-end">{% include "_fragments/_content_status_tag.html.twig" with {status:article.status} %}</p>
                                 </div>
-                                <p class="card-text">{{ article.content|slice(0, 100) }} [...]</p>
+                                <p class="card-text">{{ article.content|slice(0, 100)|raw }} [...]</p>
                                 <div class="d-flex flex-nowrap justify-content-end align-items-center">
                                     <a class="m-1 btn-sm btn btn-success" data-bs-toggle="tooltip" data-bs-placement="top" title="Voir" href="{{ path('app_backoffice_articles_show', {'id': article.id}) }}"><i class="bi bi-eye"></i></a>
                                     <a class="m-1 btn-sm btn btn-warning" data-bs-toggle="tooltip" data-bs-placement="top" title="&Eacute;diter" href="{{ path('app_backoffice_articles_edit', {'id': article.id}) }}"><i class="bi bi-pencil"></i></a>
@@ -58,7 +58,7 @@
                                         <h6 class="card-subtitle mb-2 text-muted">Crée le {{ advice.createdAt|date('d-m-Y H:i:s') }}</h6>
                                         <p class="float-end">{% include "_fragments/_content_status_tag.html.twig" with {status:advice.status} %}</p>
                                     </div>
-                                    <p class="card-text">{{ advice.content|slice(0, 100) }} [...]</p>
+                                    <p class="card-text">{{ advice.content|slice(0, 100)|raw }} [...]</p>
                                     <div class="d-flex flex-nowrap justify-content-end align-items-center">
                                         <a class="m-1 btn-sm btn btn-success" data-bs-toggle="tooltip" data-bs-placement="top" title="Voir" href="{{ path('app_backoffice_advices_show', {'id': advice.id}) }}"><i class="bi bi-eye"></i></a>
                                         <a class="m-1 btn-sm btn btn-warning" data-bs-toggle="tooltip" data-bs-placement="top" title="&Eacute;diter" href="{{ path('app_backoffice_advices_edit', {'id': advice.id}) }}"><i class="bi bi-pencil"></i></a>
