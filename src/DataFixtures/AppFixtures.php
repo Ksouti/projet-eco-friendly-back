@@ -61,7 +61,7 @@ class AppFixtures extends Fixture
         $avatars = [
             'Ours' => 'https://eco-friendly.fr/assets/img/avatars/ours.png',
             'Mésange bleue' => 'https://eco-friendly.fr/assets/img/avatars/mesange-bleue.png',
-            'Biche' => 'https://eco-friendly.fr/assets/img/avatars/biche.png',
+            'Chevreuil' => 'https://eco-friendly.fr/assets/img/avatars/chevreuil.png',
             'Grenouille' => 'https://eco-friendly.fr/assets/img/avatars/grenouille.png',
             'Renard' => 'https://eco-friendly.fr/assets/img/avatars/renard.png',
             'Lièvre' => 'https://eco-friendly.fr/assets/img/avatars/lievre.png',
@@ -93,7 +93,7 @@ class AppFixtures extends Fixture
         $user->setLastname('Istrateur');
         $user->setNickname('NoSysAdmin');
         $user->setCode($this->generator->codeGen());
-        $user->setAvatar('https://eco-friendly.fr/uploads/users/nosysadmin63ff3ea8de28a.png');
+        $user->setAvatar('https://eco-friendly.fr/uploads/users/61-640e0f721e21b.png');
         $user->setIsActive(1);
         $user->setIsVerified(1);
         $user->setCreatedAt(DateTimeImmutable::createFromMutable($faker->dateTimeBetween('-1 years', 'now')));
@@ -108,7 +108,7 @@ class AppFixtures extends Fixture
         $user->setLastname('Kundera');
         $user->setNickname('MilKuKu');
         $user->setCode($this->generator->codeGen());
-        $user->setAvatar('https://eco-friendly.fr/uploads/users/chanda-bec6400ed2e2a75b.jpg');
+        $user->setAvatar('https://www.eco-friendly.fr/uploads/users/3-6403a58bd869d.jpg');
         $user->setIsActive(1);
         $user->setIsVerified(1);
         $user->setCreatedAt(DateTimeImmutable::createFromMutable($faker->dateTimeBetween('-1 years', 'now')));
@@ -123,7 +123,7 @@ class AppFixtures extends Fixture
         $user->setLastname('Lebowski');
         $user->setNickname('The_Dude');
         $user->setCode($this->generator->codeGen());
-        $user->setAvatar('https://eco-friendly.fr/uploads/users/martina-br6400ec427207b.png');
+        $user->setAvatar('https://eco-friendly.fr/uploads/users/6-640e10d932757.jpg');
         $user->setIsActive(1);
         $user->setIsVerified(1);
         $user->setCreatedAt(DateTimeImmutable::createFromMutable($faker->dateTimeBetween('-1 years', 'now')));
@@ -133,7 +133,7 @@ class AppFixtures extends Fixture
         for ($index = 0; $index < 8; $index++) {
             $user = new User();
             $user->setEmail($faker->email);
-            $user->setPassword($faker->password);
+            $user->setPassword($passwordHasher->hashPassword($user, $faker->password));
             $user->setRoles(['ROLE_AUTHOR']);
             $user->setPassword($faker->password(8, 12));
             $user->setFirstname($faker->firstName());
@@ -151,7 +151,7 @@ class AppFixtures extends Fixture
         for ($index = 0; $index < 35; $index++) {
             $user = new User();
             $user->setEmail($faker->email);
-            $user->setPassword($faker->password);
+            $user->setPassword($passwordHasher->hashPassword($user, $faker->password));
             $user->setRoles(['ROLE_USER']);
             $user->setPassword($faker->password(8, 12));
             $user->setFirstname($faker->firstName());
@@ -253,6 +253,66 @@ class AppFixtures extends Fixture
         $manager->flush();
 
         echo 'Advices added !' . PHP_EOL;
+
+        // ! Adding items to test the 3 custom terminal commands
+
+        // ! Adding Articles to test the articles illustration images dead links removal command
+
+        for ($index = 0; $index < 5; $index++) {
+            $article = new Article();
+            $article->setTitle($faker->sentence(6, true));
+            $article->setContent("<p><em>" . $faker->paragraph(6, true) . "</em></p><h3>" . $faker->sentence(6, true) . "</h3><p>" . $faker->paragraph(6, true) . "</p><p><b>" . $faker->paragraph(6, true) . "</b></p><p>" . $faker->paragraph(6, true) . "</p><h4>" . $faker->sentence(6, true) . "</h4><ul><li>" . $faker->sentence(6, true) . "</li><li>" . $faker->sentence(6, true) . "</li><li>" . $faker->sentence(6, true) . "</li></ul><h3>" . $faker->sentence(6, true) . "</h3><p>" . $faker->paragraph(6, true) . "</p><p>" . $faker->paragraph(6, true) . "</p><p>" . $faker->paragraph(6, true) . "</p><p><em>" . $faker->paragraph(6, true) . "</em></p>");
+            $article->setSlug($this->slugger->slugify($article->getTitle()));
+            $article->setPicture('broken.jpg');
+            $article->setStatus(0);
+            $article->setAuthor($authors[array_rand($authors)]);
+            $article->setCategory($categories[$faker->numberBetween(0, count($categories) - 1)]);
+            $article->setCreatedAt(DateTimeImmutable::createFromMutable($faker->dateTimeBetween('-1 years', 'now')));
+            $article->setUpdatedAt(DateTimeImmutable::createFromMutable($faker->dateTimeBetween('-1 years', 'now')));
+            $manager->persist($article);
+        }
+
+        // ! Adding Users to test the unverified users removal command
+
+        for ($index = 0; $index < 5; $index++) {
+            $user = new User();
+            $user->setEmail($faker->email);
+            $user->setPassword($passwordHasher->hashPassword($user, $faker->password));
+            $user->setRoles(['ROLE_USER']);
+            $user->setPassword($faker->password(8, 12));
+            $user->setFirstname($faker->firstName());
+            $user->setLastname($faker->lastName());
+            $user->setNickname($faker->userName());
+            $user->setCode($this->generator->codeGen());
+            $user->setAvatar($avatars[array_rand($avatars)]);
+            $user->setIsActive(1);
+            $user->setIsVerified(0);
+            $user->setCreatedAt(DateTimeImmutable::createFromMutable($faker->dateTimeBetween('-1 years', 'now')));
+            $manager->persist($user);
+        }
+
+        // ! Adding Users to test the avatar dead links removal command
+
+        for ($index = 0; $index < 5; $index++) {
+            $user = new User();
+            $user->setEmail($faker->email);
+            $user->setPassword($passwordHasher->hashPassword($user, $faker->password));
+            $user->setRoles(['ROLE_USER']);
+            $user->setPassword($faker->password(8, 12));
+            $user->setFirstname($faker->firstName());
+            $user->setLastname($faker->lastName());
+            $user->setNickname($faker->userName());
+            $user->setCode($this->generator->codeGen());
+            $user->setAvatar('broken.jpg');
+            $user->setIsActive(1);
+            $user->setIsVerified(1);
+            $user->setCreatedAt(DateTimeImmutable::createFromMutable($faker->dateTimeBetween('-1 years', 'now')));
+            $manager->persist($user);
+        }
+
+        $manager->flush();
+
+        echo 'Commands test items added !' . PHP_EOL;
 
         echo 'All done !' . PHP_EOL;
     }

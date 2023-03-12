@@ -27,7 +27,7 @@ class AdviceType extends AbstractType
             ->add('content', CKEditorType::class, [
                 "label" => "Conseil",
                 "config" => [
-                    "uiColor" => "#ffffff",
+                    "uiColor" => "#caf2e6",
                     "toolbar" => "basic",
                 ],
                 "attr" => [

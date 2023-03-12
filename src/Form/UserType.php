@@ -21,29 +21,31 @@ class UserType extends AbstractType
             ->add("firstname", TextType::class, [
                 "label" => "Prénom",
                 "attr" => [
-                    "placeholder" => "Entrez votre prénom"
+                    "placeholder" => "Prénom"
                 ]
             ])
 
             ->add("lastname", TextType::class, [
                 "label" => "Nom",
                 "attr" => [
-                    "placeholder" => "Entrez votre nom de famille"
+                    "placeholder" => "Nom"
                 ]
             ])
 
             ->add("nickname", TextType::class, [
-                "label" => 'Pseudo',
+                "label" => 'Pseudo *',
                 "attr" => [
-                    "placeholder" => "Entrez votre pseudo"
-                ]
+                    "placeholder" => "Pseudo"
+                ],
+                'help' => '* obligatoire',
             ])
 
             ->add('email', EmailType::class, [
-                "label" => "Email",
+                "label" => "Email *",
                 "attr" => [
                     "placeholder" => "Email"
-                ]
+                ],
+                'help' => '* obligatoire',
             ])
 
             ->add('avatarFile', FileType::class, [

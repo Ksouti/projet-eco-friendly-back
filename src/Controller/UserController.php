@@ -43,14 +43,15 @@ class UserController extends AbstractController
 
         if ($form->isSubmitted() && $form->isValid()) {
             $users = $userRepository->listAllMembersWithFilter(
+                $form->get('sortType')->getData() ?? 'created_at',
+                $form->get('sortOrder')->getData() ?? 'DESC',
                 $form->get('is_verified')->getData(),
                 $form->get('is_active')->getData(),
                 $form->get('email')->getData(),
                 $form->get('firstname')->getData(),
                 $form->get('lastname')->getData(),
                 $form->get('nickname')->getData(),
-                $form->get('sortType')->getData() ?? 'created_at',
-                $form->get('sortOrder')->getData() ?? 'DESC',
+                $form->get('code')->getData(),
                 DateTimeImmutable::createFromMutable($form->get('dateFrom')->getData() ?? new DateTime('2000-01-01')),
                 DateTimeImmutable::createFromMutable($form->get('dateTo')->getData() ?? new DateTime('now'))
             );
@@ -80,14 +81,15 @@ class UserController extends AbstractController
 
         if ($form->isSubmitted() && $form->isValid()) {
             $users = $userRepository->listAllAuthorsWithFilter(
+                $form->get('sortType')->getData() ?? 'created_at',
+                $form->get('sortOrder')->getData() ?? 'DESC',
                 $form->get('is_verified')->getData(),
                 $form->get('is_active')->getData(),
                 $form->get('email')->getData(),
                 $form->get('firstname')->getData(),
                 $form->get('lastname')->getData(),
                 $form->get('nickname')->getData(),
-                $form->get('sortType')->getData() ?? 'created_at',
-                $form->get('sortOrder')->getData() ?? 'DESC',
+                $form->get('code')->getData(),
                 DateTimeImmutable::createFromMutable($form->get('dateFrom')->getData() ?? new DateTime('2000-01-01')),
                 DateTimeImmutable::createFromMutable($form->get('dateTo')->getData() ?? new DateTime('now'))
             );

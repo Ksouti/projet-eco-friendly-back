@@ -105,14 +105,15 @@ class UserRepository extends ServiceEntityRepository implements PasswordUpgrader
      * @return Users[] Returns an array of users objects filtered by authors role ordered by descending date
      */
     public function listAllAuthorsWithFilter(
+        ?string $sortType,
+        ?string $sortOrder,
         ?int $is_verified = null,
         ?int $is_active = null,
         ?string $email = null,
         ?string $firstname = null,
         ?string $lastname = null,
         ?string $nickname = null,
-        ?string $sortType,
-        ?string $sortOrder,
+        ?string $code = null,
         ?DateTimeImmutable $dateFrom = null,
         ?DateTimeImmutable $dateTo = null
     ) {
@@ -151,6 +152,11 @@ class UserRepository extends ServiceEntityRepository implements PasswordUpgrader
                 ->setParameter("nickname", "%$nickname%");
         }
 
+        if ($code) {
+            $qb->andWhere("u.code LIKE :code")
+                ->setParameter("code", "%$code%");
+        }
+
         if ($dateFrom) {
             $qb->andWhere("u.created_at >= :dateFrom")
                 ->setParameter("dateFrom", $dateFrom);
@@ -185,14 +191,15 @@ class UserRepository extends ServiceEntityRepository implements PasswordUpgrader
      * @return Users[] Returns an array of users objects filtered by authors role ordered by descending date
      */
     public function listAllMembersWithFilter(
+        ?string $sortType,
+        ?string $sortOrder,
         ?int $is_verified = null,
         ?int $is_active = null,
         ?string $email = null,
         ?string $firstname = null,
         ?string $lastname = null,
         ?string $nickname = null,
-        ?string $sortType,
-        ?string $sortOrder,
+        ?string $code = null,
         ?DateTimeImmutable $dateFrom = null,
         ?DateTimeImmutable $dateTo = null
     ) {
@@ -203,12 +210,12 @@ class UserRepository extends ServiceEntityRepository implements PasswordUpgrader
             ->andWhere("u.roles NOT LIKE :admin_roles")
             ->setParameter("admin_roles", "%ROLE_ADMIN%");
 
-        if ($is_verified) {
+        if ($is_verified !== null) {
             $qb->andWhere("u.is_verified = :is_verified")
                 ->setParameter("is_verified", $is_verified);
         }
 
-        if ($is_active) {
+        if ($is_active !== null) {
             $qb->andWhere("u.is_active = :is_active")
                 ->setParameter("is_active", $is_active);
         }
@@ -231,6 +238,11 @@ class UserRepository extends ServiceEntityRepository implements PasswordUpgrader
         if ($nickname) {
             $qb->andWhere("u.nickname LIKE :nickname")
                 ->setParameter("nickname", "%$nickname%");
+        }
+
+        if ($code) {
+            $qb->andWhere("u.code LIKE :code")
+                ->setParameter("code", "%$code%");
         }
 
         if ($dateFrom) {

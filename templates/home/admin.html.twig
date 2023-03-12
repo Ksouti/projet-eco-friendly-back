@@ -38,7 +38,7 @@
                                     <td>{{ author.nickname }}</td>
                                     <td>{{ author.firstname }} {{ author.lastname }}</td>
                                     <td>
-                                        {% include "_fragments/_user_verified_tag.html.twig" with {status:author.isActive} %}
+                                        {% include "_fragments/_user_verified_tag.html.twig" with {status:author.isVerified} %}
                                         {% include "_fragments/_user_active_tag.html.twig" with {status:author.isActive} %}
                                     </td>
                                     <td>
@@ -68,7 +68,7 @@
                                     <td>{{ member.nickname }}</td>
                                     <td>{{ member.firstname }} {{ member.lastname }}</td>
                                     <td>
-                                        {% include "_fragments/_user_verified_tag.html.twig" with {status:member.isActive} %}
+                                        {% include "_fragments/_user_verified_tag.html.twig" with {status:member.isVerified} %}
                                         {% include "_fragments/_user_active_tag.html.twig" with {status:member.isActive} %}
                                     </td>
                                     <td>
