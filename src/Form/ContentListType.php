@@ -39,7 +39,7 @@ class ContentListType extends AbstractType
                     'Tous' => null,
                     'Brouillon' => 0,
                     'Publié' => 1,
-                    'Archivé' => 2
+                    'Désactivé' => 2
                 ]
             ])
             ->add('user', EntityType::class, [

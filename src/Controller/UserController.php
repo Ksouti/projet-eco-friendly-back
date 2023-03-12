@@ -197,7 +197,7 @@ class UserController extends AbstractController
 
             $this->addFlash(
                 'success',
-                '"' . $user->getFirstname() . ' ' . $user->getLastname() . '" a bien été ajouté(e) à la liste des auteurs'
+                'Le profil de ' . $user->getFirstname() . ' ' . $user->getLastname() . ' a bien été créé.'
             );
 
             return $this->redirectToRoute('app_backoffice_authors_list', [], Response::HTTP_SEE_OTHER);
@@ -398,7 +398,7 @@ class UserController extends AbstractController
         }
         $this->addFlash(
             'danger',
-            'Le profil de ' . $user->getFirstname() . ' ' . $user->getLastname() . ' a bien été archivé.'
+            'Le profil de ' . $user->getFirstname() . ' ' . $user->getLastname() . ' a bien été désactivé.'
         );
 
         if (in_array('ROLE_AUTHOR', $user->getRoles())) {

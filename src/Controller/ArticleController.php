@@ -251,10 +251,13 @@ class ArticleController extends AbstractController
 
         $this->addFlash(
             'danger',
-            '"' . $article->getTitle() . '" a été archivé'
+            '"' . $article->getTitle() . '" a été désactivé.'
         );
-
-        return $this->redirectToRoute('app_backoffice_articles_user', ['id' => $article->getAuthor()->getId()], Response::HTTP_SEE_OTHER);
+        if ($this->isGranted('ROLE_ADMIN')) {
+            return $this->redirectToRoute('app_backoffice_articles_list', [], Response::HTTP_SEE_OTHER);
+        } else {
+            return $this->redirectToRoute('app_backoffice_articles_user', ['id' => $article->getAuthor()->getId()], Response::HTTP_SEE_OTHER);
+        }
     }
 
     /**
@@ -270,9 +273,13 @@ class ArticleController extends AbstractController
         }
         $this->addFlash(
             'success',
-            '"' . $article->getTitle() . '" a été réactivé'
+            '"' . $article->getTitle() . '" a été réactivé.'
         );
-        $user = $article->getAuthor();
-        return $this->redirectToRoute('app_backoffice_articles_user', ['id' => $user->getId()]);
+
+        if ($this->isGranted('ROLE_ADMIN')) {
+            return $this->redirectToRoute('app_backoffice_articles_list', [], Response::HTTP_SEE_OTHER);
+        } else {
+            return $this->redirectToRoute('app_backoffice_articles_user', ['id' => $article->getAuthor()->getId()], Response::HTTP_SEE_OTHER);
+        }
     }
 }

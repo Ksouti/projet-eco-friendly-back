@@ -106,7 +106,7 @@ class AdviceController extends AbstractController
         }
         $this->addFlash(
             'danger',
-            '"' . $advice->getTitle() . '" a bien été archivé. '
+            '"' . $advice->getTitle() . '" a bien été désactivé. '
         );
         return $this->redirectToRoute('app_backoffice_advices_list', [], Response::HTTP_SEE_OTHER);
     }

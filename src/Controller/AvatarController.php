@@ -56,7 +56,7 @@ class AvatarController extends AbstractController
 
             $this->addFlash(
                 'success',
-                '"' . $avatar->getName() . '" a bien été ajouté à la liste'
+                '"' . $avatar->getName() . '" a bien été ajouté.'
             );
             return $this->redirectToRoute('app_backoffice_avatars_list', [], Response::HTTP_SEE_OTHER);
         }
@@ -129,7 +129,7 @@ class AvatarController extends AbstractController
         }
         $this->addFlash(
             'danger',
-            '"' . $avatar->getName() . '" a été archivé.'
+            '"' . $avatar->getName() . '" a été désactivé.'
         );
         return $this->redirectToRoute('app_backoffice_avatars_list', [], Response::HTTP_SEE_OTHER);
     }

@@ -102,7 +102,7 @@ class CategoryController extends AbstractController
 
         $this->addFlash(
             'danger',
-            'La catégorie "' . $category->getName() . '" a bien été archivée.'
+            'La catégorie "' . $category->getName() . '" a bien été désactivée.'
         );
         return $this->redirectToRoute('app_backoffice_categories_list', [], Response::HTTP_SEE_OTHER);
     }
@@ -119,7 +119,7 @@ class CategoryController extends AbstractController
         }
         $this->addFlash(
             'success',
-            'La catégorie' . $category->getName() . '" a bien été réactivée.'
+            'La catégorie "' . $category->getName() . '" a bien été réactivée.'
         );
 
         return $this->redirectToRoute('app_backoffice_categories_list', [], Response::HTTP_SEE_OTHER);

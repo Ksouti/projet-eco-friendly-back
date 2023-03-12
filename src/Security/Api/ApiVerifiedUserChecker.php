@@ -30,7 +30,7 @@ class ApiVerifiedUserChecker implements UserCheckerInterface
 
         // user account is expired, the user may be notified
         if (!$user->isActive()) {
-            throw new CustomUserMessageAccountStatusException('Votre compte est archivé.');
+            throw new CustomUserMessageAccountStatusException('Votre compte est désactivé.');
         }
     }
 }
