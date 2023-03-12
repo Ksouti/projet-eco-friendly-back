@@ -18,6 +18,8 @@ class Profile extends Constraint
 
     public string $passwordsNoMatch = 'Les mots de passe ne correspondent pas';
 
+    public string $passwordNoChange = 'Vous ne pouvez pas réutiliser le mot de passe temporaire';
+
     public function getTargets(): string
     {
         return self::CLASS_CONSTRAINT;

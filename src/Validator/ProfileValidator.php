@@ -3,12 +3,20 @@
 namespace App\Validator;
 
 use App\Entity\User;
+use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\ConstraintValidator;
 use Symfony\Component\Validator\Exception\UnexpectedValueException;
 
 class ProfileValidator extends ConstraintValidator
 {
+    private $passwordHasher;
+
+    public function __construct(UserPasswordHasherInterface $passwordHasher)
+    {
+        $this->passwordHasher = $passwordHasher;
+    }
+
     /**
      * @param User $user
      */
@@ -29,6 +37,8 @@ class ProfileValidator extends ConstraintValidator
         // are extracted from the form manually
         $passwordNew = $this->context->getRoot()->get('new_password')->getData();
         $passwordConfirm = $this->context->getRoot()->get('confirm_password')->getData();
+        $passwordTemp = $user->getPassword();
+        $passwordNewHashed = password_hash($passwordNew, PASSWORD_DEFAULT);
 
         if (empty($firstname)) {
             $this->context->buildViolation($constraint->firstnameIsEmpty)
@@ -62,6 +72,12 @@ class ProfileValidator extends ConstraintValidator
 
         if ($passwordNew !== $passwordConfirm) {
             $this->context->buildViolation($constraint->passwordsNoMatch)
+                ->atPath('new_password')
+                ->addViolation();
+        }
+
+        if (password_verify($passwordNew, $passwordTemp)) {
+            $this->context->buildViolation($constraint->passwordNoChange)
                 ->atPath('new_password')
                 ->addViolation();
         }
