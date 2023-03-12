@@ -3,6 +3,7 @@
 namespace App\Repository;
 
 use App\Entity\User;
+use DateTimeImmutable;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
 use Symfony\Component\Security\Core\Exception\UnsupportedUserException;
@@ -88,7 +89,6 @@ class UserRepository extends ServiceEntityRepository implements PasswordUpgrader
     }
 
     /**
-     * 
      * @return Users[] Returns an array of users objects filtered by authors role ordered by descending date
      */
     public function listAllAuthors()
@@ -99,6 +99,70 @@ class UserRepository extends ServiceEntityRepository implements PasswordUpgrader
             ->addOrderBy('u.created_at', 'DESC')
             ->getQuery()
             ->getResult();
+    }
+
+    /**
+     * @return Users[] Returns an array of users objects filtered by authors role ordered by descending date
+     */
+    public function listAllAuthorsWithFilter(
+        ?int $is_verified = null,
+        ?int $is_active = null,
+        ?string $email = null,
+        ?string $firstname = null,
+        ?string $lastname = null,
+        ?string $nickname = null,
+        ?string $sortType,
+        ?string $sortOrder,
+        ?DateTimeImmutable $dateFrom = null,
+        ?DateTimeImmutable $dateTo = null
+    ) {
+        $qb = $this->createQueryBuilder('u');
+
+        $qb->where("u.roles LIKE :roles")
+            ->setParameter("roles", "%ROLE_AUTHOR%");
+
+        if ($is_verified !== null) {
+            $qb->andWhere("u.is_verified = :is_verified")
+                ->setParameter("is_verified", $is_verified);
+        }
+
+        if ($is_active !== null) {
+            $qb->andWhere("u.is_active = :is_active")
+                ->setParameter("is_active", $is_active);
+        }
+
+        if ($email) {
+            $qb->andWhere("u.email LIKE :email")
+                ->setParameter("email", "%$email%");
+        }
+
+        if ($firstname) {
+            $qb->andWhere("u.firstname LIKE :firstname")
+                ->setParameter("firstname", "%$firstname%");
+        }
+
+        if ($lastname) {
+            $qb->andWhere("u.lastname LIKE :lastname")
+                ->setParameter("lastname", "%$lastname%");
+        }
+
+        if ($nickname) {
+            $qb->andWhere("u.nickname LIKE :nickname")
+                ->setParameter("nickname", "%$nickname%");
+        }
+
+        if ($dateFrom) {
+            $qb->andWhere("u.created_at >= :dateFrom")
+                ->setParameter("dateFrom", $dateFrom);
+        }
+
+        if ($dateTo) {
+            $qb->andWhere("u.created_at <= :dateTo")
+                ->setParameter("dateTo", $dateTo);
+        }
+
+        $qb->orderBy("u." . $sortType, $sortOrder);
+        return $qb->getQuery()->getResult();
     }
 
     /**
@@ -115,6 +179,72 @@ class UserRepository extends ServiceEntityRepository implements PasswordUpgrader
             ->addOrderBy('u.created_at', 'DESC')
             ->getQuery()
             ->getResult();
+    }
+
+    /**
+     * @return Users[] Returns an array of users objects filtered by authors role ordered by descending date
+     */
+    public function listAllMembersWithFilter(
+        ?int $is_verified = null,
+        ?int $is_active = null,
+        ?string $email = null,
+        ?string $firstname = null,
+        ?string $lastname = null,
+        ?string $nickname = null,
+        ?string $sortType,
+        ?string $sortOrder,
+        ?DateTimeImmutable $dateFrom = null,
+        ?DateTimeImmutable $dateTo = null
+    ) {
+        $qb = $this->createQueryBuilder('u');
+
+        $qb->where("u.roles NOT LIKE :roles")
+            ->setParameter("roles", "%ROLE_AUTHOR%")
+            ->andWhere("u.roles NOT LIKE :admin_roles")
+            ->setParameter("admin_roles", "%ROLE_ADMIN%");
+
+        if ($is_verified) {
+            $qb->andWhere("u.is_verified = :is_verified")
+                ->setParameter("is_verified", $is_verified);
+        }
+
+        if ($is_active) {
+            $qb->andWhere("u.is_active = :is_active")
+                ->setParameter("is_active", $is_active);
+        }
+
+        if ($email) {
+            $qb->andWhere("u.email LIKE :email")
+                ->setParameter("email", "%$email%");
+        }
+
+        if ($firstname) {
+            $qb->andWhere("u.firstname LIKE :firstname")
+                ->setParameter("firstname", "%$firstname%");
+        }
+
+        if ($lastname) {
+            $qb->andWhere("u.lastname LIKE :lastname")
+                ->setParameter("lastname", "%$lastname%");
+        }
+
+        if ($nickname) {
+            $qb->andWhere("u.nickname LIKE :nickname")
+                ->setParameter("nickname", "%$nickname%");
+        }
+
+        if ($dateFrom) {
+            $qb->andWhere("u.created_at >= :dateFrom")
+                ->setParameter("dateFrom", $dateFrom);
+        }
+
+        if ($dateTo) {
+            $qb->andWhere("u.created_at <= :dateTo")
+                ->setParameter("dateTo", $dateTo);
+        }
+
+        $qb->orderBy("u." . $sortType, $sortOrder);
+        return $qb->getQuery()->getResult();
     }
 
     //    /**

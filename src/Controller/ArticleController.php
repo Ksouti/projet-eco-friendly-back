@@ -5,8 +5,10 @@ namespace App\Controller;
 use App\Entity\Article;
 use App\Entity\User;
 use App\Form\ArticleType;
+use App\Form\ContentListType;
 use App\Repository\ArticleRepository;
 use App\Service\SluggerService;
+use DateTime;
 use DateTimeImmutable;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
@@ -19,13 +21,38 @@ use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 class ArticleController extends AbstractController
 {
     /**
-     * @Route("/back_office/articles", name="app_backoffice_articles_list", methods={"GET"})
+     * @Route("/back_office/articles", name="app_backoffice_articles_list", methods={"GET", "POST"})
      * @isGranted("ROLE_ADMIN", message="Vous n'avez pas les droits pour accéder à cette page")
      */
-    public function list(ArticleRepository $articleRepository): Response
+    public function list(Request $request, ArticleRepository $articleRepository): Response
     {
-        return $this->render('article/list.html.twig', [
-            'articles' => $articleRepository->findAllOrderByDate(),
+        $articles = $articleRepository->findAllOrderByDate();
+
+        $form = $this->createForm(ContentListType::class);
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            $articles = $articleRepository->findAllWithFilter(
+                $form->get('title')->getData(),
+                $form->get('content')->getData(),
+                $form->get('status')->getData(),
+                $form->get('user')->getData(),
+                $form->get('category')->getData(),
+                $form->get('sortType')->getData() ?? 'created_at',
+                $form->get('sortOrder')->getData() ?? 'DESC',
+                DateTimeImmutable::createFromMutable($form->get('dateFrom')->getData() ?? new DateTime('2000-01-01')),
+                DateTimeImmutable::createFromMutable($form->get('dateTo')->getData() ?? new DateTime('now'))
+            );
+
+            return $this->render('article/list.html.twig', [
+                'articles' => $articles,
+                'form' => $form->createView()
+            ]);
+        }
+
+        return $this->renderForm('article/list.html.twig', [
+            'articles' => $articles,
+            'form' => $form
         ]);
     }
 
@@ -224,7 +251,7 @@ class ArticleController extends AbstractController
 
         $this->addFlash(
             'danger',
-            '"' . $article->getTitle() . '" a été désactivé'
+            '"' . $article->getTitle() . '" a été archivé'
         );
 
         return $this->redirectToRoute('app_backoffice_articles_user', ['id' => $article->getAuthor()->getId()], Response::HTTP_SEE_OTHER);

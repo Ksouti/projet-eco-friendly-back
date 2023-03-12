@@ -56,7 +56,6 @@ class AppFixtures extends Fixture
 
         echo 'Categories added !' . PHP_EOL;
 
-
         // ! Adding Avatars
 
         $avatars = [

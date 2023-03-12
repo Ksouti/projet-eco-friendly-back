@@ -20,6 +20,11 @@
     {% endif %}
         <a class="btn btn-primary" href="{{ path('app_backoffice_articles_new') }}">&Eacute;crire un article</a>
     </div>
+
+    {% if is_granted("ROLE_ADMIN") %}
+    {% include "_fragments/_content_list_filter_and_sort.html.twig" %}
+    {% endif %}
+
     <div class="table-responsive-lg">
         <table class="table table-striped table-hover table-sm">
             <thead>
@@ -43,7 +48,7 @@
                     <td>{{ article.title }}</td>
                     <td>{{ article.content|slice(0, 100)|striptags }} [...]</td>
                     <td>{{ article.author.firstname }} {{ article.author.lastname }}</td>
-                    <td class="text-center"><img src="{{ article.picture }}" alt="{{ article.slug }}" style="max-width: 80px; max-height: 80px;"></td>
+                    <td class="text-center"><img src="{{ article.picture }}" alt="{{ article.slug }}" style="max-width: 80px; max-height: 80px;" /></td>
                     <td class="text-center">{{ article.category.name }}</td>
                     <td class="text-center">
                         {% include "_fragments/_content_status_tag.html.twig" with {status:article.status} %}
