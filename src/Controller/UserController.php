@@ -3,12 +3,14 @@
 namespace App\Controller;
 
 use App\Entity\User;
+use App\Form\UserListType;
 use App\Form\ProfileType;
 use App\Form\UserType;
 use App\Repository\UserRepository;
 use App\Service\CodeGeneratorService;
 use App\Service\GeneratorService;
 use App\Service\SluggerService;
+use DateTime;
 use DateTimeImmutable;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -29,24 +31,76 @@ class UserController extends AbstractController
 
 {
     /**
-     * @Route("/back_office/utilisateurs/membres", name="app_backoffice_members_list", requirements={"id":"\d+"}, methods={"GET"})
+     * @Route("/back_office/utilisateurs/membres", name="app_backoffice_members_list", methods={"GET", "POST"})
      * @isGranted("ROLE_ADMIN", message="Accès réservé aux administrateurs")
      */
-    public function listMembers(UserRepository $userRepository): Response
+    public function listMembers(Request $request, UserRepository $userRepository): Response
     {
-        return $this->render('user/list.html.twig', [
-            'users' => $userRepository->listAllMembers(),
+        $users = $userRepository->listAllMembers();
+
+        $form = $this->createForm(UserListType::class);
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            $users = $userRepository->listAllMembersWithFilter(
+                $form->get('is_verified')->getData(),
+                $form->get('is_active')->getData(),
+                $form->get('email')->getData(),
+                $form->get('firstname')->getData(),
+                $form->get('lastname')->getData(),
+                $form->get('nickname')->getData(),
+                $form->get('sortType')->getData() ?? 'created_at',
+                $form->get('sortOrder')->getData() ?? 'DESC',
+                DateTimeImmutable::createFromMutable($form->get('dateFrom')->getData() ?? new DateTime('2000-01-01')),
+                DateTimeImmutable::createFromMutable($form->get('dateTo')->getData() ?? new DateTime('now'))
+            );
+
+            return $this->render('user/list.html.twig', [
+                'users' => $users,
+                'form' => $form->createView()
+            ]);
+        }
+
+        return $this->renderForm('user/list.html.twig', [
+            'users' => $users,
+            'form' => $form
         ]);
     }
 
     /**
-     * @Route("/back_office/utilisateurs/auteurs", name="app_backoffice_authors_list", requirements={"id":"\d+"}, methods={"GET"})
+     * @Route("/back_office/utilisateurs/auteurs", name="app_backoffice_authors_list", methods={"GET", "POST"})
      * @isGranted("ROLE_ADMIN", message="Accès réservé aux administrateurs")
      */
-    public function listAuthors(UserRepository $userRepository): Response
+    public function listAuthors(Request $request, UserRepository $userRepository): Response
     {
-        return $this->render('user/list.html.twig', [
-            'users' => $userRepository->listAllAuthors(),
+        $users = $userRepository->listAllAuthors();
+
+        $form = $this->createForm(UserListType::class);
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            $users = $userRepository->listAllAuthorsWithFilter(
+                $form->get('is_verified')->getData(),
+                $form->get('is_active')->getData(),
+                $form->get('email')->getData(),
+                $form->get('firstname')->getData(),
+                $form->get('lastname')->getData(),
+                $form->get('nickname')->getData(),
+                $form->get('sortType')->getData() ?? 'created_at',
+                $form->get('sortOrder')->getData() ?? 'DESC',
+                DateTimeImmutable::createFromMutable($form->get('dateFrom')->getData() ?? new DateTime('2000-01-01')),
+                DateTimeImmutable::createFromMutable($form->get('dateTo')->getData() ?? new DateTime('now'))
+            );
+
+            return $this->render('user/list.html.twig', [
+                'users' => $users,
+                'form' => $form->createView()
+            ]);
+        }
+
+        return $this->renderForm('user/list.html.twig', [
+            'users' => $users,
+            'form' => $form
         ]);
     }
 
@@ -344,9 +398,14 @@ class UserController extends AbstractController
         }
         $this->addFlash(
             'danger',
-            'Le profil de ' . $user->getFirstname() . ' ' . $user->getLastname() . ' a bien été désactivé.'
+            'Le profil de ' . $user->getFirstname() . ' ' . $user->getLastname() . ' a bien été archivé.'
         );
-        return $this->redirectToRoute('app_backoffice_authors_list', [], Response::HTTP_SEE_OTHER);
+
+        if (in_array('ROLE_AUTHOR', $user->getRoles())) {
+            return $this->redirectToRoute('app_backoffice_authors_list', [], Response::HTTP_SEE_OTHER);
+        } else {
+            return $this->redirectToRoute('app_backoffice_members_list', [], Response::HTTP_SEE_OTHER);
+        }
     }
 
     /**
@@ -362,6 +421,10 @@ class UserController extends AbstractController
             'success',
             'Le profil de ' . $user->getFirstname() . ' ' . $user->getLastname() . ' a bien été réactivé.'
         );
-        return $this->redirectToRoute('app_backoffice_authors_list', [], Response::HTTP_SEE_OTHER);
+        if (in_array('ROLE_AUTHOR', $user->getRoles())) {
+            return $this->redirectToRoute('app_backoffice_authors_list', [], Response::HTTP_SEE_OTHER);
+        } else {
+            return $this->redirectToRoute('app_backoffice_members_list', [], Response::HTTP_SEE_OTHER);
+        }
     }
 }

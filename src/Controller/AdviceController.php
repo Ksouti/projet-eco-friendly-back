@@ -4,8 +4,10 @@ namespace App\Controller;
 
 use App\Entity\Advice;
 use App\Form\AdviceType;
+use App\Form\ContentListType;
 use App\Repository\AdviceRepository;
 use App\Service\SluggerService;
+use DateTime;
 use DateTimeImmutable;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
@@ -17,13 +19,38 @@ use Symfony\Component\Routing\Annotation\Route;
 class AdviceController extends AbstractController
 {
     /**
-     * @Route("/back_office/conseils", name="app_backoffice_advices_list", methods={"GET"})
+     * @Route("/back_office/conseils", name="app_backoffice_advices_list", methods={"GET", "POST"})
      * @isGranted("ROLE_ADMIN"), message="Vous n'avez pas les droits pour accéder à cette page"
      */
-    public function list(AdviceRepository $adviceRepository): Response
+    public function list(Request $request, AdviceRepository $adviceRepository): Response
     {
-        return $this->render('advice/list.html.twig', [
-            'advices' => $adviceRepository->findAllOrderByDate(),
+        $advices = $adviceRepository->findAllOrderByDate();
+
+        $form = $this->createForm(ContentListType::class);
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            $advices = $adviceRepository->findAllWithFilter(
+                $form->get('title')->getData(),
+                $form->get('content')->getData(),
+                $form->get('status')->getData(),
+                $form->get('user')->getData(),
+                $form->get('category')->getData(),
+                $form->get('sortType')->getData() ?? 'created_at',
+                $form->get('sortOrder')->getData() ?? 'DESC',
+                DateTimeImmutable::createFromMutable($form->get('dateFrom')->getData() ?? new DateTime('2000-01-01')),
+                DateTimeImmutable::createFromMutable($form->get('dateTo')->getData() ?? new DateTime('now'))
+            );
+
+            return $this->render('advice/list.html.twig', [
+                'advices' => $advices,
+                'form' => $form->createView()
+            ]);
+        }
+
+        return $this->renderForm('advice/list.html.twig', [
+            'advices' => $advices,
+            'form' => $form
         ]);
     }
 
@@ -79,7 +106,7 @@ class AdviceController extends AbstractController
         }
         $this->addFlash(
             'danger',
-            '"' . $advice->getTitle() . '" a bien été désactivé. '
+            '"' . $advice->getTitle() . '" a bien été archivé. '
         );
         return $this->redirectToRoute('app_backoffice_advices_list', [], Response::HTTP_SEE_OTHER);
     }

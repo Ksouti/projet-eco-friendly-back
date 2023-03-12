@@ -3,6 +3,9 @@
 namespace App\Repository;
 
 use App\Entity\Advice;
+use App\Entity\Category;
+use App\Entity\User;
+use DateTimeImmutable;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
 
@@ -74,7 +77,7 @@ class AdviceRepository extends ServiceEntityRepository
             ->getResult();
     }
 
-     /**
+    /**
      * @return Advice[] Returns an array of advices objects ordered by descending date
      */
     public function findAllOrderByDate()
@@ -84,6 +87,54 @@ class AdviceRepository extends ServiceEntityRepository
             ->where('ad.status = 1 OR ad.status = 2')
             ->getQuery()
             ->getResult();
+    }
+
+    /**
+     * @return Advice[] Returns an array of advices objects ordered by descending date
+     */
+    public function findAllWithFilter(
+        ?string $title = null,
+        ?string $content = null,
+        ?int $status = null,
+        ?User $user = null,
+        ?Category $category = null,
+        ?string $sortType,
+        ?string $sortOrder,
+        ?DateTimeImmutable $dateFrom = null,
+        ?DateTimeImmutable $dateTo = null
+    ) {
+        $qb = $this->createQueryBuilder('ar');
+
+        if ($title) {
+            $qb->andWhere('ar.title LIKE :title')->setParameter('title', "%$title%");
+        }
+
+        if ($content) {
+            $qb->andWhere('ar.content LIKE :content')->setParameter('content', "%$content%");
+        }
+
+        if ($status !== null) {
+            $qb->andWhere('ar.status = :status')->setParameter('status', $status);
+        }
+
+        if ($user) {
+            $qb->andWhere('ar.contributor = :contributor')->setParameter('contributor', $user);
+        }
+
+        if ($category) {
+            $qb->andWhere('ar.category = :category')->setParameter('category', $category);
+        }
+
+        if ($dateFrom) {
+            $qb->andWhere('ar.created_at >= :dateFrom')->setParameter('dateFrom', $dateFrom);
+        }
+
+        if ($dateTo) {
+            $qb->andWhere('ar.created_at <= :dateTo')->setParameter('dateTo', $dateTo);
+        }
+
+        $qb->orderBy('ar.' . $sortType, $sortOrder);
+        return $qb->getQuery()->getResult();
     }
 
     /**
