@@ -87,13 +87,13 @@ class ArticleRepository extends ServiceEntityRepository
      * @return Article[] Returns an array of articles objects ordered by descending date
      */
     public function findAllWithFilter(
+        ?string $sortType,
+        ?string $sortOrder,
         ?string $title = null,
         ?string $content = null,
         ?int $status = null,
         ?User $user = null,
         ?Category $category = null,
-        ?string $sortType,
-        ?string $sortOrder,
         ?DateTimeImmutable $dateFrom = null,
         ?DateTimeImmutable $dateTo = null
     ) {
