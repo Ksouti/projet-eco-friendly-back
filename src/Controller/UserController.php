@@ -309,12 +309,9 @@ class UserController extends AbstractController
     /**
      * @Route("/back_office/utilisateurs/{id}/modifier", name="app_backoffice_users_edit", requirements={"id":"\d+"}, methods={"GET", "POST"})
      */
-    public function edit(Request $request, SluggerService $slugger, User $user, UserRepository $userRepository): Response
+    public function edit(Request $request, User $user, UserRepository $userRepository): Response
     {
-        // TODO: use the voter instead
-        if (!in_array('ROLE_ADMIN', $this->getUser()->getRoles()) || !in_array('ROLE_AUTHOR', $user->getRoles())) {
-            throw new AccessDeniedException("Vous n'avez pas le droit de modifier cet utilisateur.");
-        }
+        $this->denyAccessUnlessGranted('user_update', $user);
 
         $form = $this->createForm(UserType::class, $user);
         $form->handleRequest($request);
@@ -374,12 +371,20 @@ class UserController extends AbstractController
 
             $userRepository->add($user, true);
 
+            if ($this->getUser()->getId() === $user->getId()) {
+                $this->addFlash(
+                    'success',
+                    'Votre profil a bien été modifié.'
+                );
+                return $this->redirectToRoute('app_backoffice_home', [], Response::HTTP_SEE_OTHER);
+            }
+
+            $this->addFlash(
+                'success',
+                'Le profil de ' . $user->getFirstname() . ' ' . $user->getLastname() . ' a bien été modifié.'
+            );
             return $this->redirectToRoute('app_backoffice_authors_list', [], Response::HTTP_SEE_OTHER);
         }
-        $this->addFlash(
-            'success',
-            'Le profil de ' . $user->getFirstname() . ' ' . $user->getLastname() . ' a bien été modifié.'
-        );
 
         return $this->renderForm('user/edit.html.twig', [
             'user' => $user,

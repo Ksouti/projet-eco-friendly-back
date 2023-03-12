@@ -50,6 +50,7 @@ security:
     access_control:
         # ! BACK-OFFICE
         - { path: '^/back_office/connexion|deconnexion', roles: [] }
+        - { path: '^/back_office/utilisateurs/(\d+)', roles: ROLE_AUTHOR }
         - { path: '^/back_office/utilisateurs|conseils', roles: ROLE_ADMIN }
         - { path: '^/back_office/categories/(\d+)/(editer|modifier|desactiver)',roles: ROLE_ADMIN}
         - {

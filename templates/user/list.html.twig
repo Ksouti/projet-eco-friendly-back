@@ -67,7 +67,7 @@
                         {% if app.request.pathinfo is same as (path('app_backoffice_authors_list'))%}
                         <a class="m-1 btn-sm btn btn-warning" data-bs-toggle="tooltip" data-bs-placement="top" title="&Eacute;diter" href="{{ path('app_backoffice_users_edit', {'id': user.id}) }}"><i class="bi bi-pencil"></i></a>
                         {% endif %}
-                        {% include "_fragments/_button_activate_author.html.twig"%}
+                        {% include "_fragments/_button_activate_user.html.twig"%}
                     </td>
                 </tr>
             {% else %}

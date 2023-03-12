@@ -5,10 +5,20 @@
 {% block body %}
 
     {% include "_fragments/_flash_message.html.twig" %}
-
+    
+    {% if app.request.pathinfo is same as (path('app_backoffice_home')) and "ROLE_AUTHOR" in app.user.roles %}
     <div class="d-flex justify-content-between align-items-center mb-4">
-        <h1>Détail de l'utilisateur :</h1>
+        <h1>Espace Auteur</h1>
     </div>
+    {% elseif user is defined and 'ROLE_AUTHOR' in user.roles %}
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h1>Détails du profil "Auteur"</h1>
+    </div>
+    {% else %}
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h1>Détails du profil "Membre"</h1>
+    </div>
+    {% endif %}
     
     <div class="container-fluid">
         <div class="row">
@@ -63,10 +73,7 @@
                                 <div class="d-flex flex-nowrap justify-content-end align-items-center">
                                     <a class="m-1 btn-sm btn btn-success" data-bs-toggle="tooltip" data-bs-placement="top" title="Voir" href="{{ path('app_backoffice_advices_show', {'id': advice.id}) }}"><i class="bi bi-eye"></i></a>
                                     <a class="m-1 btn-sm btn btn-warning" data-bs-toggle="tooltip" data-bs-placement="top" title="&Eacute;diter" href="{{ path('app_backoffice_advices_edit', {'id': advice.id}) }}"><i class="bi bi-pencil"></i></a>
-                                    <form method="post" action="{{ path('app_backoffice_advices_deactivate', {'id': advice.id}) }}" onsubmit="return confirm('Êtes-vous sûr de vouloir désactiver cet advice ?');">
-                                        <input type="hidden" name="_token" value="{{ csrf_token('deactivate' ~ advice.id) }}" />
-                                        <button class="m-1 btn-sm btn btn-danger" data-bs-toggle="tooltip" data-bs-placement="top" title="D&eacute;sactiver"><i class="bi bi-x-circle"></i></button>
-                                    </form>
+                                    {% include "_fragments/_button_activate_advice.html.twig" %}
                                 </div>
                             </div>
                         </div>

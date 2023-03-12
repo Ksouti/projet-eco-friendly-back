@@ -29,13 +29,14 @@
             {% else %}
             <p class="card-text">Nombre de conseils : {{ user.advices|length }}</p>
             {% endif %}
-            {% if "ROLE_ADMIN" in app.user.roles %}
             <div class="d-flex flex-row flex-nowrap justify-content-end align-items-center">
-                {% if "ROLE_AUTHOR" in app.user.roles %}
+                {% if 'ROLE_AUTHOR' in user.roles or 'ROLE_ADMIN' in user.roles %}
                 <a class="m-1 btn-sm btn btn-warning" data-bs-toggle="tooltip" data-bs-placement="top" title="&Eacute;diter" href="{{ path('app_backoffice_users_edit', {'id': user.id}) }}"><i class="bi bi-pencil"></i></a>
-                {% endif %}   
+                {% endif %}
+                {% if is_granted('ROLE_ADMIN') and not app.user is same as user %}
+                {% include "_fragments/_button_activate_user.html.twig"%}
+                {% endif %}
             </div>
-            {% endif %}
         </div>
         <div class="card-footer bg-transparent">
             <div class="float-right text-muted small">Mis à jour : {{ user.updatedAt ? user.updatedAt|date('d-m-Y H:i:s') : 'jamais' }}</div>

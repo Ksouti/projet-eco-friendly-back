@@ -1,13 +1,11 @@
-{% if article.status is same as 1 %}
+{% if not article.status is same as 2 %}
     <form method="post" action="{{ path('app_backoffice_articles_deactivate', {'id': article.id}) }}" onsubmit="return confirm('Êtes-vous sûr de vouloir désactiver cet article ?');">
         <input type="hidden" name="_token" value="{{ csrf_token('deactivate' ~ article.id) }}" />
         <button class="m-1 btn-sm btn btn-danger" data-bs-toggle="tooltip" data-bs-placement="top" title="Désactiver"><i class="bi bi-x-circle"></i></button>
     </form>
-{% else %}
-    {% if is_granted('ROLE_ADMIN') %}
+{% elseif is_granted('ROLE_ADMIN') and article.status is same as 2 %}
         <form method="post" action="{{ path('app_backoffice_articles_reactivate', {'id': article.id}) }}" onsubmit="return confirm('Êtes-vous sûr de vouloir réactiver cet article ?');">
             <input type="hidden" name="_token" value="{{ csrf_token('reactivate' ~ article.id) }}" />
             <button class="m-1 btn-sm btn btn-info" data-bs-toggle="tooltip" data-bs-placement="top" title="Réactiver"><i class="bi bi-arrow-clockwise"></i></button>
         </form>
-     {% endif %}
 {% endif %}

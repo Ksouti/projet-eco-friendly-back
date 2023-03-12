@@ -57,7 +57,9 @@
                     <td>{{ article.updatedAt ? article.updatedAt|date('d-m-Y H:i:s') : '' }}</td>
                     <td class="d-flex flex-nowrap justify-content-center">
                         <a class="m-1 btn-sm btn btn-success" data-bs-toggle="tooltip" data-bs-placement="top" title="Voir" href="{{ path('app_backoffice_articles_show', {'id': article.id}) }}"><i class="bi bi-eye"></i></a>
+                        {% if not article.status is same as 2 or is_granted('ROLE_ADMIN') %}
                         <a class="m-1 btn-sm btn btn-warning" data-bs-toggle="tooltip" data-bs-placement="top" title="&Eacute;diter" href="{{ path('app_backoffice_articles_edit', {'id': article.id}) }}"><i class="bi bi-pencil"></i></a>                       
+                        {% endif %}
             {% include "_fragments/_button_activate_article.html.twig" %}
                     </td>
                 </tr>

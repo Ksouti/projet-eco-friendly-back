@@ -104,7 +104,7 @@ class ArticleController extends AbstractController
                 }
             }
             // TODO: The following code works for downscaling the image but not for upscaling it
-            // TODO: It has to be fixed, maybe only to square the image
+            // TODO: It has to be fixed, maybe to only square the image
             /*             if ($pictureFile) {
 
                 $extension = $pictureFile->guessExtension();
@@ -161,7 +161,7 @@ class ArticleController extends AbstractController
                 '"' . $article->getTitle() . '" a bien été créé.'
             );
 
-            if ($this->getUser()->isGranted('ROLE_ADMIN')) {
+            if ($this->isGranted('ROLE_ADMIN')) {
                 return $this->redirectToRoute('app_backoffice_articles_list', [], Response::HTTP_SEE_OTHER);
             } else {
                 return $this->redirectToRoute('app_backoffice_articles_user', ['id' => $article->getAuthor()->getId()], Response::HTTP_SEE_OTHER);

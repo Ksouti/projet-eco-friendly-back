@@ -71,13 +71,13 @@ class UserVoter extends Voter
     private function canRead(User $userSubject, User $user)
     {
         // return true or false
-        return $userSubject === $user;
+        return $userSubject === $user || $this->security->isGranted('ROLE_ADMIN');
     }
 
     private function canUpdate(User $userSubject, User $user)
     {
         // return true or false
-        return $userSubject === $user;
+        return $userSubject === $user || ($this->security->isGranted('ROLE_ADMIN') && $userSubject->getRoles() !== ['ROLE_USER']);
     }
 
     private function canDelete(User $userSubject, User $user)
