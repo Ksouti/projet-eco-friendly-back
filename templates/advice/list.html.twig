@@ -29,6 +29,7 @@
             </thead>
             <tbody>
             {% for advice in advices %}
+            {% if not advice.status is same as 0 %} 
                 <tr>
                     <td>{{ advice.id }}</td>
                     <td>{{ advice.title }}</td>
@@ -47,6 +48,7 @@
                          {% include "_fragments/_button_activate_advice.html.twig"%}
                     </td>
                 </tr>
+            {% endif %}
             {% else %}
                 <tr>
                     <td colspan="8">Aucun conseil trouvé</td>

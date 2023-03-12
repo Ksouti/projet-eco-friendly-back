@@ -31,13 +31,13 @@ class AdviceController extends AbstractController
 
         if ($form->isSubmitted() && $form->isValid()) {
             $advices = $adviceRepository->findAllWithFilter(
+                $form->get('sortType')->getData() ?? 'created_at',
+                $form->get('sortOrder')->getData() ?? 'DESC',
                 $form->get('title')->getData(),
                 $form->get('content')->getData(),
                 $form->get('status')->getData(),
                 $form->get('user')->getData(),
                 $form->get('category')->getData(),
-                $form->get('sortType')->getData() ?? 'created_at',
-                $form->get('sortOrder')->getData() ?? 'DESC',
                 DateTimeImmutable::createFromMutable($form->get('dateFrom')->getData() ?? new DateTime('2000-01-01')),
                 DateTimeImmutable::createFromMutable($form->get('dateTo')->getData() ?? new DateTime('now'))
             );

@@ -14,15 +14,6 @@ use Symfony\Component\Routing\Annotation\Route;
 class MainController extends AbstractController
 {
     /**
-     * @Route("/", name="app_root", methods={"GET"})
-     * @Route("/back_office", name="app_backoffice_root", methods={"GET"})
-     */
-    public function root(): Response
-    {
-        return $this->redirectToRoute('app_backoffice_home');
-    }
-
-    /**
      * @Route("/back_office/home", name="app_backoffice_home", methods={"GET"})
      */
     public function home(EntityManagerInterface $entityManager): Response
