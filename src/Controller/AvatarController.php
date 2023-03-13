@@ -125,6 +125,7 @@ class AvatarController extends AbstractController
     {
         if ($this->isCsrfTokenValid('deactivate' . $avatar->getId(), $request->request->get('_token'))) {
             $avatar->setIsActive(false);
+            $avatar->setUpdatedAt(new DateTimeImmutable());
             $avatarRepository->add($avatar, true);
         }
         $this->addFlash(
@@ -141,6 +142,7 @@ class AvatarController extends AbstractController
     {
         if ($this->isCsrfTokenValid('reactivate' . $avatar->getId(), $request->request->get('_token'))) {
             $avatar->setIsActive(true);
+            $avatar->setUpdatedAt(new DateTimeImmutable());
             $avatarRepository->add($avatar, true);
         }
         $this->addFlash(

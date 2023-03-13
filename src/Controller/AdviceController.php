@@ -102,6 +102,7 @@ class AdviceController extends AbstractController
     {
         if ($this->isCsrfTokenValid('deactivate' . $advice->getId(), $request->request->get('_token'))) {
             $advice->setStatus(2);
+            $advice->setUpdatedAt(new DateTimeImmutable());
             $adviceRepository->add($advice, true);
         }
         $this->addFlash(
@@ -119,6 +120,7 @@ class AdviceController extends AbstractController
     {
         if ($this->isCsrfTokenValid('reactivate' . $advice->getId(), $request->request->get('_token'))) {
             $advice->setStatus(1);
+            $advice->setUpdatedAt(new DateTimeImmutable());
             $adviceRepository->add($advice, true);
         }
         $this->addFlash(

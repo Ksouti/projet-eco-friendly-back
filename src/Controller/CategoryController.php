@@ -74,6 +74,7 @@ class CategoryController extends AbstractController
         if ($form->isSubmitted() && $form->isValid()) {
 
             $category->setSlug($slugger->slugify($category->getName()));
+            $category->setUpdatedAt(new DateTimeImmutable());
             $categoryRepository->add($category, true);
             $this->addFlash(
                 'success',
@@ -97,6 +98,7 @@ class CategoryController extends AbstractController
     {
         if ($this->isCsrfTokenValid('deactivate' . $category->getId(), $request->request->get('_token'))) {
             $category->setIsActive(false);
+            $category->setUpdatedAt(new DateTimeImmutable());
             $categoryRepository->add($category, true);
         }
 
@@ -115,6 +117,7 @@ class CategoryController extends AbstractController
     {
         if ($this->isCsrfTokenValid('reactivate' . $category->getId(), $request->request->get('_token'))) {
             $category->setIsActive(true);
+            $category->setUpdatedAt(new DateTimeImmutable());
             $categoryRepository->add($category, true);
         }
         $this->addFlash(

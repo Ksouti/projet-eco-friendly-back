@@ -59,6 +59,7 @@ class UserController extends AbstractController
             $user->setCode($originalUser->getCode());
             $user->setRoles($originalUser->getRoles());
             $user->setEmail($originalUser->getEmail());
+            $user->setAvatar($originalUser->getAvatar());
             $user->setPassword($originalUser->getPassword());
             $user->setIsActive($originalUser->isActive());
             $user->setIsVerified($originalUser->isVerified());
@@ -123,6 +124,7 @@ class UserController extends AbstractController
 
         $user->setEmail($email);
         $user->setIsVerified(false);
+        $user->setUpdatedAt(new DateTimeImmutable());
 
         $userRepository->add($user, true);
 
@@ -206,6 +208,7 @@ class UserController extends AbstractController
         imagedestroy($new_image);
 
         $user->setAvatar($this->getParameter('uploads_user_url') . $filename);
+        $user->setUpdatedAt(new DateTimeImmutable());
 
         $userRepository->add($user, true);
 
@@ -234,6 +237,7 @@ class UserController extends AbstractController
         $advices = $user->getAdvices();
         foreach ($advices as $advice) {
             $advice->setContributor($userRepository->find(1));
+            $advice->setUpdatedAt(new DateTimeImmutable());
             $adviceRepository->add($advice, true);
         }
         $userRepository->remove($user, true);

@@ -246,6 +246,7 @@ class ArticleController extends AbstractController
 
         if ($this->isCsrfTokenValid('deactivate' . $article->getId(), $request->request->get('_token'))) {
             $article->setStatus(2);
+            $article->setUpdatedAt(new DateTimeImmutable());
             $articleRepository->add($article, true);
         }
 
@@ -269,6 +270,7 @@ class ArticleController extends AbstractController
 
         if ($this->isCsrfTokenValid('reactivate' . $article->getId(), $request->request->get('_token'))) {
             $article->setStatus(1);
+            $article->setUpdatedAt(new DateTimeImmutable());
             $articleRepository->add($article, true);
         }
         $this->addFlash(

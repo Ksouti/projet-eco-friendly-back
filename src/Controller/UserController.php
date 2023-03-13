@@ -370,7 +370,7 @@ class UserController extends AbstractController
 
                 $user->setAvatar($this->getParameter('uploads_user_url') . $filename);
             }
-
+            $user->setUpdatedAt(new DateTimeImmutable());
             $userRepository->add($user, true);
 
             if ($this->getUser()->getId() === $user->getId()) {
@@ -401,6 +401,7 @@ class UserController extends AbstractController
     {
         if ($this->isCsrfTokenValid('deactivate' . $user->getId(), $request->request->get('_token'))) {
             $user->setIsActive(false);
+            $user->setUpdatedAt(new DateTimeImmutable());
             $userRepository->add($user, true);
         }
         $this->addFlash(
@@ -422,6 +423,7 @@ class UserController extends AbstractController
     {
         if ($this->isCsrfTokenValid('reactivate' . $user->getId(), $request->request->get('_token'))) {
             $user->setIsActive(true);
+            $user->setUpdatedAt(new DateTimeImmutable());
             $userRepository->add($user, true);
         }
         $this->addFlash(
